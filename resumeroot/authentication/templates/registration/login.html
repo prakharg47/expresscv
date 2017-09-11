@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Login</h2>
+{#    <form method="post">#}
+{#        {% csrf_token %}#}
+{#        {{ form.as_p }}#}
+{#        <button type="submit">Login</button>#}
+{#    </form>#}
+    <br>
+    {% load static %}
+    
+    <a href="{% url 'social:begin' 'google-oauth2' %}"><img src="{% static 'img/google-login.png' %}"/></a>
+    <br>
+    <a href="{% url 'social:begin' 'linkedin-oauth2' %}"><img src="{% static 'img/linkedin-login.png' %}"/></a>
+
+{% endblock %}
