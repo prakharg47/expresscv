@@ -1,0 +1,103 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				                %
+% 	     STANDARD THEME		    %
+%               				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Start a document with the here given default font size and paper size.
+\documentclass[10pt,a4paper]{article}
+
+% Set the page margins.
+\usepackage[a4paper,margin=0.75in]{geometry}
+
+% Setup the language.
+\usepackage[english]{babel}
+\hyphenation{Some-long-word}
+
+% Makes resume-specific commands available.
+\usepackage{resume}
+
+\begin{document}  % begin the content of the document
+\sloppy  % this to relax whitespacing in favour of straight margins
+
+
+% title on top of the document
+\noindent \maintitle{ {{personal.name}} } {}
+
+\nobreakvspace{0.3em}  % add some page break averse vertical spacing
+
+% \noindent prevents paragraph's first lines from indenting
+% \mbox is used to obfuscate the email address
+% \sbull is a spaced bullet
+% \href well..
+% \\ breaks the line into a new paragraph
+\noindent  {{ personal.email }} \sbull
+\textsmaller{+}91 {{ personal.mobile }}
+\\
+{{ personal.city }} \sbull
+{{personal.country }}
+
+\spacedhrule{0.9em}{-0.4em}  % a horizontal line with some vertical spacing before and after
+
+\roottitle{Summary}  % a root section title
+
+\vspace{-1.3em}  % some vertical spacing
+\begin{multicols}{2}  % open a multicolumn environment
+\noindent{{ personal.summary }}
+\end{multicols}
+
+\spacedhrule{0em}{-0.4em}
+
+\roottitle{Experience}
+
+{% for w in work %}
+\headedsection  % sets the header for the section and includes any subsections
+{% templatetag openvariable %} {{w.company}} {% templatetag closevariable %}
+{\textsc{ {{ w.city }}, {{ w.country}} }} {% templatetag openblock %}
+\headedsubsection
+{ {{w.designation}} }
+{ {{ w.from_year }} -- {{w.to_year}} }
+{\bodytext{ {{ w.summary}} }}
+}
+{% endfor %}
+
+\spacedhrule{-0.2em}{-0.4em}
+
+\roottitle{Education}
+
+{% for e in education %}
+\headedsection
+    {% templatetag openvariable %} {{e.college}} {% templatetag closevariable %}
+    {\textsc{ {{ e.city }}, {{e.country}} }} {% templatetag openblock %}
+    \headedsubsection
+        { {{ e.degree }}, {{ e.major }} }
+        { {{ e.from_year }} -- {{ e.to_year }} } {}
+
+}
+{% endfor %}
+
+
+\spacedhrule{0.5em}{-0.4em}
+
+\roottitle{Skills}
+
+\inlineheadsection  % special section that has an inline header with a 'hanging' paragraph
+  {Technical expertise:}
+  {Software design and implementation, with(in) a team.  Big fan of Agile methodologies (Scrum and Kanban), automated deployment (Capistrano) and continuous integration (Hudson/Jenkins).  Enjoys writing Ruby/\nsp Python/\nsp Java/\nsp \CPP, yet flirts regularly with Haskell.  Solid knowledge of web technologies:\ \acr{HTML+CSS}, \acr{XML}, \acr{RDF}, \acr{REST}, \acr{SOAP} and JavaScript (mostly Angular and jQuery).  Linux administration skills:\ Bash, Apache, My\acr{SQL}, Postgres\acr{SQL}, virtualization/cloud (Vagrant, Open\acr{VZ}, \acr{VM}ware, \acr{KVM}, Xen and \acr{EC}2), datacenter automation (Puppet and Chef).}
+
+\vspace{0.5em}
+\inlineheadsection
+  {Natural languages:}
+  {Dutch \emph{(mother tongue)}, English \emph{(full professional proficiency)}, German \emph{(limited working proficiency)}, French \emph{(elementary proficiency)} and Mandarin Chinese \emph{(beginner)}.}
+
+
+\spacedhrule{1.6em}{-0.4em}
+
+\roottitle{Interests}
+
+\inlineheadsection
+  {Non-exhaustive and in alphabetical order:}
+  {art, Buddhism, cryptography, Go (board game), history, music, open source, philosophy, software engineering (methodologies), travel, typography (e.g.\ graphic design, \LaTeX), \acr{UI}/\acr{UX}-design and vegetarian/vegan cooking.}
+
+
+\end{document}

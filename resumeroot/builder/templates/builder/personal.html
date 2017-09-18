@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h3>Enter personal details</h3>
+<div>
+  <form action="/builder/personal" method="post">
+        {% csrf_token %}
+        {% crispy form %}
+
+    <input type="submit" value="Submit" />
+  </form>
+</div>
+
+{% endblock %}

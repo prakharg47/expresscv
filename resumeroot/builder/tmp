@@ -1,0 +1,115 @@
+import os
+import subprocess
+
+from django.contrib.auth.decorators import login_required
+from django.forms import modelformset_factory
+from django.forms.formsets import formset_factory
+from django.shortcuts import render, render_to_response
+from django.http import *
+from django.contrib.auth.models import User
+
+from builder.models import Education
+from builder.models import Personal
+
+from builder.forms import EducationFormSet
+from . import models
+from django.template.loader import render_to_string
+
+from . import forms
+# Create your views here.
+
+
+def home(request):
+    # print User.objects.all()
+    # # print request.user
+    #
+    # if request.method == 'POST':
+    #
+    #     print 'data is posted'
+    #     main_form = ResumeForm(request.POST)
+    #     if main_form.is_valid():
+    #
+    #         formset = EducationFormSet(request.POST,
+    #                                  queryset=Education.objects.none())
+    #         # education_formset = forms.EducationFormSet(request.POST)
+    #
+    #         main_form.save()
+    #         formset.save()
+    #         # education_formset.save()
+    #
+    #     with open('/tmp/test.pdf', 'r') as pdf:
+    #         response = HttpResponse(pdf.read(), content_type='application/pdf')
+    #         #response['Content-Disposition'] = 'inline;filename=test.pdf'
+    #         return response
+    #
+    # form = forms.ResumeForm()
+    # education_formset = forms.EducationFormSet()
+    # helper2 = EducationFormSetHelper()
+    #
+    # return render(request, 'builder/home.html', {'form': form, 'formset': education_formset, 'helper2': helper2})
+    return HttpResponse("dsf")
+
+
+def personal(request):
+    return HttpResponse("hi")
+
+
+def education(request):
+    """
+    Method to handle education form requests
+    :param request:
+    :return:
+    """
+    education_formset = modelformset_factory(Education, extra=2, exclude=('resume',) )
+
+    if request.method == "POST":
+        formset = education_formset(request.POST)
+
+        if formset.is_valid():
+            message = "Thank you"
+            for form in formset:
+                if form.is_valid():
+                    print form.is_valid()
+
+                    print '--------------'
+                    resume_id = Personal.objects.get(pk=1)
+                    form.cleaned_data['resume'] = resume_id
+                    print form.cleaned_data
+                    ed_obj = form.save(commit=False)
+                    ed_obj.resume = resume_id
+                    ed_obj.save()
+
+        else:
+            message = "Something went wrong"
+
+        return render(request, 'builder/education.html', {'message': message})
+
+    else:
+        return render( request, 'builder/education.html', {'formset': education_formset()} )
+
+
+def publish(request):
+
+    current_user = request.user
+    try:
+        app_user = Personal.objects.get(user=current_user.id)
+    except:
+        print "app user doesnt exist"
+
+    # education_set = Education.objects.get(user=current_user.id)
+    education_set = Education.objects.all()
+    print app_user, education_set
+
+    rendered = render_to_string('themes/standard.html', {'personal': app_user, 'education' : education_set })
+    with open('output.tex', 'w') as f:
+        f.write(rendered)
+
+    p = subprocess.Popen(["pdflatex", "-interaction=scrollmode", "output.tex"])
+    p.communicate()
+
+    with open('output.pdf', 'r') as pdf:
+        response = HttpResponse(pdf.read(), content_type='application/pdf')
+        #response['Content-Disposition'] = 'inline;filename=test.pdf'
+        return response
+
+

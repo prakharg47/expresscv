@@ -6,4 +6,5 @@ from django.http import *
 
 
 def home(request):
-    return HttpResponse("you are logged in")
+    print "**********"
+    return render(request, 'resumeroot/home.html', context=None)

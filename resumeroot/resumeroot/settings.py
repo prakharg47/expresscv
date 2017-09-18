@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'social_django',
     'crispy_forms',
+    'formtools'
 ]
 
 MIDDLEWARE = [
@@ -58,7 +59,10 @@ ROOT_URLCONF = 'resumeroot.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'authentication/templates')],
+        'DIRS': [
+                    os.path.join(BASE_DIR, 'authentication/templates'),
+                    os.path.join(BASE_DIR, 'resumeroot/templates')
+                ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

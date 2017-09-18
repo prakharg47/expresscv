@@ -1,6 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import ResumeConfig
+from .models import *
 
-admin.site.register(ResumeConfig)
+# admin.site.register(Personal)

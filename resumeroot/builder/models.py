@@ -1,30 +1,58 @@
 from __future__ import unicode_literals
 
+from pyexpat import model
+
 from django.contrib.auth.models import User
 from django.db import models
-
-# Create your models here.
 from django.utils import timezone
 
 
-class ResumeConfig(models.Model):
+# Create your models here.
 
+class Personal(models.Model):
     created_on = models.DateTimeField(default=timezone.now)
-    user = models.ForeignKey(User)
+
+    user = models.ForeignKey(User, primary_key=True)
     name = models.CharField(max_length=50)
-    email = models.EmailField()
-    mobile = models.IntegerField()
+    email = models.EmailField(null=True)
+    mobile = models.CharField(max_length=50, null=True)
+    summary = models.CharField(max_length=50, null=True)
+    city = models.CharField(max_length=50)
+    country = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.name
+        return self.email
 
 
 class Education(models.Model):
+    user = models.ForeignKey(User)
 
     college = models.CharField(max_length=50)
     major = models.CharField(max_length=50)
+    degree = models.CharField(max_length=50, default='M.Sc')
     gpa = models.CharField(max_length=50)
-    resume = models.ForeignKey(ResumeConfig)
+
+    city = models.CharField(max_length=50)
+    country = models.CharField(max_length=50)
+
+    from_year = models.CharField(max_length=50, default='2010')
+    to_year = models.CharField(max_length=50, default='2015')
+
+    def __str__(self):
+        return "{}-{}-{}".format(self.college, self.major, self.gpa)
 
 
+class Work(models.Model):
 
+    user = models.ForeignKey(User)
+    company = models.CharField(max_length=50)
+    designation = models.CharField(max_length=50)
+    work_summary = models.CharField(max_length=50)
+    city = models.CharField(max_length=50)
+    country = models.CharField(max_length=50)
+
+    from_year = models.CharField(max_length=50, default='2010')
+    to_year = models.CharField(max_length=50, default='2010')
+
+    def __str__(self):
+        return "{}-{}".format(self.company, self.designation)

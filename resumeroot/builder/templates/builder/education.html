@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2> Education form </h2>
+
+{% if message %}
+  {{ messsage }}
+{% endif %}
+
+<div>
+  <form action="/builder/education" method="post">
+
+        {% csrf_token %}
+        {{ formset }}
+
+    <input type="submit" value="Submit" />
+  </form>
+</div>
+
+{% endblock %}}

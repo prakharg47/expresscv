@@ -17,10 +17,20 @@
 <body>
 
 <div class="container-fluid col-lg-4">
-    <h3>Build your cv</h3>
-    <form method="POST" class="post-form">{% csrf_token %}
-        {% crispy form form.helper %}
-        {% crispy ed_formset helper2 %}
+    <h3>form test</h3>
+    <form method="POST" class="post-form">
+        <!--{% csrf_token %}-->
+        <!--{% crispy form form.helper %}-->
+        <!--{% crispy formset helper2 %}-->
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        {{ formset.management_form }}
+
+        {% for f_form in formset %}
+            {{ f_form.as_p }}
+        {% endfor %}
     <button type="submit" class="save btn btn-default">Save</button>
     </form>
 </div>
