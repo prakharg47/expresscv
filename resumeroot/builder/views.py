@@ -91,10 +91,6 @@ def education(request):
 
         formset = EducationFormset(request.POST)
 
-
-
-        print formset
-        print "-----"
         if formset.is_valid():
             # Delete older user data. Save new form data
             print formset.cleaned_data
@@ -102,24 +98,21 @@ def education(request):
 
             new_education_objects = []
             for form_dict in formset.cleaned_data:
-                new_education_objects.append(Education(user=request.user, college=form_dict.get('college')))
+                new_education_objects.append(Education(user=request.user,
+                                                       college=form_dict.get('college'),
+                                                       degree=form_dict.get('degree'),
+                                                       major=form_dict.get('major'),
+                                                       gpa=form_dict.get('gpa'),
+                                                       city=form_dict.get('city'),
+                                                       country=form_dict.get('country'),
+                                                       to_year=form_dict.get('to_year'),
+                                                       from_year=form_dict.get('from_year')))
 
             # delete old instances of the user
             Education.objects.filter(user=request.user).delete()
 
             # save new instances
             Education.objects.bulk_create(new_education_objects)
-
-            # # Save new instances
-            # instances = formset.save(commit=False)
-            # print "\n\n printing instances ...."
-            # print instances
-            #
-            # for instance in instances:
-            #     print "\n\n printing instance ----- ...."
-            #     print instance.id
-            #     instance.user = request.user
-            #     instance.save()
 
             # Return
             messages.success(request, "Your education details are saved")
@@ -133,38 +126,6 @@ def education(request):
     else:
         formset = EducationFormset(queryset=Education.objects.filter(user=request.user))
         return render(request, 'builder/education.html', {'formset': formset})
-
-
-def education2(request):
-
-    if request.method == 'POST':
-        # Handle POST form data
-
-        form = EducationFormset(request.POST)
-        print "---------------"
-        for f in form:
-            print f
-            print " *********"
-            print " "
-        print "---------------"
-
-        if form.is_valid():
-
-            instances = form.save(commit=False)
-            # Delete older entries
-            #Education.objects.filter(user=request.user).delete()
-
-            print "Printing instances ... "
-            for instance in instances:
-                print instance
-                instance.user = request.user
-                instance.save()
-
-        return HttpResponseRedirect(reverse('education'))
-
-    # Render fresh form
-    form = EducationFormset(queryset=Education.objects.filter(user=request.user))
-    return render(request, 'builder/education.html', {'formset': form})
 
 
 def publish(request):
