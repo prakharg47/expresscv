@@ -1,8 +1,4 @@
 /**
- * Created by prakhar on 11/9/17.
- */
-
-/**
  * jQuery Formset 1.3-pre
  * @author Stanislaus Madueke (stan DOT madueke AT gmail DOT com)
  * @requires jQuery 1.2.6 or later
@@ -45,7 +41,7 @@
 
             showAddButton = function() {
                 return maxForms.length == 0 ||   // For Django versions pre 1.2
-                    (maxForms.val() == '' || (maxForms.val() - totalForms.val() > 0));
+                    (maxForms.val() == '' || (maxForms.val() - totalForms.val() > 0) || maxForms.val() - totalForms.val() > 0 );
             },
 
             /**
@@ -53,7 +49,7 @@
             */
             showDeleteLinks = function() {
                 return minForms.length == 0 ||   // For Django versions pre 1.7
-                    (minForms.val() == '' || (totalForms.val() - minForms.val() > 0));
+                    (minForms.val() == '' || (totalForms.val() - minForms.val() > 0) );
             },
 
             insertDeleteLink = function(row) {

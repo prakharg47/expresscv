@@ -7,7 +7,7 @@
 <div>
   <form action="/builder/personal" method="post">
         {% csrf_token %}
-        {% crispy form %}
+        {{ form }}
 
     <input type="submit" value="Submit" />
   </form>

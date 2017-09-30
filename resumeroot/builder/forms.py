@@ -14,10 +14,10 @@ class PersonalForm(forms.ModelForm):
 EducationFormset = modelformset_factory(Education,
                                         exclude=('user',),
                                         extra=1,
-                                        max_num=3)
+                                        max_num=4)
 
 WorkFormset = modelformset_factory(Work,
                                    exclude=('user',),
                                    extra=1,
-                                   max_num=3)
+                                   max_num=6)
 

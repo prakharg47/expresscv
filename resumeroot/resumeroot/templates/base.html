@@ -1,0 +1,134 @@
+{% load static %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>resumeroot</title>
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display+SC" rel="stylesheet">
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+{#    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery.formset@1.3.0/src/jquery.formset.js"></script>#}
+    <script type="text/javascript" src="http://yourjavascript.com/93320114137/jquery-formset.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
+
+    <style>
+        #heading {
+            font-family: 'Playfair Display SC', serif;
+        }
+    </style>
+
+</head>
+<div>
+
+    <div class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">{{ APPTITLE }}</a>
+                <button class="navbar-toggle" data-target="#navbar-main" data-toggle="collapse" type="button">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div id="navbar-main" class="navbar-collapse collapse">
+
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                        <li><a href="">Profile</a></li>
+                    {% else %}
+                        <li><a href="/auth/login">Login</a></li>
+                    {% endif %}
+                </ul>
+
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'root_home' %}">Resume Root</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{%  url 'personal'%}">Builder</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{% url 'pricing' %}">Pricing</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{% url 'blog' %}">Blog</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{% url 'about' %}">About Us</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="height:500px">
+
+        <main>
+            {% for message in messages %}
+            <p style="color: {% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% endif %}">
+                {{ message }}
+            </p>
+            {% endfor %}
+                {% block content %}
+                {% endblock %}
+        </main>
+
+    </div>
+
+
+</div>
+    <footer id="myFooter">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h3 class="logo"><a href="#"> ResumeRoot </a></h3>
+                </div>
+                <div class="col-sm-2">
+                    <h5>Builder</h5>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Login</a></li>
+
+                    </ul>
+                </div>
+                <div class="col-sm-2">
+                    <h5>About Us</h5>
+                    <ul>
+                        <li><a href="#">Company</a></li>
+                        <li><a href="#">Contact us</a></li>
+                        <li><a href="#">Testimonials</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-2">
+                    <h5>Support</h5>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Help </a></li>
+                        <li><a href="#">Forums</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <div class="social-networks">
+                        <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                        <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                        <a href="#" class="google"><i class="fa fa-google-plus"></i></a>
+                    </div>
+                    <button type="button" class="btn btn-default">Contact us</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <p>© 2017 Root Technology</p>
+        </div>
+    </footer>
+
+    </body>
+</html>

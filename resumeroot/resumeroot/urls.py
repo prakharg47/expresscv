@@ -17,13 +17,22 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from . import views as core_views
 from app_core import views as app_views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     # Apps
     url(r'^auth/', include('authentication.urls')),
     url(r'^builder/', include('builder.urls')),
-    url(r'^home/', core_views.home, name='home'),
+
+    url(r'^home/', app_views.home, name='home'),
+    url(r'^$', app_views.home, name='root_home'),
+    url(r'^blog', app_views.home, name='blog'),
+    url(r'^pricing', app_views.home, name='pricing'),
+    url(r'^about', app_views.home, name='about'),
 
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     url(r'^admin/', admin.site.urls),
 ]
+
+urlpatterns += staticfiles_urlpatterns()
+

@@ -61,6 +61,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
                     os.path.join(BASE_DIR, 'authentication/templates'),
+                    os.path.join(BASE_DIR, 'app_core/templates'),
                     os.path.join(BASE_DIR, 'resumeroot/templates')
                 ],
         'APP_DIRS': True,
@@ -139,7 +140,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+#MEDIA_ROOT = "/home/prakhar/projects/resumeroot/resumeroot/static/js"
+PROJECT_DIR = os.path.dirname(__file__)
+
+STATICFILES_DIRS = (os.path.join(PROJECT_DIR, 'static'),)
+
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static-root')
+
+
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
@@ -153,3 +163,31 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'MXLbKs6Tovz_mzUoF4OPWwqc'
 
 SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = '78o8mql7rg2v1i'
 SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'cMXpYULSrkXbr02h'
+
+LOGGING = {
+    'disable_existing_loggers': False,
+    'version': 1,
+    'handlers': {
+        'console': {
+            # logging handler that outputs log messages to terminal
+            'class': 'logging.StreamHandler',
+            'level': 'DEBUG', # message level to be written to console
+        },
+    },
+    'loggers': {
+        '': {
+            # this sets root level logger to log debug and higher level
+            # logs to console. All other loggers inherit settings from
+            # root level logger.
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False, # this tells logger to send logging message
+                                # to its parent (will send if set to True)
+        },
+        'django.db': {
+            # django also has database level logging
+        },
+    },
+}
+
+

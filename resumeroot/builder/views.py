@@ -13,6 +13,7 @@ from django.urls import reverse
 
 from .models import *
 from .forms import *
+from django.contrib import messages
 
 
 # Create your views here.
@@ -77,17 +78,85 @@ def experience(request):
     return render(request, 'builder/work.html', {'formset': form})
 
 
-
 def education(request):
+    """
+    Allow users to update education details
+    :param request:
+    :return:
+    """
+    if request.method == 'POST':
+
+        # HACK - add arbitrary ids in the request if form.id is null.
+        # This is because of bug in dynamic-formset-js
+
+        formset = EducationFormset(request.POST)
+
+
+
+        print formset
+        print "-----"
+        if formset.is_valid():
+            # Delete older user data. Save new form data
+            print formset.cleaned_data
+            print Education.objects.filter(user=request.user)
+
+            new_education_objects = []
+            for form_dict in formset.cleaned_data:
+                new_education_objects.append(Education(user=request.user, college=form_dict.get('college')))
+
+            # delete old instances of the user
+            Education.objects.filter(user=request.user).delete()
+
+            # save new instances
+            Education.objects.bulk_create(new_education_objects)
+
+            # # Save new instances
+            # instances = formset.save(commit=False)
+            # print "\n\n printing instances ...."
+            # print instances
+            #
+            # for instance in instances:
+            #     print "\n\n printing instance ----- ...."
+            #     print instance.id
+            #     instance.user = request.user
+            #     instance.save()
+
+            # Return
+            messages.success(request, "Your education details are saved")
+            return HttpResponseRedirect(reverse('education'))
+
+        else:
+            print "Form is invalid"
+            messages.error(request, str(formset.errors))
+            return HttpResponseRedirect(reverse('education'))
+
+    else:
+        formset = EducationFormset(queryset=Education.objects.filter(user=request.user))
+        return render(request, 'builder/education.html', {'formset': formset})
+
+
+def education2(request):
 
     if request.method == 'POST':
         # Handle POST form data
 
         form = EducationFormset(request.POST)
-        if form.is_valid():
-            instances = form.save(commit=False)
+        print "---------------"
+        for f in form:
+            print f
+            print " *********"
+            print " "
+        print "---------------"
 
+        if form.is_valid():
+
+            instances = form.save(commit=False)
+            # Delete older entries
+            #Education.objects.filter(user=request.user).delete()
+
+            print "Printing instances ... "
             for instance in instances:
+                print instance
                 instance.user = request.user
                 instance.save()
 

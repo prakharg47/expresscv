@@ -27,16 +27,16 @@ class Personal(models.Model):
 class Education(models.Model):
     user = models.ForeignKey(User)
 
-    college = models.CharField(max_length=50)
-    major = models.CharField(max_length=50)
-    degree = models.CharField(max_length=50, default='M.Sc')
-    gpa = models.CharField(max_length=50)
+    college = models.CharField(max_length=50, null=True, blank=True)
+    major = models.CharField(max_length=50, null=True, blank=True)
+    degree = models.CharField(max_length=50, default='M.Sc', null=True, blank=True)
+    gpa = models.CharField(max_length=50, null=True, blank=True)
 
-    city = models.CharField(max_length=50)
-    country = models.CharField(max_length=50)
+    city = models.CharField(max_length=50, null=True, blank=True)
+    country = models.CharField(max_length=50, null=True, blank=True)
 
-    from_year = models.CharField(max_length=50, default='2010')
-    to_year = models.CharField(max_length=50, default='2015')
+    from_year = models.CharField(max_length=50, default='2010', null=True, blank=True)
+    to_year = models.CharField(max_length=50, default='2015', null=True, blank=True)
 
     def __str__(self):
         return "{}-{}-{}".format(self.college, self.major, self.gpa)

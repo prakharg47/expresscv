@@ -1,11 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <br><br><br>
+    <div class="row">
+        <h1 class="text-center"><strong>Build your future with ResumeRoot</strong></h1>
+        <br><br><br>
+        <div class="col-md-2 col-md-offset-5">
+            <a href="{% url 'personal' %}" class="btn btn-success btn-lg btn-block ">Get Started</a>
+        </div>
+    </div>
 
-<h2> Home </h2>
 
-{% if message %}
-  {{ messsage }}
-{% endif %}
+    <div class="row">
+        <div class="col-md-2 col-md-offset-5">
+            <h3>Total users <strong>{{ total_users }}</strong></h3>
+        </div>
+    </div>
 
-{% endblock %}}
+{% endblock %}
+

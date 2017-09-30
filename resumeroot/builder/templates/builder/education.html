@@ -4,18 +4,48 @@
 
 <h2> Education form </h2>
 
-{% if message %}
-  {{ messsage }}
+{% if messages %}
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
 {% endif %}
 
 <div>
-  <form action="/builder/education" method="post">
 
+    <script type="text/javascript">
+    $(function() {
+        $('#myForm tbody tr').formset();
+    })
+    </script>
+
+    <!--<form action="/builder/education" method="post">-->
+
+    <!--{% csrf_token %}-->
+    <!--{{ formset }}-->
+
+    <!--<input type="submit" value="Submit" />-->
+    <!--</form>-->
+    <!---->
+
+    <form id="myForm" method="post" action="">
         {% csrf_token %}
-        {{ formset }}
-
-    <input type="submit" value="Submit" />
-  </form>
+        <table border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+            {% for form in formset.forms %}
+            <tr>
+                {% for field in form %}
+                <td>{{ field }}</td>
+                {% endfor %}
+                <!--<td>{{ form.field1 }}</td>-->
+                <!--<td>{{ form.field2 }}</td>-->
+                <!--<td>{{ form.field3 }}</td>-->
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {{ formset.management_form }}
+        <input type="submit" value="Submit" />
+    </form>
 </div>
 
 {% endblock %}}
