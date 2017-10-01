@@ -8,6 +8,6 @@ urlpatterns = [
     url(r'^$', views.home, name='builder_home'),
     url(r'^personal$', views.personal, name='personal'),
     url(r'^education$', views.education, name='education'),
-    url(r'^experience$', views.experience, name='experience' ),
+    url(r'^experience$', views.experience, name='experience'),
     url(r'^publish$', views.publish, name='publish')
 ]

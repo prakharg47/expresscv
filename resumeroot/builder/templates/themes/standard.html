@@ -41,11 +41,12 @@
 
 \roottitle{Summary}  % a root section title
 
-\vspace{-1.3em}  % some vertical spacing
-\begin{multicols}{2}  % open a multicolumn environment
-\noindent{{ personal.summary }}
-\end{multicols}
+% \vspace{1.3em}  % some vertical spacing
+% \begin{multicols}{2}  % open a multicolumn environment
+\noindent {{ personal.summary }}
+% \end{multicols}
 
+\vspace{1.1em}  % some vertical spacing
 \spacedhrule{0em}{-0.4em}
 
 \roottitle{Experience}
@@ -57,10 +58,11 @@
 \headedsubsection
 { {{w.designation}} }
 { {{ w.from_year }} -- {{w.to_year}} }
-{\bodytext{ {{ w.summary}} }}
+{\bodytext{ {{ w.work_summary}} }}
 }
 {% endfor %}
 
+\vspace{1.1em}  % some vertical spacing
 \spacedhrule{-0.2em}{-0.4em}
 
 \roottitle{Education}

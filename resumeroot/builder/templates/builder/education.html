@@ -1,45 +1,40 @@
-{% extends 'base.html' %}
+{% extends 'builder/builder_base.html' %}
 
-{% block content %}
+{% block form_content %}
 
-<h2> Education form </h2>
+    <h3> Education</h3>
 
-<div>
+    <div>
 
-    <script type="text/javascript">
-    $(function() {
-        $('#myForm tbody tr').formset();
-    })
-    </script>
+        <script type="text/javascript">
+            $(function () {
+                $('.formset-group').formset();
+                $('.add-row').addClass('btn').addClass('btn-success');
+                $('.delete-row').addClass('btn').addClass('btn-danger');
+            })
+        </script>
 
-    <!--<form action="/builder/education" method="post">-->
+        <form id="myForm" method="post" action="/builder/education">
+            {% csrf_token %}
 
-    <!--{% csrf_token %}-->
-    <!--{{ formset }}-->
-
-    <!--<input type="submit" value="Submit" />-->
-    <!--</form>-->
-    <!---->
-
-    <form id="myForm" method="post" action="">
-        {% csrf_token %}
-        <table border="0" cellpadding="0" cellspacing="0">
-            <tbody>
             {% for form in formset.forms %}
-            <tr>
-                {% for field in form %}
-                <td>{{ field }}</td>
-                {% endfor %}
-                <!--<td>{{ form.field1 }}</td>-->
-                <!--<td>{{ form.field2 }}</td>-->
-                <!--<td>{{ form.field3 }}</td>-->
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        {{ formset.management_form }}
-        <input type="submit" value="Submit" />
-    </form>
-</div>
+                <div class="formset-group row">
+                    {% for field in form %}
+                        <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                            <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <br>
 
-{% endblock %}}
+            {% endfor %}
+            {{ formset.management_form }}
+        <br><br>
+            <div class="control-group">
+                <input type="submit" class="btn btn-primary" value="Submit"/>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

@@ -1,21 +1,40 @@
-{% extends 'base.html' %}
+{% extends 'builder/builder_base.html' %}
 
-{% block content %}
+{% block form_content %}
 
-<h2> Experience form </h2>
-{% if message %}
-  {{ messsage }}
-{% endif %}
+    <h3>Experience</h3>
 
-<div>
-  <form action="/builder/experience" method="post">
+    <div>
 
-        {% csrf_token %}
-        {{ formset }}
+        <script type="text/javascript">
+            $(function () {
+                $('.formset-group').formset();
+                $('.add-row').addClass('btn').addClass('btn-success');
+                $('.delete-row').addClass('btn').addClass('btn-danger');
+            })
+        </script>
 
-    <input type="submit" value="Submit" />
-  </form>
-</div>
+        <form id="myForm" method="post" action="{% url 'experience' %}">
+            {% csrf_token %}
 
+            {% for form in formset.forms %}
+                <div class="formset-group row">
+                    {% for field in form %}
+                        <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                            <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <br>
+
+            {% endfor %}
+            {{ formset.management_form }}
+        <br><br>
+            <div class="control-group">
+                <input type="submit" class="btn btn-primary" value="Submit"/>
+            </div>
+        </form>
+    </div>
 
 {% endblock %}
