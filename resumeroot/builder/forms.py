@@ -23,9 +23,8 @@ class PersonalForm(forms.ModelForm):
         model = Personal
         fields = ['name', 'email', 'mobile', 'summary', 'city', 'country']
 
-
 EducationFormset = modelformset_factory(Education,
-                                        exclude=('user',), extra=0, max_num=4,
+                                        exclude=('user',), extra=1, max_num=4,
                                         widgets={
                                             'college': TextInput(
                                                 attrs={'class': 'form-control', 'placeholder': 'College', }),
@@ -46,7 +45,7 @@ EducationFormset = modelformset_factory(Education,
                                         })
 
 WorkFormset = modelformset_factory(Work,
-                                   exclude=('user',), extra=0, max_num=6,
+                                   exclude=('user',), extra=1, max_num=6,
                                    widgets={
                                        'company': TextInput(
                                            attrs={'class': 'form-control', 'placeholder': 'Company', }),
