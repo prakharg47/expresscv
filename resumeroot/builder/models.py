@@ -29,14 +29,14 @@ class Education(models.Model):
 
     college = models.CharField(max_length=50, null=True, blank=True)
     major = models.CharField(max_length=50, null=True, blank=True)
-    degree = models.CharField(max_length=50, default='M.Sc', null=True, blank=True)
+    degree = models.CharField(max_length=50, null=True, blank=True)
     gpa = models.CharField(max_length=50, null=True, blank=True)
 
     city = models.CharField(max_length=50, null=True, blank=True)
     country = models.CharField(max_length=50, null=True, blank=True)
 
-    from_year = models.CharField(max_length=50, default='2010', null=True, blank=True)
-    to_year = models.CharField(max_length=50, default='2015', null=True, blank=True)
+    from_year = models.CharField(max_length=50, null=True, blank=True)
+    to_year = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
         return "{}-{}-{}".format(self.college, self.major, self.gpa)
@@ -51,8 +51,8 @@ class Work(models.Model):
     city = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
 
-    from_year = models.CharField(max_length=50, default='2010')
-    to_year = models.CharField(max_length=50, default='2010')
+    from_year = models.CharField(max_length=50)
+    to_year = models.CharField(max_length=50)
 
     def __str__(self):
         return "{}-{}".format(self.company, self.designation)
