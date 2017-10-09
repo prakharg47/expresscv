@@ -56,3 +56,15 @@ class Work(models.Model):
 
     def __str__(self):
         return "{}-{}".format(self.company, self.designation)
+
+
+class Skills(models.Model):
+
+    user = models.ForeignKey(User)
+    technical = models.CharField(max_length=100)
+    management = models.CharField(max_length=100)
+
+    def __str__(self):
+        return "{}".format(self.technical)
+
+

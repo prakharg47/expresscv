@@ -153,7 +153,12 @@ def education(request):
             return HttpResponseRedirect(reverse('education'))
 
     else:
-        formset = EducationFormset(queryset=Education.objects.filter(user=request.user))
+
+        if len(Education.objects.filter(user=request.user)) > 0:
+            formset = EducationFormset(queryset=Education.objects.filter(user=request.user))
+        else:
+            formset = EducationFormset_extra1(queryset=Education.objects.filter(user=request.user))
+
         return render(request, 'builder/education.html', {'formset': formset})
 
 
@@ -189,3 +194,36 @@ def publish(request):
         # response['Content-Disposition'] = 'inline;filename=test.pdf'
         return response
     pass
+
+
+def skills(request):
+    user_id = request.user.id
+
+    if request.method == 'POST':
+        # Handle form submission
+        form = SkillsForm(request.POST)
+
+        if form.is_valid():
+            form.cleaned_data['user'] = request.user
+            f = form.save(commit=False)
+            f.user = request.user
+            f.save()
+
+            # return render(request, 'builder/personal.html')
+            messages.success(request, "Your personal details are saved")
+            return HttpResponseRedirect(reverse('personal'))
+
+    try:
+        old_data = Skills.objects.get(user=request.user)
+    except:
+        old_data = None
+        pass
+
+    if old_data is None:
+        form = SkillsForm()
+    else:
+        form = SkillsForm(instance=old_data)
+
+    return render(request, 'builder/skills.html', {'form': form})
+
+

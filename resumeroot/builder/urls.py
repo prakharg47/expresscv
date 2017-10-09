@@ -9,5 +9,7 @@ urlpatterns = [
     url(r'^personal$', views.personal, name='personal'),
     url(r'^education$', views.education, name='education'),
     url(r'^experience$', views.experience, name='experience'),
+    url(r'^skills$', views.skills, name='skills'),
+
     url(r'^publish$', views.publish, name='publish')
 ]

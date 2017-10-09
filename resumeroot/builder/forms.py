@@ -23,7 +23,19 @@ class PersonalForm(forms.ModelForm):
         model = Personal
         fields = ['name', 'email', 'mobile', 'summary', 'city', 'country']
 
-EducationFormset = modelformset_factory(Education,
+
+class SkillsForm(forms.ModelForm):
+    technical = forms.CharField(label="Technical Skills",
+                           widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Technical', }))
+    management = forms.CharField(label="Management Skills",
+                            widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Management', }))
+
+    class Meta:
+        model = Skills
+        fields = ['management', 'technical']
+
+
+EducationFormset_extra1 = modelformset_factory(Education,
                                         exclude=('user',), extra=1, max_num=4,
                                         widgets={
                                             'college': TextInput(
@@ -44,6 +56,28 @@ EducationFormset = modelformset_factory(Education,
 
                                         })
 
+EducationFormset = modelformset_factory(Education,
+                                        exclude=('user',), extra=0, max_num=4,
+                                        widgets={
+                                            'college': TextInput(
+                                                attrs={'class': 'form-control', 'placeholder': 'College', }),
+                                            'gpa': TextInput(attrs={'class': 'form-control', 'placeholder': 'GPA', }),
+                                            'degree': TextInput(
+                                                attrs={'class': 'form-control', 'placeholder': 'Degree', }),
+                                            'major': TextInput(
+                                                attrs={'class': 'form-control', 'placeholder': 'Major', }),
+                                            'city': TextInput(
+                                                attrs={'class': 'form-control', 'placeholder': 'City', }),
+                                            'country': TextInput(
+                                                attrs={'class': 'form-control', 'placeholder': 'Country', }),
+                                            'from_year': TextInput(
+                                                attrs={'class': 'form-control', 'placeholder': 'From', }),
+                                            'to_year': TextInput(
+                                                attrs={'class': 'form-control', 'placeholder': 'To', })
+
+                                        })
+
+
 WorkFormset = modelformset_factory(Work,
                                    exclude=('user',), extra=1, max_num=6,
                                    widgets={
@@ -60,3 +94,5 @@ WorkFormset = modelformset_factory(Work,
                                        'to_year': TextInput(
                                            attrs={'class': 'form-control', 'placeholder': 'To', }),
                                    })
+
+
