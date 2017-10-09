@@ -161,41 +161,7 @@ def education(request):
 
         return render(request, 'builder/education.html', {'formset': formset})
 
-
 @login_required
-def publish(request):
-    current_user = request.user
-    print request.user
-
-    try:
-        app_user = Personal.objects.get(user=request.user.id)
-        print app_user.summary + "************"
-    except:
-        print "app user doesnt exist"
-        raise Http404('User doesnt exist. Please fill in details for that user first')
-
-    education_set = Education.objects.filter(user=request.user)
-    work_set = Work.objects.filter(user=request.user)
-
-    rendered = render_to_string('themes/standard.html',
-                                {
-                                    'personal': app_user,
-                                    'education': education_set,
-                                    'work': work_set
-                                })
-    with open('output.tex', 'w') as f:
-        f.write(rendered)
-
-    p = subprocess.Popen(["pdflatex", "-interaction=scrollmode", "output.tex"])
-    p.communicate()
-
-    with open('output.pdf', 'r') as pdf:
-        response = HttpResponse(pdf.read(), content_type='application/pdf')
-        # response['Content-Disposition'] = 'inline;filename=test.pdf'
-        return response
-    pass
-
-
 def skills(request):
     user_id = request.user.id
 
@@ -210,8 +176,8 @@ def skills(request):
             f.save()
 
             # return render(request, 'builder/personal.html')
-            messages.success(request, "Your personal details are saved")
-            return HttpResponseRedirect(reverse('personal'))
+            messages.success(request, "Your details are saved")
+            return HttpResponseRedirect(reverse('skills'))
 
     try:
         old_data = Skills.objects.get(user=request.user)
@@ -225,5 +191,40 @@ def skills(request):
         form = SkillsForm(instance=old_data)
 
     return render(request, 'builder/skills.html', {'form': form})
+
+
+@login_required
+def publish(request):
+    current_user = request.user
+    print request.user
+
+    try:
+        app_user = Personal.objects.get(user=request.user.id)
+        print app_user.summary + "************"
+    except:
+        raise Http404('Please fill in Personal details first')
+
+    education_set = Education.objects.filter(user=request.user)
+    work_set = Work.objects.filter(user=request.user)
+    skills = Skills.objects.get(user=request.user)
+
+    rendered = render_to_string('themes/standard.html',
+                                {
+                                    'personal': app_user,
+                                    'education': education_set,
+                                    'work': work_set,
+                                    'skills' : skills,
+                                })
+    with open('output.tex', 'w') as f:
+        f.write(rendered)
+
+    p = subprocess.Popen(["pdflatex", "-interaction=scrollmode", "output.tex"])
+    p.communicate()
+
+    with open('output.pdf', 'r') as pdf:
+        response = HttpResponse(pdf.read(), content_type='application/pdf')
+        # response['Content-Disposition'] = 'inline;filename=test.pdf'
+        return response
+    pass
 
 

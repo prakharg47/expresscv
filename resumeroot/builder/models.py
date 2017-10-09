@@ -68,3 +68,6 @@ class Skills(models.Model):
         return "{}".format(self.technical)
 
 
+
+
+
