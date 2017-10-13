@@ -10,11 +10,17 @@
 
     <script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.js"></script>
     <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
     <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+
     {# <script type="text/javascript" src="http://yourjavascript.com/93320114137/jquery-formset.js"></script>#}
 
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
 
     <style>
         #heading {
@@ -50,7 +56,7 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{%  url 'personal'%}">Builder</a></li>
+                    <li><a href="{% url 'resume' %}">Editor</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -71,14 +77,49 @@
 
     <div class="container" style="min-height:500px">
 
+{#        <script type="text/javascript">#}
+{#            $(function () { //ready#}
+{#                toastr.info('If all three of these are referenced correctly, then this should toast should pop-up.');#}
+{#            });#}
+{#        </script>#}
+
         <main>
-            {% for message in messages %}
-            <p style="color: {% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% endif %}">
-                {{ message }}
-            </p>
-            {% endfor %}
-                {% block content %}
-                {% endblock %}
+{#            {% for message in messages %}#}
+{#                <p style="color: {% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% endif %}">#}
+{#                    {{ message }}#}
+{#                </p>#}
+{#            {% endfor %}#}
+
+            {% if messages %}
+                <script type="text/javascript">
+                    $(document).ready(function () {
+
+                        toastr.options = {
+                            "closeButton": false,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": false,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "5000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+                        {% for m in messages %}
+                        toastr.success("{{ m }}");
+                        {% endfor %}
+                    });
+                </script>
+            {% endif %}
+
+            {% block content %}
+            {% endblock %}
         </main>
 
     </div>
@@ -87,50 +128,50 @@
 
     </div>
 </div>
-    <footer id="myFooter">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-3">
-                    <h3 class="logo"><a href="#"> ResumeRoot </a></h3>
-                </div>
-                <div class="col-sm-2">
-                    <h5>Builder</h5>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Login</a></li>
+<footer id="myFooter">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <h3 class="logo"><a href="#"> ResumeRoot </a></h3>
+            </div>
+            <div class="col-sm-2">
+                <h5>Builder</h5>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Login</a></li>
 
-                    </ul>
+                </ul>
+            </div>
+            <div class="col-sm-2">
+                <h5>About Us</h5>
+                <ul>
+                    <li><a href="#">Company</a></li>
+                    <li><a href="#">Contact us</a></li>
+                    <li><a href="#">Testimonials</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-2">
+                <h5>Support</h5>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Help </a></li>
+                    <li><a href="#">Forums</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3">
+                <div class="social-networks">
+                    <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                    <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                    <a href="#" class="google"><i class="fa fa-google-plus"></i></a>
                 </div>
-                <div class="col-sm-2">
-                    <h5>About Us</h5>
-                    <ul>
-                        <li><a href="#">Company</a></li>
-                        <li><a href="#">Contact us</a></li>
-                        <li><a href="#">Testimonials</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-2">
-                    <h5>Support</h5>
-                    <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Help </a></li>
-                        <li><a href="#">Forums</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <div class="social-networks">
-                        <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
-                        <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
-                        <a href="#" class="google"><i class="fa fa-google-plus"></i></a>
-                    </div>
-                    <button type="button" class="btn btn-default">Contact us</button>
-                </div>
+                <button type="button" class="btn btn-default">Contact us</button>
             </div>
         </div>
-        <div class="footer-copyright">
-            <p><tt>© 2017 Root Technology</tt></p>
-        </div>
-    </footer>
+    </div>
+    <div class="footer-copyright">
+        <p><tt>© 2017 Root Technology</tt></p>
+    </div>
+</footer>
 
-    </body>
+</body>
 </html>

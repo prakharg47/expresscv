@@ -22,7 +22,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
     # Apps
     url(r'^auth/', include('authentication.urls')),
-    url(r'^builder/', include('builder.urls')),
+    url(r'^editor/', include('builder.urls')),
 
     url(r'^home/', app_views.home, name='home'),
     url(r'^$', app_views.home, name='root_home'),

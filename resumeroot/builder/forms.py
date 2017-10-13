@@ -5,6 +5,16 @@ from django.forms.widgets import TextInput, Textarea
 from .models import *
 
 
+class ResumeForm(forms.ModelForm):
+    name = forms.CharField(label="Resume Name",
+                                widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name', }))
+
+    class Meta:
+        model = Resume
+        fields = ['name']
+
+
+
 class PersonalForm(forms.ModelForm):
     name = forms.CharField(label="Name",
                            widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name', }))
@@ -36,7 +46,7 @@ class SkillsForm(forms.ModelForm):
 
 
 EducationFormset_extra1 = modelformset_factory(Education,
-                                        exclude=('user',), extra=1, max_num=4,
+                                        exclude=('resume',), extra=1, max_num=4,
                                         widgets={
                                             'college': TextInput(
                                                 attrs={'class': 'form-control', 'placeholder': 'College', }),
@@ -57,7 +67,7 @@ EducationFormset_extra1 = modelformset_factory(Education,
                                         })
 
 EducationFormset = modelformset_factory(Education,
-                                        exclude=('user',), extra=0, max_num=4,
+                                        exclude=('resume',), extra=0, max_num=4,
                                         widgets={
                                             'college': TextInput(
                                                 attrs={'class': 'form-control', 'placeholder': 'College', }),
@@ -79,7 +89,7 @@ EducationFormset = modelformset_factory(Education,
 
 
 WorkFormset = modelformset_factory(Work,
-                                   exclude=('user',), extra=1, max_num=6,
+                                   exclude=('resume',), extra=1, max_num=6,
                                    widgets={
                                        'company': TextInput(
                                            attrs={'class': 'form-control', 'placeholder': 'Company', }),

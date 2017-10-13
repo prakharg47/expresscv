@@ -14,7 +14,7 @@
             })
         </script>
 
-        <form id="myForm" method="post" action="{% url 'experience' %}">
+        <form id="myForm" method="post" action="{% url 'experience' resume_id=resume_id%}">
             {% csrf_token %}
 
             {% for form in formset.forms %}
@@ -32,7 +32,7 @@
             {{ formset.management_form }}
         <br><br>
             <div class="control-group">
-                <input type="submit" class="btn btn-primary" value="Submit"/>
+                <input type="submit" class="btn btn-primary" value="Save"/>
             </div>
         </form>
     </div>

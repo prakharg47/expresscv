@@ -6,7 +6,7 @@
 
     <h3>Personal</h3>
     <div>
-        <form action="{% url 'skills' %}" method="post">
+        <form action="{% url 'skills' resume_id=resume_id %}" method="post">
             {% csrf_token %}
 
             {% for field in form %}
@@ -16,7 +16,7 @@
                 </div>
             {% endfor %}
 
-            <input type="submit" class="btn btn-primary" value="Submit"/>
+            <input type="submit" class="btn btn-primary" value="Save"/>
         </form>
     </div>
 

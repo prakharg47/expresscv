@@ -9,10 +9,24 @@ from django.utils import timezone
 
 # Create your models here.
 
-class Personal(models.Model):
-    created_on = models.DateTimeField(default=timezone.now)
+class BaseModel(models.Model):
+    created_date = models.DateTimeField(editable=False)
+    modified_date = models.DateTimeField()
 
-    user = models.ForeignKey(User, primary_key=True)
+    class Meta:
+        abstract = True
+
+
+class Resume(models.Model):
+    user = models.ForeignKey(User)
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return "{}".format(self.name)
+
+
+class Personal(models.Model):
+    resume = models.ForeignKey(Resume, primary_key=True)
     name = models.CharField(max_length=50)
     email = models.EmailField(null=True)
     mobile = models.CharField(max_length=50, null=True)
@@ -23,9 +37,16 @@ class Personal(models.Model):
     def __str__(self):
         return self.email
 
+    def save(self, *args, **kwargs):
+        """ On save, update timestamps """
+        if not self.resume:
+            self.created_date = timezone.now()
+        self.modified_date = timezone.now()
+        return super(Personal, self).save(*args, **kwargs)
+
 
 class Education(models.Model):
-    user = models.ForeignKey(User)
+    resume = models.ForeignKey(Resume)
 
     college = models.CharField(max_length=50, null=True, blank=True)
     major = models.CharField(max_length=50, null=True, blank=True)
@@ -44,7 +65,7 @@ class Education(models.Model):
 
 class Work(models.Model):
 
-    user = models.ForeignKey(User)
+    resume = models.ForeignKey(Resume)
     company = models.CharField(max_length=50)
     designation = models.CharField(max_length=50)
     work_summary = models.CharField(max_length=50)
@@ -60,14 +81,12 @@ class Work(models.Model):
 
 class Skills(models.Model):
 
-    user = models.ForeignKey(User)
+    resume = models.ForeignKey(Resume)
     technical = models.CharField(max_length=100)
     management = models.CharField(max_length=100)
 
     def __str__(self):
         return "{}".format(self.technical)
-
-
 
 
 
