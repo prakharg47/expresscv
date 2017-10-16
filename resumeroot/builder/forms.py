@@ -154,6 +154,27 @@ EducationFormset = modelformset_factory(Education,
                                         })
 
 WorkFormset = modelformset_factory(Work,
+                                   exclude=('resume',), extra=0, max_num=6,
+                                   widgets={
+                                       'company': TextInput(
+                                           attrs={'class': 'form-control', 'placeholder': 'Company', }),
+                                       'designation': TextInput(
+                                           attrs={'class': 'form-control', 'placeholder': 'Designation', }),
+                                       'work_summary': Textarea(
+                                           attrs={'class': 'form-control', 'placeholder': 'Roles', }),
+
+                                       'city': TextInput(
+                                           attrs={'class': 'form-control', 'placeholder': 'City', }),
+                                       'country': TextInput(
+                                           attrs={'class': 'form-control', 'placeholder': 'Country', }),
+                                       'from_year': AdminDateWidget(
+                                           attrs={'class': 'form-control Default', 'placeholder': 'From', }),
+
+                                       'to_year': TextInput(
+                                           attrs={'class': 'form-control Default', 'placeholder': 'To', }),
+                                   })
+
+WorkFormset_extra1 = modelformset_factory(Work,
                                    exclude=('resume',), extra=1, max_num=6,
                                    widgets={
                                        'company': TextInput(

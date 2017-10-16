@@ -252,9 +252,13 @@ def experience(request, resume_id):
             return HttpResponseRedirect(reverse('experience', kwargs={'resume_id': resume_id}))
 
     else:
-        formset = WorkFormset(queryset=Work.objects.filter(resume=resume_id))
-        return render(request, 'builder/work.html', {'formset': formset,
-                                                     'resume_id': resume_id})
+
+        if len(Education.objects.filter(resume=resume_id)) > 0:
+            formset = WorkFormset(queryset=Work.objects.filter(resume=resume_id))
+        else:
+            formset = WorkFormset_extra1(queryset=Work.objects.filter(resume=resume_id))
+
+        return render(request, 'builder/work.html', {'formset': formset, 'resume_id': resume_id})
 
 
 @login_required
