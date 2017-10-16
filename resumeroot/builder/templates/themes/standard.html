@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%				                %
-% 	     STANDARD THEME		    %
-%               				%
+%                                %
+%         STANDARD THEME            %
+%                            %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Start a document with the here given default font size and paper size.
@@ -20,9 +20,13 @@
 \begin{document}  % begin the content of the document
 \sloppy  % this to relax whitespacing in favour of straight margins
 
+% FOR CHANGING FONTS
+%\usepackage[T1]{fontenc}
+%\usepackage{mathptmx}
+
 
 % title on top of the document
-\noindent \maintitle{ {{personal.name}} } {}
+\noindent \maintitle{ {{ personal.name }} } {}
 
 \nobreakvspace{0.3em}  % add some page break averse vertical spacing
 
@@ -35,7 +39,7 @@
 \textsmaller{+}91 {{ personal.mobile }}
 \\
 {{ personal.city }} \sbull
-{{personal.country }}
+{{ personal.country }}
 
 \spacedhrule{0.9em}{-0.4em}  % a horizontal line with some vertical spacing before and after
 
@@ -43,7 +47,12 @@
 
 % \vspace{1.3em}  % some vertical spacing
 % \begin{multicols}{2}  % open a multicolumn environment
-\noindent {{ personal.summary }}
+
+\begin{itemize}
+\setlength\itemsep{0em}
+\item {{ personal.summary }}
+\end{itemize}
+
 % \end{multicols}
 
 \vspace{1.1em}  % some vertical spacing
@@ -52,14 +61,21 @@
 \roottitle{Experience}
 
 {% for w in work %}
-\headedsection  % sets the header for the section and includes any subsections
-{% templatetag openvariable %} {{w.company}} {% templatetag closevariable %}
-{\textsc{ {{ w.city }}, {{ w.country}} }} {% templatetag openblock %}
-\headedsubsection
-{ {{w.designation}} }
-{ {{ w.from_year }} -- {{w.to_year}} }
-{\bodytext{ {{ w.work_summary}} }}
-}
+    \headedsection  % sets the header for the section and includes any subsections
+    {% templatetag openvariable %} {{ w.company }} {% templatetag closevariable %}
+    {\textsc{ {{ w.city }}, {{ w.country }} }} {% templatetag openblock %}
+    \headedsubsection
+    { {{ w.designation }} }
+    { {{ w.from_year }} -- {{ w.to_year }} }
+
+    {}
+    }
+
+    \begin{itemize}
+    \setlength\itemsep{0em}
+    \item {{ w.work_summary }}
+    \end{itemize}
+
 {% endfor %}
 
 \vspace{1.1em}  % some vertical spacing
@@ -68,14 +84,14 @@
 \roottitle{Education}
 
 {% for e in education %}
-\headedsection
-    {% templatetag openvariable %} {{e.college}} {% templatetag closevariable %}
-    {\textsc{ {{ e.city }}, {{e.country}} }} {% templatetag openblock %}
+    \headedsection
+    {% templatetag openvariable %} {{ e.college }} {% templatetag closevariable %}
+    {\textsc{ {{ e.city }}, {{ e.country }} }} {% templatetag openblock %}
     \headedsubsection
-        { {{ e.degree }}, {{ e.major }} }
-        { {{ e.from_year }} -- {{ e.to_year }} } {}
+    { {{ e.degree }}, {{ e.major }} }
+    { {{ e.from_year }} -- {{ e.to_year }} } {}
 
-}
+    }
 {% endfor %}
 
 
@@ -84,21 +100,21 @@
 \roottitle{Skills}
 
 \inlineheadsection  % special section that has an inline header with a 'hanging' paragraph
-  {Technical:}
-  { {{ skills.technical }} }
+{Technical:}
+{ {{ skills.technical }} }
 
 \vspace{0.5em}
 \inlineheadsection
-  {Management:}
-  { {{ skills.management }} }
+{Management:}
+{ {{ skills.management }} }
 
 \spacedhrule{1.6em}{-0.4em}
 
 \roottitle{Interests}
 
 \inlineheadsection
-  {Non-exhaustive and in alphabetical order:}
-  {art, Buddhism, cryptography, Go (board game), history, music, open source, philosophy, software engineering (methodologies), travel, typography (e.g.\ graphic design, \LaTeX), \acr{UI}/\acr{UX}-design and vegetarian/vegan cooking.}
+{Non-exhaustive and in alphabetical order:}
+{art, Buddhism, cryptography, Go (board game), history, music, open source, philosophy, software engineering (methodologies), travel, typography (e.g.\ graphic design, \LaTeX), \acr{UI}/\acr{UX}-design and vegetarian/vegan cooking.}
 
 
 \end{document}

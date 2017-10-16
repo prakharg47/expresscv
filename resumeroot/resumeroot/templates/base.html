@@ -10,17 +10,19 @@
 
     <script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.js"></script>
     <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-
+    <script src="https://cdn.rawgit.com/digitalBush/jquery.maskedinput/1.4.1/dist/jquery.maskedinput.min.js"></script>
 
     <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/MonthPicker.min.js' %}"></script>
 
     {# <script type="text/javascript" src="http://yourjavascript.com/93320114137/jquery-formset.js"></script>#}
-
+    <link href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/MonthPicker.min.css' %}">
 
     <style>
         #heading {
@@ -77,18 +79,18 @@
 
     <div class="container" style="min-height:500px">
 
-{#        <script type="text/javascript">#}
-{#            $(function () { //ready#}
-{#                toastr.info('If all three of these are referenced correctly, then this should toast should pop-up.');#}
-{#            });#}
-{#        </script>#}
+        {#        <script type="text/javascript">#}
+        {#            $(function () { //ready#}
+        {#                toastr.info('If all three of these are referenced correctly, then this should toast should pop-up.');#}
+        {#            });#}
+        {#        </script>#}
 
         <main>
-{#            {% for message in messages %}#}
-{#                <p style="color: {% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% endif %}">#}
-{#                    {{ message }}#}
-{#                </p>#}
-{#            {% endfor %}#}
+            {#            {% for message in messages %}#}
+            {#                <p style="color: {% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% endif %}">#}
+            {#                    {{ message }}#}
+            {#                </p>#}
+            {#            {% endfor %}#}
 
             {% if messages %}
                 <script type="text/javascript">
@@ -110,10 +112,17 @@
                             "hideEasing": "linear",
                             "showMethod": "fadeIn",
                             "hideMethod": "fadeOut"
-                        }
+                        };
                         {% for m in messages %}
-                        toastr.success("{{ m }}");
+                            {% if 'success' in m.tags %}
+                                toastr.success("{{ m }}");
+                            {% elif 'error' in m.tags %}
+                                toastr.error("{{ m }}");
+                            {% elif 'warning' in m.tags %}
+                                toastr.info("{{ m }}");
+                            {% endif %}
                         {% endfor %}
+
                     });
                 </script>
             {% endif %}

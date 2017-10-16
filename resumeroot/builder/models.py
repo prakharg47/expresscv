@@ -30,7 +30,7 @@ class Personal(models.Model):
     name = models.CharField(max_length=50)
     email = models.EmailField(null=True)
     mobile = models.CharField(max_length=50, null=True)
-    summary = models.CharField(max_length=50, null=True)
+    summary = models.CharField(max_length=500, null=True)
     city = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
 
@@ -68,7 +68,7 @@ class Work(models.Model):
     resume = models.ForeignKey(Resume)
     company = models.CharField(max_length=50)
     designation = models.CharField(max_length=50)
-    work_summary = models.CharField(max_length=50)
+    work_summary = models.CharField(max_length=500)
     city = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
 
