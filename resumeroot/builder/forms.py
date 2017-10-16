@@ -50,12 +50,12 @@ class PersonalForm(forms.ModelForm):
         )
     )
 
-    summary = forms.CharField(
-        label="Summary",
-        widget=forms.Textarea(
-            attrs={'class': 'form-control', 'placeholder': 'Summary', }
-        )
-    )
+    # summary = forms.CharField(
+    #     label="Summary",
+    #     widget=forms.Textarea(
+    #         attrs={'class': 'form-control', 'placeholder': 'Summary', }
+    #     )
+    # )
 
     city = forms.CharField(
         label="City",
@@ -73,7 +73,20 @@ class PersonalForm(forms.ModelForm):
 
     class Meta:
         model = Personal
-        fields = ['name', 'email', 'mobile', 'summary', 'city', 'country']
+        fields = ['name', 'email', 'mobile', 'city', 'country']
+
+
+class SummaryForm(forms.ModelForm):
+    summary = forms.CharField(
+        label="Summary",
+        widget=forms.Textarea(
+            attrs={'class': 'form-control', 'placeholder': 'Summary', }
+        )
+    )
+
+    class Meta:
+        model = Summary
+        fields = ['summary',]
 
 
 class SkillsForm(forms.ModelForm):

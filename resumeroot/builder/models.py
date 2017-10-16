@@ -30,7 +30,7 @@ class Personal(models.Model):
     name = models.CharField(max_length=50)
     email = models.EmailField(null=True)
     mobile = models.CharField(max_length=50, null=True)
-    summary = models.CharField(max_length=500, null=True)
+    # summary = models.CharField(max_length=500, null=True)
     city = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
 
@@ -43,6 +43,11 @@ class Personal(models.Model):
             self.created_date = timezone.now()
         self.modified_date = timezone.now()
         return super(Personal, self).save(*args, **kwargs)
+
+
+class Summary(models.Model):
+    resume = models.ForeignKey(Resume, primary_key=True)
+    summary = models.CharField(max_length=500, null=True)
 
 
 class Education(models.Model):

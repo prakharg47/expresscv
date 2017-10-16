@@ -10,6 +10,7 @@
                 </div>
                 <ul class="list-group">
                     <a href="{% url 'personal' resume_id=resume_id %}" class="list-group-item">Personal</a>
+                    <a href="{% url 'summary' resume_id=resume_id %}" class="list-group-item">Summary</a>
                     <a href="{% url 'education' resume_id=resume_id %}" class="list-group-item">Education</a>
                     <a href="{% url 'experience' resume_id=resume_id %}" class="list-group-item">Experience</a>
                     <a href="{% url 'skills' resume_id=resume_id %}" class="list-group-item">Skills</a>

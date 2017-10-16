@@ -87,7 +87,7 @@ def personal(request, resume_id):
             form.save()
 
             messages.success(request, "Your personal details are saved")
-            return HttpResponseRedirect(reverse('education', kwargs={'resume_id': resume_id}))
+            return HttpResponseRedirect(reverse('summary', kwargs={'resume_id': resume_id}))
         else:
 
             # Form is not valid
@@ -112,6 +112,50 @@ def personal(request, resume_id):
 
     return render(request, 'builder/personal.html', {'form': personal_form,
                                                      'resume_id': resume_id})
+
+
+def summary(request, resume_id):
+    """
+    Handle summary details
+    """
+
+    if request.method == 'POST':
+
+        # Create a bound form using user data
+        form = SummaryForm(request.POST)
+
+        if form.is_valid():
+
+            # Get the resume instance
+            resume_inst = Resume.objects.get(id=resume_id)
+
+            form.instance.resume = resume_inst
+            form.save()
+
+            messages.success(request, "Your summary details are saved")
+            return HttpResponseRedirect(reverse('education', kwargs={'resume_id': resume_id}))
+        else:
+
+            # Form is not valid
+            print form.errors.as_data()
+            messages.error(request, str("Form has errors"))
+            return render(request, 'builder/summary.html', {'form': form,
+                                                             'resume_id': resume_id})
+
+    try:
+        old_data = Summary.objects.get(resume=resume_id)
+    except:
+        old_data = None
+
+    if old_data is None:
+        # New form. Initialize with social account data
+        personal_form = SummaryForm()
+    else:
+        personal_form = SummaryForm(instance=old_data)
+
+    return render(request, 'builder/summary.html', {'form': personal_form,
+                                                     'resume_id': resume_id})
+
 
 
 @login_required
@@ -257,16 +301,19 @@ def publish(request, resume_id):
 
     try:
         app_user = Personal.objects.get(resume=res)
-        app_user.summary = "\\item  ".join(e for e in app_user.summary.split("\r\n"))
     except Exception as e:
         print e
         raise Http404('Please fill in Personal details first')
 
     education_set = Education.objects.filter(resume=res)
     work_set = Work.objects.filter(resume=res)
+    user_summary = Summary.objects.get(resume=res)
+
+    user_summary.summary = "\\item  ".join(e for e in user_summary.summary.split("\r\n"))
+
 
     for work_inst in work_set:
-        work_inst.work_summary = "\\item  ".join(e for e in app_user.summary.split("\r\n"))
+        work_inst.work_summary = "\\item  ".join(e for e in work_inst.work_summary.split("\r\n"))
 
     skills = Skills.objects.get(resume=res)
 
@@ -276,6 +323,7 @@ def publish(request, resume_id):
                                     'education': education_set,
                                     'work': work_set,
                                     'skills': skills,
+                                    'summary' : user_summary,
                                 })
     with open('output.tex', 'w') as f:
         f.write(rendered)
@@ -308,3 +356,5 @@ def delete_resume(request, resume_id):
         print "Cannot delete resume id: {}".format(resume_id)
 
     return HttpResponseRedirect(reverse('resume'))
+
+

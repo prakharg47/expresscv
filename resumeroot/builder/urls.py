@@ -7,6 +7,7 @@ from . import views
 urlpatterns = [
     url(r'^$', views.home, name='builder_home'),
     url(r'^(?P<resume_id>[0-9]+)/personal$', views.personal, name='personal'),
+    url(r'^(?P<resume_id>[0-9]+)/summary$', views.summary, name='summary'),
     url(r'^(?P<resume_id>[0-9]+)/education$', views.education, name='education'),
     url(r'^(?P<resume_id>[0-9]+)/experience$', views.experience, name='experience'),
     url(r'^(?P<resume_id>[0-9]+)/skills$', views.skills, name='skills'),
