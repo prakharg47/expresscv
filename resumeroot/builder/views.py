@@ -76,7 +76,7 @@ def personal(request, resume_id):
     if request.method == 'POST':
 
         # Create a bound form using user data
-        form = PersonalForm(request.POST)
+        form = PersonalForm(request.POST,request.FILES)
 
         if form.is_valid():
 
@@ -253,7 +253,7 @@ def experience(request, resume_id):
 
     else:
 
-        if len(Education.objects.filter(resume=resume_id)) > 0:
+        if len(Work.objects.filter(resume=resume_id)) > 0:
             formset = WorkFormset(queryset=Work.objects.filter(resume=resume_id))
         else:
             formset = WorkFormset_extra1(queryset=Work.objects.filter(resume=resume_id))
@@ -362,3 +362,37 @@ def delete_resume(request, resume_id):
     return HttpResponseRedirect(reverse('resume'))
 
 
+def languages(request, resume_id):
+
+    """ Handle language form"""
+    res = Resume.objects.get(id=resume_id)
+    form = LanguagesForm(request.POST or None)
+
+    if request.method == 'POST':
+        # Handle form submission
+        form = LanguagesForm(request.POST)
+
+        if form.is_valid():
+            form.instance.resume = res
+            form.save()
+
+            # return render(request, 'builder/personal.html')
+            messages.success(request, "Your details are saved")
+            return HttpResponseRedirect(reverse('languages', kwargs={'resume_id': resume_id}))
+        else:
+            messages.error(request, "Form has errors")
+            return render(request, 'builder/languages.html', {'form': form, 'resume_id': resume_id})
+
+    try:
+        old_data = Languages.objects.get(resume=res)
+    except:
+        old_data = None
+        pass
+
+    if old_data is None:
+        # form = SkillsForm()
+        pass
+    else:
+        form = LanguagesForm(instance=old_data)
+
+    return render(request, 'builder/languages.html', {'form': form, 'resume_id': resume_id})

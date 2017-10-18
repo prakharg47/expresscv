@@ -27,12 +27,14 @@ class Resume(models.Model):
 
 class Personal(models.Model):
     resume = models.ForeignKey(Resume, primary_key=True)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=200)
     email = models.EmailField(null=True)
-    mobile = models.CharField(max_length=50, null=True)
-    # summary = models.CharField(max_length=500, null=True)
-    city = models.CharField(max_length=50)
-    country = models.CharField(max_length=50)
+    mobile = models.CharField(max_length=200, null=True)
+    # summary = models.CharField(max_length=2000, null=True)
+    linkedin_url = models.CharField(max_length=200, null=True)
+    city = models.CharField(max_length=200)
+    country = models.CharField(max_length=200)
+    photo = models.FileField(upload_to="profile", null=True)
 
     def __str__(self):
         return self.email
@@ -47,22 +49,22 @@ class Personal(models.Model):
 
 class Summary(models.Model):
     resume = models.ForeignKey(Resume, primary_key=True)
-    summary = models.CharField(max_length=500, null=True)
+    summary = models.CharField(max_length=2000, null=True)
 
 
 class Education(models.Model):
     resume = models.ForeignKey(Resume)
 
-    college = models.CharField(max_length=50, null=True, blank=True)
-    major = models.CharField(max_length=50, null=True, blank=True)
-    degree = models.CharField(max_length=50, null=True, blank=True)
-    gpa = models.CharField(max_length=50, null=True, blank=True)
+    college = models.CharField(max_length=200, null=True, blank=True)
+    major = models.CharField(max_length=200, null=True, blank=True)
+    degree = models.CharField(max_length=200, null=True, blank=True)
+    gpa = models.CharField(max_length=200, null=True, blank=True)
 
-    city = models.CharField(max_length=50, null=True, blank=True)
-    country = models.CharField(max_length=50, null=True, blank=True)
+    city = models.CharField(max_length=200, null=True, blank=True)
+    country = models.CharField(max_length=200, null=True, blank=True)
 
-    from_year = models.CharField(max_length=50, null=True, blank=True)
-    to_year = models.CharField(max_length=50, null=True, blank=True)
+    from_year = models.CharField(max_length=200, null=True, blank=True)
+    to_year = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return "{}-{}-{}".format(self.college, self.major, self.gpa)
@@ -71,14 +73,14 @@ class Education(models.Model):
 class Work(models.Model):
 
     resume = models.ForeignKey(Resume)
-    company = models.CharField(max_length=50)
-    designation = models.CharField(max_length=50)
-    work_summary = models.CharField(max_length=500)
-    city = models.CharField(max_length=50)
-    country = models.CharField(max_length=50)
+    company = models.CharField(max_length=200)
+    designation = models.CharField(max_length=200)
+    work_summary = models.CharField(max_length=2000)
+    city = models.CharField(max_length=200)
+    country = models.CharField(max_length=200)
 
-    from_year = models.CharField(max_length=50)
-    to_year = models.CharField(max_length=50)
+    from_year = models.CharField(max_length=200)
+    to_year = models.CharField(max_length=200)
 
     def __str__(self):
         return "{}-{}".format(self.company, self.designation)
@@ -86,12 +88,17 @@ class Work(models.Model):
 
 class Skills(models.Model):
 
-    resume = models.ForeignKey(Resume)
-    technical = models.CharField(max_length=100)
-    management = models.CharField(max_length=100)
+    resume = models.ForeignKey(Resume, primary_key=True)
+    technical = models.CharField(max_length=300)
+    management = models.CharField(max_length=300)
 
     def __str__(self):
         return "{}".format(self.technical)
 
+
+class Languages(models.Model):
+
+    resume = models.ForeignKey(Resume, primary_key=True)
+    languages = models.CharField(max_length=300)
 
 

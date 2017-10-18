@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.admin.widgets import AdminDateWidget
 from django.core.exceptions import ValidationError
 from django.forms import modelformset_factory
-from django.forms.widgets import TextInput, Textarea, DateInput, SelectDateWidget
+from django.forms.widgets import TextInput, Textarea
 from django.utils.translation import gettext_lazy as _
 
 from .models import *
@@ -71,9 +71,22 @@ class PersonalForm(forms.ModelForm):
         )
     )
 
+    linkedin_url = forms.CharField(
+        required=False,
+        label="Country",
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'LinkedIn url', }
+        )
+    )
+
+    photo = forms.FileField(
+        required=False,
+        label='Upload Image'
+    )
+
     class Meta:
         model = Personal
-        fields = ['name', 'email', 'mobile', 'city', 'country']
+        fields = ['name', 'email', 'mobile', 'city', 'country', 'linkedin_url', 'photo']
 
 
 class SummaryForm(forms.ModelForm):
@@ -86,11 +99,10 @@ class SummaryForm(forms.ModelForm):
 
     class Meta:
         model = Summary
-        fields = ['summary',]
+        fields = ['summary', ]
 
 
 class SkillsForm(forms.ModelForm):
-
     technical = forms.CharField(
         label="Technical Skills",
         widget=forms.Textarea(
@@ -110,6 +122,19 @@ class SkillsForm(forms.ModelForm):
         fields = ['management', 'technical']
 
 
+class LanguagesForm(forms.ModelForm):
+    languages = forms.CharField(
+        label="Foreign languages",
+        widget=forms.Textarea(
+            attrs={'class': 'form-control', 'placeholder': 'Foreign Languages', }
+        )
+    )
+
+    class Meta:
+        model = Skills
+        fields = ['languages']
+
+
 EducationFormset_extra1 = modelformset_factory(Education,
                                                exclude=('resume',), extra=1, max_num=4,
                                                widgets={
@@ -126,7 +151,8 @@ EducationFormset_extra1 = modelformset_factory(Education,
                                                    'country': TextInput(
                                                        attrs={'class': 'form-control', 'placeholder': 'Country', }),
                                                    'from_year': TextInput(
-                                                       attrs={'class': 'form-control Default', 'placeholder': 'From', }),
+                                                       attrs={'class': 'form-control Default',
+                                                              'placeholder': 'From', }),
                                                    'to_year': TextInput(
                                                        attrs={'class': 'form-control Default', 'placeholder': 'To', })
 
@@ -161,7 +187,7 @@ WorkFormset = modelformset_factory(Work,
                                        'designation': TextInput(
                                            attrs={'class': 'form-control', 'placeholder': 'Designation', }),
                                        'work_summary': Textarea(
-                                           attrs={'class': 'form-control', 'placeholder': 'Roles', }),
+                                           attrs={'class': 'form-control', 'placeholder': 'Responsibilities', }),
 
                                        'city': TextInput(
                                            attrs={'class': 'form-control', 'placeholder': 'City', }),
@@ -175,22 +201,22 @@ WorkFormset = modelformset_factory(Work,
                                    })
 
 WorkFormset_extra1 = modelformset_factory(Work,
-                                   exclude=('resume',), extra=1, max_num=6,
-                                   widgets={
-                                       'company': TextInput(
-                                           attrs={'class': 'form-control', 'placeholder': 'Company', }),
-                                       'designation': TextInput(
-                                           attrs={'class': 'form-control', 'placeholder': 'Designation', }),
-                                       'work_summary': Textarea(
-                                           attrs={'class': 'form-control', 'placeholder': 'Roles', }),
+                                          exclude=('resume',), extra=1, max_num=6,
+                                          widgets={
+                                              'company': TextInput(
+                                                  attrs={'class': 'form-control', 'placeholder': 'Company', }),
+                                              'designation': TextInput(
+                                                  attrs={'class': 'form-control', 'placeholder': 'Designation', }),
+                                              'work_summary': Textarea(
+                                                  attrs={'class': 'form-control', 'placeholder': 'Responsibilities', }),
 
-                                       'city': TextInput(
-                                           attrs={'class': 'form-control', 'placeholder': 'City', }),
-                                       'country': TextInput(
-                                           attrs={'class': 'form-control', 'placeholder': 'Country', }),
-                                       'from_year': AdminDateWidget(
-                                           attrs={'class': 'form-control Default', 'placeholder': 'From', }),
+                                              'city': TextInput(
+                                                  attrs={'class': 'form-control', 'placeholder': 'City', }),
+                                              'country': TextInput(
+                                                  attrs={'class': 'form-control', 'placeholder': 'Country', }),
+                                              'from_year': AdminDateWidget(
+                                                  attrs={'class': 'form-control Default', 'placeholder': 'From', }),
 
-                                       'to_year': TextInput(
-                                           attrs={'class': 'form-control Default', 'placeholder': 'To', }),
-                                   })
+                                              'to_year': TextInput(
+                                                  attrs={'class': 'form-control Default', 'placeholder': 'To', }),
+                                          })

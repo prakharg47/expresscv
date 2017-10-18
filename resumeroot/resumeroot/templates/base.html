@@ -17,12 +17,17 @@
     <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/MonthPicker.min.js' %}"></script>
 
+
     {# <script type="text/javascript" src="http://yourjavascript.com/93320114137/jquery-formset.js"></script>#}
-    <link href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+    <link href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    {#    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/sandstone/bootstrap.min.css">#}
+
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
     <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/MonthPicker.min.css' %}">
+    {#    <link rel="stylesheet" type="text/css" href="{% static 'css/test.css' %}">#}
+
 
     <style>
         #heading {
@@ -45,24 +50,16 @@
             </div>
             <div id="navbar-main" class="navbar-collapse collapse">
 
-                <ul class="nav navbar-nav navbar-right">
-                    {% if user.is_authenticated %}
-                        <li><a href="">Profile</a></li>
-                    {% else %}
-                        <li><a href="/auth/login">Login</a></li>
-                    {% endif %}
-                </ul>
-
                 <ul class="nav navbar-nav">
                     <li><a href="{% url 'root_home' %}">Resume Root</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{% url 'resume' %}">Editor</a></li>
+                    <li><a href="#">Follow us</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{% url 'pricing' %}">Pricing</a></li>
+                    <li><a href="#">Feedback</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -70,7 +67,32 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
                     <li><a href="{% url 'about' %}">About Us</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Templates</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{% url 'pricing' %}">Pricing</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{% url 'resume' %}">Resume Maker</a></li>
+                </ul>
+
+
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                        <li><a href="">Profile</a></li>
+                    {% else %}
+                        <li><a href="/auth/login">Login</a></li>
+                    {% endif %}
                 </ul>
 
             </div>
@@ -137,6 +159,10 @@
 
     </div>
 </div>
+
+<!-- React Playground -->
+
+
 <footer id="myFooter">
     <div class="container">
         <div class="row">

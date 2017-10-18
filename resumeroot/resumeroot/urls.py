@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^home/', app_views.home, name='home'),
     url(r'^$', app_views.home, name='root_home'),
     url(r'^blog', app_views.home, name='blog'),
-    url(r'^pricing', app_views.home, name='pricing'),
+    url(r'^pricing', app_views.pricing, name='pricing'),
     url(r'^about', app_views.home, name='about'),
 
     url(r'^oauth/', include('social_django.urls', namespace='social')),
