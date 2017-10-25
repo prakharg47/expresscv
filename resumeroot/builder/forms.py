@@ -73,7 +73,7 @@ class PersonalForm(forms.ModelForm):
 
     linkedin_url = forms.CharField(
         required=False,
-        label="Country",
+        label="LinkedIn Url",
         widget=forms.TextInput(
             attrs={'class': 'form-control', 'placeholder': 'LinkedIn url', }
         )
@@ -131,7 +131,7 @@ class LanguagesForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Skills
+        model = Languages
         fields = ['languages']
 
 

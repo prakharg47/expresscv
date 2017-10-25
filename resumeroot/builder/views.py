@@ -264,20 +264,18 @@ def experience(request, resume_id):
 @login_required
 def skills(request, resume_id):
     res = Resume.objects.get(id=resume_id)
-    form = SkillsForm(request.POST or None)
+    # form = SkillsForm(request.POST or None)
+
+    form = SkillsForm(request.POST)
 
     if request.method == 'POST':
         # Handle form submission
         form = SkillsForm(request.POST)
 
         if form.is_valid():
-            form.cleaned_data['resume'] = res
+            form.instance.resume = res
+            form.save()
 
-            f = form.save(commit=False)
-            f.resume_id = resume_id
-            f.save()
-
-            # return render(request, 'builder/personal.html')
             messages.success(request, "Your details are saved")
             return HttpResponseRedirect(reverse('skills', kwargs={'resume_id': resume_id}))
         else:
@@ -299,6 +297,42 @@ def skills(request, resume_id):
     return render(request, 'builder/skills.html', {'form': form, 'resume_id': resume_id})
 
 
+def languages(request, resume_id):
+
+    res = Resume.objects.get(id=resume_id)
+    # form = SkillsForm(request.POST or None)
+
+    form = LanguagesForm(request.POST)
+
+    if request.method == 'POST':
+        # Handle form submission
+        form = LanguagesForm(request.POST)
+
+        if form.is_valid():
+            form.instance.resume = res
+            form.save()
+
+            messages.success(request, "Your details are saved")
+            return HttpResponseRedirect(reverse('languages', kwargs={'resume_id': resume_id}))
+        else:
+            messages.error(request, "Form has errors")
+            return render(request, 'builder/languages.html', {'form': form, 'resume_id': resume_id})
+
+    try:
+        old_data = Languages.objects.get(resume=res)
+    except:
+        old_data = None
+        pass
+
+    if old_data is None:
+         # form = SkillsForm()
+        pass
+    else:
+        form = LanguagesForm(instance=old_data)
+
+    return render(request, 'builder/languages.html', {'form': form, 'resume_id': resume_id})
+
+
 @login_required
 def publish(request, resume_id):
     res = Resume.objects.get(id=resume_id)
@@ -310,16 +344,16 @@ def publish(request, resume_id):
         raise Http404('Please fill in Personal details first')
 
     education_set = Education.objects.filter(resume=res)
-    work_set = Work.objects.filter(resume=res)
-    user_summary = Summary.objects.get(resume=res)
 
+    user_summary = Summary.objects.get(resume=res)
     user_summary.summary = "\\item  ".join(e for e in user_summary.summary.split("\r\n"))
 
-
+    work_set = Work.objects.filter(resume=res)
     for work_inst in work_set:
         work_inst.work_summary = "\\item  ".join(e for e in work_inst.work_summary.split("\r\n"))
 
     skills = Skills.objects.get(resume=res)
+    language = Languages.objects.get(resume=res)
 
     rendered = render_to_string('themes/standard.html',
                                 {
@@ -328,6 +362,7 @@ def publish(request, resume_id):
                                     'work': work_set,
                                     'skills': skills,
                                     'summary' : user_summary,
+                                    'language' : language
                                 })
     with open('output.tex', 'w') as f:
         f.write(rendered)
@@ -362,37 +397,3 @@ def delete_resume(request, resume_id):
     return HttpResponseRedirect(reverse('resume'))
 
 
-def languages(request, resume_id):
-
-    """ Handle language form"""
-    res = Resume.objects.get(id=resume_id)
-    form = LanguagesForm(request.POST or None)
-
-    if request.method == 'POST':
-        # Handle form submission
-        form = LanguagesForm(request.POST)
-
-        if form.is_valid():
-            form.instance.resume = res
-            form.save()
-
-            # return render(request, 'builder/personal.html')
-            messages.success(request, "Your details are saved")
-            return HttpResponseRedirect(reverse('languages', kwargs={'resume_id': resume_id}))
-        else:
-            messages.error(request, "Form has errors")
-            return render(request, 'builder/languages.html', {'form': form, 'resume_id': resume_id})
-
-    try:
-        old_data = Languages.objects.get(resume=res)
-    except:
-        old_data = None
-        pass
-
-    if old_data is None:
-        # form = SkillsForm()
-        pass
-    else:
-        form = LanguagesForm(instance=old_data)
-
-    return render(request, 'builder/languages.html', {'form': form, 'resume_id': resume_id})

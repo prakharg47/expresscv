@@ -25,23 +25,48 @@
     {% if resumes %}
         <div>
             <h2>My resumes</h2>
-            <table class="table">{% for resume in resumes %}
+            <table class="table table-hover table-bordered table-condensed">
+                <thead>
                 <tr>
-                    <td>{{ resume.name }}</td>
-                    <td><a role="button" class="btn btn-default"
-                           href="{% url 'personal' resume_id=resume.id %}">Edit</a></td>
-                    <td><a role="button" class="btn btn-default" href="{% url 'delete_resume' resume_id=resume.id %}">Delete</a>
-                    </td>
+                    <th>#</th>
+                    <th>Resume Name</th>
+                    <th>
+                    </th>
+                    <th></th>
                 </tr>
-            {% endfor %}
+                </thead>
+
+                {% for resume in resumes %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ resume.name }}</td>
+                        <td><a role="button" class="btn btn-default"
+                               href="{% url 'personal' resume_id=resume.id %}">Edit</a></td>
+                        <td><a role="button" class="btn btn-default"
+                               href="{% url 'delete_resume' resume_id=resume.id %}">Delete</a>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default">Share</button>
+                                <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+                                    <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Download</a></li>
+                                    <li><a href="#">Email</a></li>
+
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
             </table>
         </div>
     {% endif %}
 
 
-    <h3>Add new resume</h3>
+    <h3>Add New</h3>
     <div class="row">
-        <form action="{% url 'resume' %}" method="post">
+        {% comment %}<form action="{% url 'resume' %}" method="post">
             {% csrf_token %}
             {#        {{ form }}#}
 
@@ -55,6 +80,21 @@
 
 
             <input type="submit" class="btn btn-primary " value="Save"/>
+        </form>{% endcomment %}
+
+        <form action="{% url 'resume' %}" method="post" name="myform">
+
+            {% csrf_token %}
+            <div class="col-lg-5">
+                <div class="input-group">
+                    <input name="name"  id="id_name" type="text" class="form-control" placeholder="Enter resume name">
+                    <span class="input-group-btn">
+                        <input class="btn btn-primary" type="submit" value="Add Resume" />
+                    </span>
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+
+
         </form>
     </div>
 

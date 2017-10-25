@@ -30,7 +30,16 @@
     </div>
 
     <script>
-                $('.Default').MonthPicker({ MonthFormat: 'M, yy' });
-            </script>
+        $('.Default').MonthPicker({MonthFormat: 'M, yy'});
+    </script>
+
+    <script>
+        $("#datepicker").datepicker({
+            format: "mm-yyyy",
+            startView: "months",
+            minViewMode: "months"
+        });
+    </script>
+
 
 {% endblock %}
