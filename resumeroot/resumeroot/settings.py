@@ -40,7 +40,8 @@ INSTALLED_APPS = [
 
     'social_django',
     'crispy_forms',
-    'formtools'
+    'formtools',
+    'tinymce'
 ]
 
 MIDDLEWARE = [
@@ -183,3 +184,22 @@ LOGGING = {
 }
 
 
+TINYMCE_JS_URL = "https://cloud.tinymce.com/stable/tinymce.min.js"
+TINYMCE_DEFAULT_CONFIG = {
+    'plugins': "table,spellchecker,paste,searchreplace",
+    'theme': "advanced",
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 10,
+}
+TINYMCE_SPELLCHECKER = True
+TINYMCE_COMPRESSOR = True
+# TINYMCE_EXTRA_MEDIA = {
+#     'css': {
+#         'all': [
+#             ...
+#         ],
+#     },
+#     'js': [
+#         ...
+#     ],
+# }
