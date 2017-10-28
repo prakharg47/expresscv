@@ -9,6 +9,8 @@
 
 % Set the page margins.
 \usepackage[a4paper,margin=0.75in]{geometry}
+\usepackage{scrextend}
+
 
 % Setup the language.
 \usepackage[english]{babel}
@@ -48,10 +50,11 @@
 % \vspace{1.3em}  % some vertical spacing
 % \begin{multicols}{2}  % open a multicolumn environment
 
-\begin{itemize}
-\setlength\itemsep{0em}
-\item {{ summary.summary }}
-\end{itemize}
+{#\begin{itemize}#}
+{#\setlength\itemsep{0em}#}
+{#\item {{ summary.summary }}#}
+{#\end{itemize}#}
+{{ summary.summary }}
 
 % \end{multicols}
 
@@ -70,11 +73,16 @@
 
     {}
     }
+    {##}
+    {#    \begin{itemize}#}
+    {#    \setlength\itemsep{0em}#}
+    {#    \item {{ w.work_summary }}#}
+    {#    \end{itemize}#}
 
-    \begin{itemize}
-    \setlength\itemsep{0em}
-    \item {{ w.work_summary }}
-    \end{itemize}
+    \begin{addmargin}[1em]
+    {{ w.work_summary }}
+    \end{addmargin}
+
 
 {% endfor %}
 
@@ -114,7 +122,7 @@
 
 \inlineheadsection  % special section that has an inline header with a 'hanging' paragraph
 {Languages:}
-{ {{ language.languages}} }
+{ {{ language.languages }} }
 
 
 \end{document}

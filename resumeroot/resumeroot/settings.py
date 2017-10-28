@@ -40,7 +40,8 @@ INSTALLED_APPS = [
 
     'social_django',
     'crispy_forms',
-    'formtools'
+    'formtools',
+    'ckeditor'
 ]
 
 MIDDLEWARE = [
@@ -180,6 +181,17 @@ LOGGING = {
             # django also has database level logging
         },
     },
+}
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList' ],
+            ['RemoveFormat', ]
+        ]
+    }
 }
 
 

@@ -223,6 +223,8 @@ def experience(request, resume_id):
         formset = WorkFormset(request.POST)
         resume_object = Resume.objects.get(id=resume_id)
 
+        print formset
+
         if formset.is_valid():
 
             new_education_objects = []
@@ -309,6 +311,8 @@ def languages(request, resume_id):
         form = LanguagesForm(request.POST)
 
         if form.is_valid():
+            print form.cleaned_data['languages']
+
             form.instance.resume = res
             form.save()
 
@@ -333,6 +337,30 @@ def languages(request, resume_id):
     return render(request, 'builder/languages.html', {'form': form, 'resume_id': resume_id})
 
 
+def html_to_latex(html):
+    html = html.replace("<ol>", "\\begin{enumerate} ")
+    html = html.replace("</ol>", "\\end{enumerate} ")
+    html = html.replace("<ul>", "\\begin{itemize} ")
+    html = html.replace("</ul>", "\\end{itemize} ")
+
+    html = html.replace("<li>", "\\item ")
+    html = html.replace("</li>", " ")
+    html = html.replace("<p>", " ")
+    html = html.replace("</p>", " ")
+
+    html = html.replace("<strong>", "\\textbf{")
+    html = html.replace("</strong>", "} ")
+    html = html.replace("<em>", "\\textit{")
+    html = html.replace("</em>", "} ")
+    html = html.replace("<u>", "\\underline{")
+    html = html.replace("</u>", "} ")
+
+    html = html.replace("&nbsp;", " ")
+
+
+    return html
+
+
 @login_required
 def publish(request, resume_id):
     res = Resume.objects.get(id=resume_id)
@@ -346,14 +374,19 @@ def publish(request, resume_id):
     education_set = Education.objects.filter(resume=res)
 
     user_summary = Summary.objects.get(resume=res)
-    user_summary.summary = "\\item  ".join(e for e in user_summary.summary.split("\r\n"))
+    # user_summary.summary = "\\item  ".join(e for e in user_summary.summary.split("\r\n"))
+    user_summary.summary = html_to_latex(user_summary.summary)
 
     work_set = Work.objects.filter(resume=res)
     for work_inst in work_set:
-        work_inst.work_summary = "\\item  ".join(e for e in work_inst.work_summary.split("\r\n"))
+        #work_inst.work_summary = "\\item  ".join(e for e in work_inst.work_summary.split("\r\n"))
+        work_inst.work_summary = html_to_latex(work_inst.work_summary)
+        print work_inst.work_summary
 
     skills = Skills.objects.get(resume=res)
     language = Languages.objects.get(resume=res)
+
+    #language.languages = html_to_latex(language.languages)
 
     rendered = render_to_string('themes/standard.html',
                                 {

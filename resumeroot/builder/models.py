@@ -75,12 +75,13 @@ class Work(models.Model):
     resume = models.ForeignKey(Resume)
     company = models.CharField(max_length=200)
     designation = models.CharField(max_length=200)
-    work_summary = models.CharField(max_length=2000)
     city = models.CharField(max_length=200)
     country = models.CharField(max_length=200)
 
     from_year = models.CharField(max_length=200)
     to_year = models.CharField(max_length=200)
+
+    work_summary = models.CharField(max_length=2000)
 
     def __str__(self):
         return "{}-{}".format(self.company, self.designation)

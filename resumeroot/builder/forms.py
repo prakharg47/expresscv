@@ -1,3 +1,4 @@
+from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.contrib.admin.widgets import AdminDateWidget
 from django.core.exceptions import ValidationError
@@ -92,9 +93,7 @@ class PersonalForm(forms.ModelForm):
 class SummaryForm(forms.ModelForm):
     summary = forms.CharField(
         label="Summary",
-        widget=forms.Textarea(
-            attrs={'class': 'form-control', 'placeholder': 'Summary', }
-        )
+        widget=CKEditorWidget()
     )
 
     class Meta:
@@ -124,9 +123,8 @@ class SkillsForm(forms.ModelForm):
 
 class LanguagesForm(forms.ModelForm):
     languages = forms.CharField(
-        label="Foreign languages",
         widget=forms.Textarea(
-            attrs={'class': 'form-control', 'placeholder': 'Foreign Languages', }
+            attrs={'class': 'form-control', 'placeholder': 'Languages', }
         )
     )
 
@@ -186,8 +184,10 @@ WorkFormset = modelformset_factory(Work,
                                            attrs={'class': 'form-control', 'placeholder': 'Company', }),
                                        'designation': TextInput(
                                            attrs={'class': 'form-control', 'placeholder': 'Designation', }),
-                                       'work_summary': Textarea(
-                                           attrs={'class': 'form-control', 'placeholder': 'Responsibilities', }),
+                                       # 'work_summary': Textarea(
+                                       #     attrs={'class': 'form-control', 'placeholder': 'Responsibilities', }),
+
+
 
                                        'city': TextInput(
                                            attrs={'class': 'form-control', 'placeholder': 'City', }),
@@ -198,6 +198,7 @@ WorkFormset = modelformset_factory(Work,
 
                                        'to_year': TextInput(
                                            attrs={'class': 'form-control Default', 'placeholder': 'To', }),
+                                       'work_summary': CKEditorWidget(),
                                    })
 
 WorkFormset_extra1 = modelformset_factory(Work,
@@ -207,8 +208,9 @@ WorkFormset_extra1 = modelformset_factory(Work,
                                                   attrs={'class': 'form-control', 'placeholder': 'Company', }),
                                               'designation': TextInput(
                                                   attrs={'class': 'form-control', 'placeholder': 'Designation', }),
-                                              'work_summary': Textarea(
-                                                  attrs={'class': 'form-control', 'placeholder': 'Responsibilities', }),
+                                              # 'work_summary': Textarea(
+                                              #     attrs={'class': 'form-control', 'placeholder': 'Responsibilities', }),
+
 
                                               'city': TextInput(
                                                   attrs={'class': 'form-control', 'placeholder': 'City', }),
@@ -219,4 +221,5 @@ WorkFormset_extra1 = modelformset_factory(Work,
 
                                               'to_year': TextInput(
                                                   attrs={'class': 'form-control Default', 'placeholder': 'To', }),
+'work_summary': CKEditorWidget(),
                                           })
