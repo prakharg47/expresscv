@@ -41,11 +41,7 @@ INSTALLED_APPS = [
     'social_django',
     'crispy_forms',
     'formtools',
-<<<<<<< HEAD
-    'tinymce'
-=======
     'ckeditor'
->>>>>>> feature/ckedit
 ]
 
 MIDDLEWARE = [
@@ -93,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'resumeroot',
         'USER': 'root',
-        'PASSWORD': 'thisisroot',
+        'PASSWORD': 'lidsysRoot',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
 
