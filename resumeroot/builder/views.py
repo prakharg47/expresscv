@@ -32,7 +32,6 @@ def resume(request):
             messages.error(request, "Please chose a different name")
             return HttpResponseRedirect(reverse('resume'))
 
-
         # If form is valid, save it.
         if form.is_valid():
 
@@ -50,7 +49,7 @@ def resume(request):
         else:
             print str(form.errors.as_data())
             messages.error(request, "Form has errors")
-            #return HttpResponseRedirect(reverse('resume'))
+            # return HttpResponseRedirect(reverse('resume'))
 
             # Handle GET request
             resumes = Resume.objects.filter(user=request.user)
@@ -68,6 +67,40 @@ def resume(request):
 
 
 @login_required
+def theme(request, resume_id):
+    """
+    Choose theme for a resume
+    """
+    res = Resume.objects.get(id=resume_id)
+    #form = SkillsForm(request.POST)
+
+    if request.method == 'POST':
+        # Handle form submission
+        form = ThemesForm(request.POST)
+
+        if form.is_valid():
+
+            print "*********************"
+            print form.cleaned_data['theme']
+            print "*********************"
+
+            res.theme = form.cleaned_data['theme']
+            res.save()
+
+            messages.success(request, "theme is changed")
+
+            return HttpResponseRedirect(reverse('personal', kwargs={'resume_id': resume_id}))
+        else:
+            messages.error(request, "Form has errors")
+            return render(request, 'builder/theme.html', {'form': form, 'resume_id': resume_id})
+
+
+    form = ThemesForm()
+
+    return render(request, 'builder/theme.html', {'form': form, 'resume_id': resume_id})
+
+
+@login_required
 def personal(request, resume_id):
     """
     Handle personal details form
@@ -76,7 +109,7 @@ def personal(request, resume_id):
     if request.method == 'POST':
 
         # Create a bound form using user data
-        form = PersonalForm(request.POST,request.FILES)
+        form = PersonalForm(request.POST, request.FILES)
 
         if form.is_valid():
 
@@ -140,7 +173,7 @@ def summary(request, resume_id):
             print form.errors.as_data()
             messages.error(request, str("Form has errors"))
             return render(request, 'builder/summary.html', {'form': form,
-                                                             'resume_id': resume_id})
+                                                            'resume_id': resume_id})
 
     try:
         old_data = Summary.objects.get(resume=resume_id)
@@ -154,8 +187,7 @@ def summary(request, resume_id):
         personal_form = SummaryForm(instance=old_data)
 
     return render(request, 'builder/summary.html', {'form': personal_form,
-                                                     'resume_id': resume_id})
-
+                                                    'resume_id': resume_id})
 
 
 @login_required
@@ -291,7 +323,7 @@ def skills(request, resume_id):
         pass
 
     if old_data is None:
-         # form = SkillsForm()
+        # form = SkillsForm()
         pass
     else:
         form = SkillsForm(instance=old_data)
@@ -300,7 +332,6 @@ def skills(request, resume_id):
 
 
 def languages(request, resume_id):
-
     res = Resume.objects.get(id=resume_id)
     # form = SkillsForm(request.POST or None)
 
@@ -329,7 +360,7 @@ def languages(request, resume_id):
         pass
 
     if old_data is None:
-         # form = SkillsForm()
+        # form = SkillsForm()
         pass
     else:
         form = LanguagesForm(instance=old_data)
@@ -357,13 +388,25 @@ def html_to_latex(html):
 
     html = html.replace("&nbsp;", " ")
 
-
     return html
 
 
 @login_required
 def publish(request, resume_id):
+
+    themes = [
+                (0, 'standard'),
+                (1, 'express'),
+                (2, 'compact')
+              ]
+
     res = Resume.objects.get(id=resume_id)
+    theme = res.theme
+
+    theme_name = 'standard'
+    for e in themes:
+        if e[0] == theme:
+            theme_name = e[1]
 
     try:
         app_user = Personal.objects.get(resume=res)
@@ -373,34 +416,46 @@ def publish(request, resume_id):
 
     education_set = Education.objects.filter(resume=res)
 
-    user_summary = Summary.objects.get(resume=res)
-    # user_summary.summary = "\\item  ".join(e for e in user_summary.summary.split("\r\n"))
-    user_summary.summary = html_to_latex(user_summary.summary)
+    try:
+        user_summary = Summary.objects.get(resume=res)
+        user_summary.summary = html_to_latex(user_summary.summary)
+    except Summary.DoesNotExist:
+        user_summary = None
 
     work_set = Work.objects.filter(resume=res)
     for work_inst in work_set:
-        #work_inst.work_summary = "\\item  ".join(e for e in work_inst.work_summary.split("\r\n"))
+        # work_inst.work_summary = "\\item  ".join(e for e in work_inst.work_summary.split("\r\n"))
         work_inst.work_summary = html_to_latex(work_inst.work_summary)
         print work_inst.work_summary
 
-    skills = Skills.objects.get(resume=res)
-    language = Languages.objects.get(resume=res)
+    try:
+        skills = Skills.objects.get(resume=res)
+    except Skills.DoesNotExist:
+        skills = None
 
-    #language.languages = html_to_latex(language.languages)
+    try:
+        language = Languages.objects.get(resume=res)
+    except Languages.DoesNotExist:
+        language = None
 
-    rendered = render_to_string('themes/standard.html',
+    # language.languages = html_to_latex(language.languages)
+
+
+    print " **** USING THEME **** {}".format(theme_name)
+
+    rendered = render_to_string('themes/{}.html'.format(theme_name),
                                 {
                                     'personal': app_user,
                                     'education': education_set,
                                     'work': work_set,
                                     'skills': skills,
-                                    'summary' : user_summary,
-                                    'language' : language
+                                    'summary': user_summary,
+                                    'language': language
                                 })
     with open('output.tex', 'w') as f:
         f.write(rendered)
 
-    p = subprocess.Popen(["pdflatex", "-interaction=scrollmode", "output.tex"])
+    p = subprocess.Popen(["xelatex", "-interaction=scrollmode", "output.tex"])
     p.communicate()
 
     # Rename output.pdf to @resume_name.pdf
@@ -408,7 +463,7 @@ def publish(request, resume_id):
     shutil.copy('output.pdf', resume_name)
 
     # send back response
-    with open(resume_name , 'r') as pdf:
+    with open(resume_name, 'r') as pdf:
         response = HttpResponse(pdf.read(), content_type='application/pdf')
         response['Content-Disposition'] = 'inline;filename={}'.format(resume_name)
         return response
@@ -428,5 +483,3 @@ def delete_resume(request, resume_id):
         print "Cannot delete resume id: {}".format(resume_id)
 
     return HttpResponseRedirect(reverse('resume'))
-
-

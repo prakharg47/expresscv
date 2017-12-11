@@ -5,7 +5,7 @@ from pyexpat import model
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
-
+from django_extensions.db.models import TimeStampedModel
 
 # Create your models here.
 
@@ -17,9 +17,10 @@ class BaseModel(models.Model):
         abstract = True
 
 
-class Resume(models.Model):
+class Resume(TimeStampedModel):
     user = models.ForeignKey(User)
     name = models.CharField(max_length=100)
+    theme = models.IntegerField(default=0)
 
     def __str__(self):
         return "{}".format(self.name)

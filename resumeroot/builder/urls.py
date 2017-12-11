@@ -13,6 +13,9 @@ urlpatterns = [
     url(r'^(?P<resume_id>[0-9]+)/skills$', views.skills, name='skills'),
     url(r'^(?P<resume_id>[0-9]+)/languages$', views.languages, name='languages'),
 
+    # name changed to avoid any django clashing
+    url(r'^(?P<resume_id>[0-9]+)/theme', views.theme, name='theme'),
+
 
     url(r'^resume$', views.resume, name='resume'),
     url(r'^resume/(?P<resume_id>[0-9]+)/delete$', views.delete_resume, name='delete_resume'),

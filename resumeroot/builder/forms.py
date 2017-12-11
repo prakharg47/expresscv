@@ -223,3 +223,14 @@ WorkFormset_extra1 = modelformset_factory(Work,
                                                   attrs={'class': 'form-control Default', 'placeholder': 'To', }),
 'work_summary': CKEditorWidget(),
                                           })
+
+class ThemesForm(forms.Form):
+
+    CHOICES = [
+                (0, 'standard'),
+                (1, 'express'),
+                (2, 'compact')
+              ]
+
+    theme = forms.ChoiceField(choices=CHOICES)
+

@@ -1,13 +1,22 @@
 {% extends 'builder/builder_base.html' %}
 
+{% load static %}
 
 {% block form_content %}
 
-    {#    <h3>Skills</h3>#}
+    <h2>Choose your theme</h2>
+
 
     <div>
 
-        <form action="{% url 'skills' resume_id=resume_id %}" method="post">
+    <div class="row">
+        <img src="{% static 'img/img1.png' %}" />
+        <img src="{% static 'img/img1.png' %}" />
+        <img src="{% static 'img/img1.png' %}" />
+    </div>
+    <br>
+
+        <form action="{% url 'theme' resume_id=resume_id %}" method="post">
             <div class="row">
                 {% csrf_token %}
 

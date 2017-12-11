@@ -1,8 +1,8 @@
-{% load crispy_forms_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <title>Title</title>
     <!-- Latest compiled and minified CSS -->
@@ -19,9 +19,7 @@
 <div class="container-fluid col-lg-4">
     <h3>form test</h3>
     <form method="POST" class="post-form">
-        <!--{% csrf_token %}-->
-        <!--{% crispy form form.helper %}-->
-        <!--{% crispy formset helper2 %}-->
+
         {% csrf_token %}
 
         {{ form.as_p }}

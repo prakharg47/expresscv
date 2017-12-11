@@ -8,4 +8,4 @@ mysqlclient
 whitenoise==3.3.0
 django-formtools
 django-ckeditor==5.3.1
-crispy-forms
+django-extensions
