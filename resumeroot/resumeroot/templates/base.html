@@ -45,6 +45,12 @@
         #heading {
             font-family: 'Playfair Display SC', serif;
         }
+
+        iframe {
+            resize: horizontal;
+            overflow: auto;
+        }
+
     </style>
 
 </head>
@@ -63,27 +69,15 @@
             <div id="navbar-main" class="navbar-collapse collapse">
 
                 <ul class="nav navbar-nav">
-                    <li><a href="{% url 'root_home' %}"><strong>Resume Root</strong></a></li>
+                    <li><a href="{% url 'root_home' %}"><strong>express cv</strong></a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Follow us</a></li>
-                </ul>
-
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Feedback</a></li>
-                </ul>
-
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{% url 'blog' %}">Blog</a></li>
-                </ul>
-
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Contact Us</a></li>
-                </ul>
-
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{% url 'about' %}">About Us</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="/auth/login">Login</a></li>
+                    {% endif %}
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -95,17 +89,10 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{% url 'resume' %}">Resume Maker</a></li>
+                    <li><a href="{% url 'resume' %}">CV Editor</a></li>
                 </ul>
 
 
-                <ul class="nav navbar-nav navbar-right">
-                    {% if user.is_authenticated %}
-                        <li><a href="">Profile</a></li>
-                    {% else %}
-                        <li><a href="/auth/login">Login</a></li>
-                    {% endif %}
-                </ul>
 
             </div>
         </div>

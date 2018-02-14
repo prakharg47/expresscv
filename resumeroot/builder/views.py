@@ -1,5 +1,7 @@
+import shutil
 import subprocess
-import os, shutil
+
+from wsgiref.util import FileWrapper
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -7,21 +9,16 @@ from django.http import *
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.views.generic.edit import FormView
+from django.views.generic import ListView
 
 from .forms import *
 
-
-def home(request):
-    return HttpResponse("Editor home")
-
+# Global defaults
+FORM_ERROR_MESSAGE = "Form has errors. Please fill the form again"
 
 @login_required
 def resume(request):
-    """
-    Add/ edit resumes
-    :param request:
-    :return:
-    """
     if request.method == 'POST':
 
         # Create a bound form
@@ -47,15 +44,12 @@ def resume(request):
 
         # If form is invalid, show errors to user and render form again
         else:
-            print str(form.errors.as_data())
-            messages.error(request, "Form has errors")
-            # return HttpResponseRedirect(reverse('resume'))
+            messages.error(request, FORM_ERROR_MESSAGE)
 
             # Handle GET request
             resumes = Resume.objects.filter(user=request.user)
 
-            return render(request, 'builder/resume.html', {'resumes': resumes,
-                                                           'form': form})
+            return render(request, 'builder/resume.html', {'resumes': resumes, 'form': form})
 
     # Handle GET request
     resumes = Resume.objects.filter(user=request.user)
@@ -67,12 +61,20 @@ def resume(request):
 
 
 @login_required
+def experience2(request, resume_id):
+
+    # get resume object
+    res = Resume.objects.get(id=resume_id)
+    pass
+
+
+@login_required
 def theme(request, resume_id):
     """
     Choose theme for a resume
     """
     res = Resume.objects.get(id=resume_id)
-    #form = SkillsForm(request.POST)
+    # form = SkillsForm(request.POST)
 
     if request.method == 'POST':
         # Handle form submission
@@ -80,9 +82,6 @@ def theme(request, resume_id):
 
         if form.is_valid():
 
-            print "*********************"
-            print form.cleaned_data['theme']
-            print "*********************"
 
             res.theme = form.cleaned_data['theme']
             res.save()
@@ -94,18 +93,25 @@ def theme(request, resume_id):
             messages.error(request, "Form has errors")
             return render(request, 'builder/theme.html', {'form': form, 'resume_id': resume_id})
 
-
     form = ThemesForm()
 
     return render(request, 'builder/theme.html', {'form': form, 'resume_id': resume_id})
 
 
+class PersonalView(FormView):
+    template_name = 'builder/personal.html'
+    form_class = PersonalForm
+    success_url = '/education/'
+
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        form.send_email()
+        return super(self).form_valid(form)
+
+
 @login_required
 def personal(request, resume_id):
-    """
-    Handle personal details form
-    """
-
     if request.method == 'POST':
 
         # Create a bound form using user data
@@ -124,7 +130,6 @@ def personal(request, resume_id):
         else:
 
             # Form is not valid
-            print form.errors.as_data()
             messages.error(request, str("Form has errors"))
             return render(request, 'builder/personal.html', {'form': form,
                                                              'resume_id': resume_id})
@@ -170,7 +175,7 @@ def summary(request, resume_id):
         else:
 
             # Form is not valid
-            print form.errors.as_data()
+
             messages.error(request, str("Form has errors"))
             return render(request, 'builder/summary.html', {'form': form,
                                                             'resume_id': resume_id})
@@ -226,7 +231,7 @@ def education(request, resume_id):
             return HttpResponseRedirect(reverse('experience', kwargs={'resume_id': resume_id}))
 
         else:
-            print "Form is invalid"
+
             messages.error(request, "Form has errors")
             return HttpResponseRedirect(reverse('education', kwargs={'resume_id': resume_id}))
 
@@ -255,8 +260,6 @@ def experience(request, resume_id):
         formset = WorkFormset(request.POST)
         resume_object = Resume.objects.get(id=resume_id)
 
-        print formset
-
         if formset.is_valid():
 
             new_education_objects = []
@@ -281,7 +284,7 @@ def experience(request, resume_id):
             return HttpResponseRedirect(reverse('skills', kwargs={'resume_id': resume_id}))
 
         else:
-            print "Form is invalid"
+
             messages.error(request, "Form has errors")
             return HttpResponseRedirect(reverse('experience', kwargs={'resume_id': resume_id}))
 
@@ -342,7 +345,7 @@ def languages(request, resume_id):
         form = LanguagesForm(request.POST)
 
         if form.is_valid():
-            print form.cleaned_data['languages']
+
 
             form.instance.resume = res
             form.save()
@@ -393,12 +396,11 @@ def html_to_latex(html):
 
 @login_required
 def publish(request, resume_id):
-
     themes = [
-                (0, 'standard'),
-                (1, 'express'),
-                (2, 'compact')
-              ]
+        (0, 'standard'),
+        (1, 'express'),
+        (2, 'compact')
+    ]
 
     res = Resume.objects.get(id=resume_id)
     theme = res.theme
@@ -411,7 +413,6 @@ def publish(request, resume_id):
     try:
         app_user = Personal.objects.get(resume=res)
     except Exception as e:
-        print e
         raise Http404('Please fill in Personal details first')
 
     education_set = Education.objects.filter(resume=res)
@@ -426,7 +427,6 @@ def publish(request, resume_id):
     for work_inst in work_set:
         # work_inst.work_summary = "\\item  ".join(e for e in work_inst.work_summary.split("\r\n"))
         work_inst.work_summary = html_to_latex(work_inst.work_summary)
-        print work_inst.work_summary
 
     try:
         skills = Skills.objects.get(resume=res)
@@ -440,11 +440,16 @@ def publish(request, resume_id):
 
     # language.languages = html_to_latex(language.languages)
 
+    try:
+        theme_detail = Theme_Model.objects.get(resume=res)
+    except Exception:
+        theme_detail = None
 
-    print " **** USING THEME **** {}".format(theme_name)
+    ttt = theme_detail.theme
 
-    rendered = render_to_string('themes/{}.html'.format(theme_name),
+    rendered = render_to_string('themes/{}.html'.format(ttt),
                                 {
+                                    'theme_details': theme_detail,
                                     'personal': app_user,
                                     'education': education_set,
                                     'work': work_set,
@@ -463,11 +468,60 @@ def publish(request, resume_id):
     shutil.copy('output.pdf', resume_name)
 
     # send back response
-    with open(resume_name, 'r') as pdf:
-        response = HttpResponse(pdf.read(), content_type='application/pdf')
-        response['Content-Disposition'] = 'inline;filename={}'.format(resume_name)
-        return response
-    pass
+    # with open(resume_name, 'r') as pdf:
+        #response = HttpResponse(pdf.read(), content_type='application/pdf')
+    response = HttpResponse(FileWrapper(open(resume_name, 'rb')), content_type='application/pdf')
+    response['Content-Disposition'] = 'inline;filename={}'.format(resume_name)
+    return response
+
+
+def preview(request, resume_id):
+    """previews a inline pdf. Also allows further fine tuning """
+
+    # generate the pdf ('output.pdf')
+    # publish(request, resume_id)
+    if request.method == 'POST':
+
+        # Create a bound form using user data
+        form = ThemesModelForm(request.POST)
+
+        # font = request.POST.get('font_family')
+        # theme = request.POST.get('theme')
+        #
+        # form.fields['font_family'] = [(font, font)]
+        # form.fields['theme'] = [(theme, theme)]
+
+        if form.is_valid():
+
+            # Get the resume instance
+            resume_inst = Resume.objects.get(id=resume_id)
+
+            form.instance.resume = resume_inst
+            form.save()
+
+            messages.success(request, "Your summary details are saved")
+            return HttpResponseRedirect(reverse('education', kwargs={'resume_id': resume_id}))
+        else:
+
+            # Form is not valid
+
+            messages.error(request, str("Form has errors"))
+            return render(request, 'builder/preview.html', {'form': form,
+                                                            'resume_id': resume_id})
+
+    try:
+        old_data = Theme_Model.objects.get(resume=resume_id)
+    except:
+        old_data = None
+
+    if old_data is None:
+        # New form. Initialize with social account data
+        personal_form = ThemesModelForm()
+    else:
+        personal_form = ThemesModelForm(instance=old_data)
+
+    return render(request, 'builder/preview.html', {'pdf': 'output.pdf', 'resume_id': resume_id,
+                                                    'form': personal_form})
 
 
 def delete_resume(request, resume_id):
@@ -479,7 +533,8 @@ def delete_resume(request, resume_id):
         res.delete()
         messages.warning(request, "Resume {} deleted".format(res_name))
     except Exception as e:
-        print e
-        print "Cannot delete resume id: {}".format(resume_id)
+        pass
 
     return HttpResponseRedirect(reverse('resume'))
+
+

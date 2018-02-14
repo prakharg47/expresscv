@@ -36,6 +36,14 @@
 \usepackage[big]{layaureo} % Margin formatting of the A4 page, an alternative to layaureo can be \usepackage{fullpage}
 % To reduce the height of the top margin uncomment: \addtolength{\voffset}{-1.3cm}
 
+\usepackage{geometry}
+\geometry{
+a4paper,
+total={170mm,257mm},
+left=17mm,
+top=25mm,
+}
+
 \usepackage{hyperref} % Required for adding links   and customizing them
 \definecolor{linkcolour}{rgb}{0,0.2,0.6} % Link color
 \hypersetup{colorlinks,breaklinks,urlcolor=linkcolour,linkcolor=linkcolour} % Set link colors throughout the document
@@ -60,9 +68,8 @@
 
 \begin{tabular}{rl}
 \textsc{Place and Date of Birth:} & {{ personal.country }}  | 20 November 1987 \\
-\textsc{Address:} & 123 Broadway, City, State, Canada \\
-\textsc{Phone:} & +1 111 1112\\
-\textsc{email:} & \href{mailto:john@smith.com}{john@smith.com}
+\textsc{Phone:} & {{ persona.mobile }}\\
+\textsc{email:} & \href{mailto:john@smith.com}{ {{ personal.email }} }
 \end{tabular}
 
 %----------------------------------------------------------------------------------------
