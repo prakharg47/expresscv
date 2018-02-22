@@ -537,4 +537,44 @@ def delete_resume(request, resume_id):
 
     return HttpResponseRedirect(reverse('resume'))
 
+@login_required
+def experience_all(request, resume_id):
 
+    res = Resume.objects.get(id=resume_id)
+    work_objects = Work.objects.filter(resume=resume_id)
+
+    return render(request, 'builder/experience_all.html', {'work_objects' : work_objects,
+                                                           'resume_id' : resume_id})
+
+
+def experience_new(request, resume_id):
+
+    res = Resume.objects.get(id=resume_id)
+
+    if request.method == 'POST' :
+        # handle new work form
+
+        form = ExperienceForm(request.POST)
+
+        if form.is_valid():
+            form.instance.resume = res
+            form.save()
+
+            messages.success(request, "Your details are saved")
+            return HttpResponseRedirect(reverse('experience', kwargs={'resume_id': resume_id}))
+        else:
+            messages.error(request, "Form has errors")
+            return render(request, 'builder/experience_new.html', {'form': form, 'resume_id': resume_id})
+
+    form = ExperienceForm()
+
+    return render(request, 'builder/experience_new.html', {'form': form,
+                                                           'resume_id': resume_id})
+
+
+def experience_edit(request, resume_id, work_id):
+    return None
+
+
+def experience_delete(request, resume_id, work_id):
+    return None
