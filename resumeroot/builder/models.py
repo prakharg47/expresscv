@@ -108,7 +108,8 @@ class Theme_Model(models.Model):
     THEMES_CHOICES = [
         ('standard', 'standard'),
         ('express', 'express'),
-        ('compact', 'compact')
+        ('compact', 'compact'),
+        ('modern', 'modern')
     ]
 
     FONTS = [

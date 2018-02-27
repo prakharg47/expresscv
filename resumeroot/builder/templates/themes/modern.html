@@ -34,15 +34,15 @@
 %\setlength{\makecvtitlenamewidth}{10cm}           % for the 'classic' style, if you want to force the width allocated to your name and avoid line breaks. be careful though, the length is normally calculated to avoid any overlap with your personal info; use this at your own typographical risks...
 
 % personal data
-\name{  Prakhar Gupta  }{  }
-\title{  }                               % optional, remove / comment the line if not wanted
+\name{ {{personal.firstname}} {{personal.name}}  }{ {{personal.surname}} }
+\title{ {{personal.title}} }                               % optional, remove / comment the line if not wanted
 
-\address{ 8098098098 }{ 09809 }% optional, remove / comment the line if not wanted; the "postcode city" and and "country" arguments can be omitted or provided empty
+\address{ {{personal.city}} }{ {{personal.country}} }% optional, remove / comment the line if not wanted; the "postcode city" and and "country" arguments can be omitted or provided empty
 
 
-\phone[mobile]{ 098808080 }
-\email{ soccer3056@gmail.com }                               % optional, remove / comment the line if not wanted
-\homepage{  }                         % optional, remove / comment the line if %----------------------------------------------------------------------------------
+\phone[mobile]{ {{personal.mobile}} }
+\email{ {{personal.email}} }                               % optional, remove / comment the line if not wanted
+\homepage{ {{personal.linkedin}} }                         % optional, remove / comment the line if %----------------------------------------------------------------------------------
 %            content
 %----------------------------------------------------------------------------------
 \begin{document}
@@ -51,29 +51,28 @@
 
 \vspace{-35pt}
 \section{Education}
-
-\cventry{  --  }{oko ,kok }{IIT Kanpur }{ 789 ,  7987 }{\textit{ 8798 }}{\blindtext \blinditemize}  % arguments 3 to 6 can be left empty
-
+{% for education in educations %}
+\cventry{ {{education.from}} -- {{education.to}} }{ {{education.degree}} , {{education.major}} }{ {{education.college}} }{ {{education.city}} ,  {{education.country}} }{\textit{ {{education.gpa}} }}{\blindtext \blinditemize}  % arguments 3 to 6 can be left empty
+{% endfor %}
 
 \section{Work Experience}
 
-
-\cventry{  --  }{uhu }{guuhu }{huhu ,  huh }{}{did somethings \begin{enumerate} \item erer \item ioi99 \end{enumerate}  }
-
-\cventry{  --  }{Thinker }{Google X }{ San Francisco ,  USA }{}{  Did awesome things  }
-
-\cventry{  --  }{Thinker }{Google X }{ San Francisco ,  USA }{}{  \blindtext \blinditemize  }
+{% for work in works %}
+\cventry{ {{work.from}} -- {{work.to}} }{ {{work.designation}} }{ {{work.company}} }{ {{work.city}} ,  {{work.country}} }{}{ {{work.work_summary}} }
+{% endfor %}
 
 \section{Skills}
- 
+ {{skills.skills}}
 
 \section{Languages}
- 
+ {{langauge.languages}}
 
 
 \section{Awards and Certificates}
 
-
+{% for award in awards %}
+\cvlistitem{\awardentry{ {{award.award}} }{ {{award.organisation}} }{ {{award.year}} }{ {{award.summary}} }}
+{% endfor %}
 
 \end{document}
 

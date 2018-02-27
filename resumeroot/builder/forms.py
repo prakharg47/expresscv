@@ -328,7 +328,8 @@ class ThemesForm(forms.Form):
     CHOICES = [
         (0, 'standard'),
         (1, 'express'),
-        (2, 'compact')
+        (2, 'compact'),
+        (3, 'modern')
     ]
 
     theme = forms.ChoiceField(choices=CHOICES)

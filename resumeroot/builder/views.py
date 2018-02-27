@@ -399,7 +399,8 @@ def publish(request, resume_id):
     themes = [
         (0, 'standard'),
         (1, 'express'),
-        (2, 'compact')
+        (2, 'compact'),
+        (3, 'modern')
     ]
 
     res = Resume.objects.get(id=resume_id)
@@ -447,15 +448,16 @@ def publish(request, resume_id):
 
     ttt = theme_detail.theme
 
-    rendered = render_to_string('themes/{}.html'.format(ttt),
+    #rendered = render_to_string('themes/{}.html'.format(ttt),
+    rendered = render_to_string('themes/{}.html'.format("modern"),
                                 {
                                     'theme_details': theme_detail,
                                     'personal': app_user,
-                                    'education': education_set,
-                                    'work': work_set,
+                                    'educations': education_set,
+                                    'works': work_set,
                                     'skills': skills,
                                     'summary': user_summary,
-                                    'language': language
+                                    'languages': language
                                 })
     with open('output.tex', 'w') as f:
         f.write(rendered)
