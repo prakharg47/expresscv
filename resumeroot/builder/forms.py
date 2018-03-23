@@ -20,7 +20,7 @@ class ResumeForm(forms.ModelForm):
 
     class Meta:
         model = Resume
-        fields = ['name', ]
+        fields = ['name', 'tags']
 
     def clean(self):
         if self.cleaned_data.get('name') == 'Prakhar':
@@ -30,10 +30,17 @@ class ResumeForm(forms.ModelForm):
 
 
 class PersonalForm(forms.ModelForm):
-    name = forms.CharField(
-        label="Name",
+    first_name = forms.CharField(
+        label="First Name",
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': 'Name', }
+            attrs={'class': 'form-control', 'placeholder': 'Elon', }
+        )
+    )
+
+    last_name = forms.CharField(
+        label="Family Name",
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Elon', }
         )
     )
 
@@ -50,6 +57,14 @@ class PersonalForm(forms.ModelForm):
         label="Mobile",
         widget=forms.TextInput(
             attrs={'class': 'form-control', 'placeholder': 'Mobile', }
+        )
+    )
+
+    title = forms.CharField(
+        required=False,
+        label="Title ",
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Investment Banker', }
         )
     )
 
@@ -92,7 +107,7 @@ class PersonalForm(forms.ModelForm):
     class Meta:
         model = Personal
         # fields = ['name', 'email', 'mobile', 'city', 'country', 'linkedin_url', 'photo']
-        fields = ['name', 'email', 'mobile', 'city', 'country', 'linkedin_url']
+        fields = ['first_name', 'last_name', 'email', 'mobile', 'title', 'city', 'country', 'linkedin_url']
 
 
 class SummaryForm(forms.ModelForm):
@@ -107,7 +122,6 @@ class SummaryForm(forms.ModelForm):
 
 
 class ExperienceForm(forms.ModelForm):
-
     company = forms.CharField(
         required=False,
         label="Company",
@@ -166,6 +180,80 @@ class ExperienceForm(forms.ModelForm):
         fields = ['company', 'designation', 'city', 'country', 'from_year', 'to_year', 'work_summary']
 
 
+class EducationNewForm(forms.ModelForm):
+    college = forms.CharField(
+        required=False,
+        label="College",
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Harvard Business School', }
+        )
+    )
+
+    major = forms.CharField(
+        required=False,
+        label="Major",
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Chemical Engineering', }
+        )
+    )
+
+    degree = forms.CharField(
+        required=False,
+        label="Degree",
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Masters of Science', }
+        )
+    )
+
+    gpa = forms.CharField(
+        required=False,
+        label="GPA",
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': '4.0', }
+        )
+    )
+
+    city = forms.CharField(
+        required=False,
+        label="City",
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Boston', }
+        )
+    )
+
+    country = forms.CharField(
+        required=False,
+        label="Country",
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'USA', }
+        )
+    )
+
+    from_year = forms.CharField(
+        required=False,
+        label="From year",
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': '2018', }
+        )
+    )
+
+    to_year = forms.CharField(
+        required=False,
+        label="To year",
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': '2018', }
+        )
+    )
+
+    education_summary = forms.CharField(
+        label="Summary",
+        widget=CKEditorWidget()
+    )
+
+    class Meta:
+        model = Education
+        fields = ['college', 'major', 'degree', 'gpa', 'city', 'country', 'from_year', 'to_year', 'education_summary']
+
 
 class ThemesModelForm(forms.ModelForm):
     # THEMES_CHOICES = [
@@ -184,35 +272,64 @@ class ThemesModelForm(forms.ModelForm):
     # font_family = forms.ChoiceField(FONTS, widget=forms.Select())
 
     class Meta:
-        model = Theme_Model
+        model = Theme
         fields = ['theme', 'font_size', 'font_family', 'horizontal_margins', 'top_margin', 'bottom_margin']
 
+class ThemesChoiceForm(forms.Form):
 
-class SkillsForm(forms.ModelForm):
-    technical = forms.CharField(
-        label="Technical Skills",
-        widget=forms.Textarea(
-            attrs={'class': 'form-control', 'placeholder': 'Technical', }
+    choices = Theme.THEME_CHOICES
+    theme_name = forms.CharField(label='Choose your theme', widget=forms.RadioSelect(choices=choices))
+
+
+
+class AwardForm(forms.ModelForm):
+    award_name = forms.CharField(
+        label="Award/Certificate",
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Company Secretary', }
         )
     )
 
-    management = forms.CharField(
-        label="Management Skills",
-        widget=forms.Textarea(
-            attrs={'class': 'form-control', 'placeholder': 'Management', }
+    organisation = forms.CharField(
+        label="Organisation",
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Indian Company Secretary Institute', }
         )
+    )
+
+    year = forms.CharField(
+        required=False,
+        label="Year",
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': '2015', }
+        )
+    )
+
+    award_summary = forms.CharField(
+        label="Short description",
+        widget=CKEditorWidget()
+    )
+
+    class Meta:
+        model = Award
+        fields = ['award_name', 'organisation', 'year', 'award_summary']
+
+
+class SkillsForm(forms.ModelForm):
+    skills = forms.CharField(
+        label="Skills",
+        widget=CKEditorWidget()
     )
 
     class Meta:
         model = Skills
-        fields = ['management', 'technical']
+        fields = ['skills']
 
 
 class LanguagesForm(forms.ModelForm):
     languages = forms.CharField(
-        widget=forms.Textarea(
-            attrs={'class': 'form-control', 'placeholder': 'Languages', }
-        )
+        label="Languages",
+        widget=CKEditorWidget()
     )
 
     class Meta:
@@ -220,7 +337,7 @@ class LanguagesForm(forms.ModelForm):
         fields = ['languages']
 
 
-MONTH_CHOICE = [(e, e) for e in ["January","February","March",
+MONTH_CHOICE = [(e, e) for e in ["January", "February", "March",
                                  "April", "May", "June", "July", "August",
                                  "September", "October", "November", "December"]]
 
@@ -335,6 +452,8 @@ class ThemesForm(forms.Form):
     theme = forms.ChoiceField(choices=CHOICES)
 
 
+
+
 class FineTuningForm(forms.Form):
     FONTS = [
         (0, 'computer modern'),
@@ -346,6 +465,3 @@ class FineTuningForm(forms.Form):
     horizontal_margins = forms.DecimalField(label='Horizontal margin')
     top_margin = forms.DecimalField(label='Top margin')
     bottom_margin = forms.DecimalField(label='Bottom margin')
-
-
-

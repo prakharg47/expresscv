@@ -1,0 +1,27 @@
+{% extends 'builder/builder_base.html' %}
+
+
+{% block form_content %}
+
+        <h3>Add new</h3>
+
+    <div>
+
+        <form action="{% url 'education_new' resume_id=resume_id %}" method="post">
+            <div class="row">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                        <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>
+                        {{ field }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                <input type="submit" class="btn btn-primary" value="Save"/>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,158 @@
+
+\documentclass[a4paper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage[pdftex]{hyperref}
+\usepackage{blindtext}
+
+
+\hypersetup{
+    colorlinks,%
+    citecolor=black,%
+    filecolor=black,%
+    linkcolor=black,%
+    urlcolor=black 
+    %urlcolor=mygreylink     % can put red here to better visualize the links
+}
+
+\urlstyle{same}
+\definecolor{mygrey}{gray}{.85}
+\definecolor{mygreylink}{gray}{.40}
+\textheight=9.0in
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.375in}
+\addtolength{\evensidemargin}{0.375in}
+\addtolength{\textwidth}{0.5in}
+\addtolength{\topmargin}{-.375in}
+\addtolength{\textheight}{0.75in}
+
+%-----------------------------------------------------------
+%Custom commands
+\newcommand{\resitem}[1]{\item #1 \vspace{-2pt}}
+
+\newcommand{\resheading}[1]{% templatetag openbrace %}{% templatetag openbrace %}\large \colorbox{mygrey}{\begin{minipage}{\textwidth}{\textbf{% templatetag openbrace %}#1 \vphantom{p\^{E} } } }\end{minipage} } } \vspace{-3pt} }
+
+\newcommand{\ressubheading}[4]{
+\begin{tabular*}{6.5in}{l@{\extracolsep{\fill}}r}
+		\textbf{% templatetag openbrace %}#1} & #2 \\
+		\textit{% templatetag openbrace %}#3} & \textit{% templatetag openbrace %}#4} \\
+\end{tabular*}\vspace{-6pt}}
+
+\newcommand{\ressubsubheading}[2]{
+\begin{tabular*}{6.5in}{l@{\extracolsep{\fill}}r}
+		\textit{% templatetag openbrace %}#1} & \textit{% templatetag openbrace %}#2} \\
+\end{tabular*}\vspace{-6pt}}
+
+\newcommand{\educationitem}[8]{\textbf{% templatetag openbrace %}#1} \hfill \textsc{\small #2, #3}\\
+		\normalsize \emph{% templatetag openbrace %}#4, #5} \hfill \small {% templatetag openbrace %}#6} \\
+		GPA: #7 \\
+		\normalsize #8
+}
+
+\newcommand{\workitem}[6]{\textbf{% templatetag openbrace %}#1} \hfill \small \textsc{% templatetag openbrace %}#2, #3}\\
+		\normalsize \emph{% templatetag openbrace %}#4} \hfill \small #5 \\ \vspace{2pt}
+		\normalsize #6
+}
+
+\newcommand{\awarditem}[4]{\textbf{% templatetag openbrace %}#1}, \emph{% templatetag openbrace %}#2} \hfill {% templatetag openbrace %}#3} \\ 
+		\normalsize #4}
+
+
+%-----------------------------------------------------------
+
+%-----------------------------------------------------------
+%General Resume Tips
+%   No periods!  Technically, nothing in this document is a full sentence.
+%   Use parallelism by ending key words with the same thing,  i.e. "Coordinated; Designed; Communicated".
+%   More tips on bottom of this LaTeX document.
+%-----------------------------------------------------------
+
+\begin{document}
+
+\newcommand{\mywebheader}{
+\begin{tabular*}{6.85in}{l@{\extracolsep{\fill}}r}
+\textbf{\LARGE {{ personal.first_name }} {{ personal.last_name }}{% templatetag closebrace %} & {% if personal.linkedin|length > 0 %}{% templatetag openbrace %}{{ personal.linkedin }}{% templatetag closebrace %}{% endif %}\\
+	{\small \texttt{[{{ personal.mobile }}, {{ personal.email }}]{% templatetag closebrace %}} & {% templatetag openbrace %}{{ personal.city }}, {{ personal.country }}{% templatetag closebrace %} \\
+	\end{tabular*}
+\\
+\vspace{0.1in}}
+
+% CHANGE HEADER SOURCE HERE
+\mywebheader
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\resheading{Summary}
+\begin{itemize}
+\item[] {{ summary.summary }}
+\end{itemize}
+
+
+\resheading{Experience}
+
+	\begin{itemize}
+        {% for work in works %}
+
+		\item \workitem{% templatetag openbrace %}{{ work.company }}{% templatetag closebrace %}
+            {% templatetag openbrace %}{{ work.city }}{% templatetag closebrace %}
+            {% templatetag openbrace %}{{ work.country }}{% templatetag closebrace %}
+            {% templatetag openbrace %}{{ work.designation }}{% templatetag closebrace %}
+            {% templatetag openbrace %}{{ work.from_year }} -- {{ work.to_year }}{% templatetag closebrace %}
+            {% templatetag openbrace %}{{ work.work_summary }}{% templatetag closebrace %}
+
+        {% endfor %}
+	\end{itemize}
+
+
+\resheading{Education}
+\begin{itemize}
+{% for education in educations %}
+
+		\item \educationitem{% templatetag openbrace %}{{ education.college }}{% templatetag closebrace %}
+{% templatetag openbrace %}{{ education.city }}{% templatetag closebrace %}
+{% templatetag openbrace %}{{ education.country }}{% templatetag closebrace %}
+{% templatetag openbrace %}{{ education.degree }}{% templatetag closebrace %}
+{% templatetag openbrace %}{{ education.major }}{% templatetag closebrace %}
+{% templatetag openbrace %}{{ education.from_year }} -- {{ education.to_year }}{% templatetag closebrace %}
+{% templatetag openbrace %}{{ education.gpa }}{% templatetag closebrace %}
+{% templatetag openbrace %}{{ education.education_summary }}{% templatetag closebrace %}
+
+{% endfor %}
+
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%
+\resheading{Awards and Certificates}
+	\begin{itemize}
+{% for award in awards %}
+		\item \awarditem{% templatetag openbrace %}{{ award.award_name }}{% templatetag closebrace %}
+    {% templatetag openbrace %}{{ award.organisation }}{% templatetag closebrace %}
+    {% templatetag openbrace %}{{ award.year }}{% templatetag closebrace %}
+    {% templatetag openbrace %}{{ award.award_summary }}{% templatetag closebrace %}
+{% endfor %}
+	\end{itemize}
+
+
+\resheading{Skills}
+	%\begin{description}
+	\begin{itemize}
+	\item[] {{ skills.skills }}
+	\end{itemize}
+	%\end{description} % End Skills list
+	
+
+\resheading{Languages}
+	\begin{itemize}
+	\item[ ] {{languages.languages}}
+	\end{itemize}
+\end{document}

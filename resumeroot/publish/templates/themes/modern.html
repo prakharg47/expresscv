@@ -1,0 +1,81 @@
+
+\documentclass[12pt,a4paper,sans]{moderncv}        % possible options include font size ('10pt', '11pt' and '12pt'), paper size ('a4paper', 'letterpaper', 'a5paper', 'legalpaper', 'executivepaper' and 'landscape') and font family ('sans' and 'roman')
+
+
+\moderncvstyle{banking}                           % style options are 'casual' (default), 'classic', 'oldstyle' and 'banking'
+\moderncvcolor{green}                               % color options 'blue' (default), 'orange', 'green', 'red', 'purple', 'grey' and 'black'
+\renewcommand*{\addresssymbol}       {}
+\renewcommand*{\mobilephonesymbol}   {}
+\renewcommand*{\fixedphonesymbol}    {}
+\renewcommand*{\faxphonesymbol}      {}
+\renewcommand*{\emailsymbol}         {}
+\renewcommand*{\homepagesymbol}      {}
+\usepackage[utf8]{inputenc}                       % if you are not using xelatex ou lualatex, replace by the encoding you are using
+
+\usepackage[a4paper,left=1cm,right=1cm,top=1cm,bottom=1cm,footskip=.25in]{geometry}
+
+{#\usepackage[scale]{tgheros}#}
+
+\usepackage{blindtext}
+
+{# PERSONAL SECTION #}
+\name{% templatetag openbrace %}{{personal.first_name}}{% templatetag closebrace %}{% templatetag openbrace %}{{personal.last_name}}{% templatetag closebrace %}
+
+{% if personal.title|length > 0  %}
+    \title{% templatetag openbrace %}{{personal.title}}}
+{% endif %}
+
+\address{% templatetag openbrace %}{{personal.city}}{% templatetag closebrace %}{% templatetag openbrace %}{{personal.country}}{% templatetag closebrace %}
+{#\phone[mobile]{ {{personal.mobile}} }#}
+\email{% templatetag openbrace %}{{personal.email}}{% templatetag closebrace %}
+\homepage{% templatetag openbrace %}{{personal.mobile}}{% templatetag closebrace %}
+{% if personal.linkedin|length > 0  %}
+    \extrainfo{% templatetag openbrace %}{{ personal.linkedin }}{% templatetag closebrace %}
+{% endif  %}
+\begin{document}
+\makecvtitle
+\vspace{-35pt}
+
+\section{Summary}
+{{ summary.summary }}
+
+\section{Work Experience}
+{% for work in works %}
+\cventry
+    {% templatetag openbrace %}{{work.from_year}} -- {{work.to_year}}{% templatetag closebrace %}
+    {% templatetag openbrace %}{{ work.designation }}{% templatetag closebrace %}
+    {% templatetag openbrace %}{{work.company}}{% templatetag closebrace %}
+    {% templatetag openbrace %}{{work.city}}, {{work.country}}{% templatetag closebrace %}
+    {}
+    {% templatetag openbrace %}{{work.work_summary}}{% templatetag closebrace %}
+{% endfor %}
+
+\section{Education}
+{% for education in educations %}
+\cventry{% templatetag openbrace %}{{education.from_year}} -- {{education.to_year}}{% templatetag closebrace %}
+    {% templatetag openbrace %}{{education.degree}}, {{education.major}}{% templatetag closebrace %}
+    {% templatetag openbrace %}{{education.college}} }{ {{education.city}}, {{education.country}}{% templatetag closebrace %}
+    {\textit{% templatetag openbrace %}{{ education.gpa }}{% templatetag closebrace %}}
+    {% templatetag openbrace %}{{ education.education_summary }}{% templatetag closebrace %}
+{% endfor %}
+
+
+\section{Skills}
+{{skills.skills}}
+
+
+\section{Languages}
+{{languages.languages}}
+
+
+\section{Awards and Certificates}
+{% for award in awards %}
+\cvlistitem{\awardentry{% templatetag openbrace %}{{award.award_name}}{% templatetag closebrace %}
+    {% templatetag openbrace %}{{award.organisation}}{% templatetag closebrace %}
+    {% templatetag openbrace %}\emph{% templatetag openbrace %}{{award.year}}{% templatetag closebrace %}{% templatetag closebrace %}
+    {% templatetag openbrace %}{{award.award_summary}}{% templatetag closebrace %}{% templatetag closebrace %}
+{% endfor %}
+
+\end{document}
+
+

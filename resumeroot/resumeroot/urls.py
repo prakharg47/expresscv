@@ -23,11 +23,12 @@ urlpatterns = [
     # Apps
     url(r'^auth/', include('authentication.urls')),
     url(r'^editor/', include('builder.urls')),
-
+    url(r'^publish/', include('publish.urls')),
     url(r'^home/', app_views.home, name='home'),
     url(r'^$', app_views.home, name='root_home'),
     url(r'^blog', app_views.home, name='blog'),
     url(r'^pricing', app_views.pricing, name='pricing'),
+    url(r'^upgrade', app_views.upgrade_user, name='upgrade'),
     url(r'^about', app_views.home, name='about'),
 
     url(r'^oauth/', include('social_django.urls', namespace='social')),

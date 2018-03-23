@@ -12,12 +12,20 @@
 
 
     <div class="jumbotron">
-        <h1><span contenteditable="true">Build your future</span></h1>
-    <p>Create professional looking resumes in minutes </p>
-    <p>
-            <a href="{% url 'resume' %}" class="btn btn-success btn-lg ">Get Started</a>
-    </p>
+        <h1><span contenteditable="true">Awesome CVs for <span class="elemento"></span></span></h1>
+        <p>Create professional looking resumes in minutes </p>
+        <p>
+            <a href="{% url 'resume'  %}" class="btn btn-success btn-lg ">Get Started</a>
+        </p>
     </div>
+
+    <script>
+        var typed = new Typed('.elemento', {
+            strings: ["Artists", "Bankers", "Consultants", "Developers"],
+            typeSpeed: 1000,
+            loop: true
+        });
+    </script>
 
 
     <div class="row">

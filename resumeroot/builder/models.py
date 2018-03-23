@@ -4,31 +4,43 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from django_extensions.db.models import TimeStampedModel
-
-
-class BaseModel(models.Model):
-    created_date = models.DateTimeField(editable=False)
-    modified_date = models.DateTimeField()
-
-    class Meta:
-        abstract = True
+from taggit.managers import TaggableManager
 
 
 class Resume(TimeStampedModel):
     user = models.ForeignKey(User)
     name = models.CharField(max_length=100)
-    theme = models.IntegerField(default=0)
+    tags = TaggableManager()
 
     def __str__(self):
         return "{}".format(self.name)
 
 
+class Theme(models.Model):
+
+    THEME_NAMES = ['Specter', 'Ross', 'Donna', 'Louie']
+    THEME_CHOICES = [(e,e) for e in THEME_NAMES]
+    FONT_NAMES = ['Computer Modern', 'Sans', 'Teletype']
+    FONT_CHOICES = [(e,e) for e in FONT_NAMES]
+
+    resume = models.ForeignKey(Resume, primary_key=True, unique=True)
+
+    theme = models.CharField(max_length=60, choices=THEME_CHOICES, default='Specter')
+    font_size = models.IntegerField(default=11)
+    font_family = models.CharField(max_length=60, choices=FONT_CHOICES, default='Sans')
+    horizontal_margins = models.DecimalField(max_digits=5, decimal_places=2, default=1.5)
+    top_margin = models.DecimalField(max_digits=5, decimal_places=2, default=1.5)
+    bottom_margin = models.DecimalField(max_digits=5, decimal_places=2, default=1.5)
+
+
 class Personal(models.Model):
     resume = models.ForeignKey(Resume, primary_key=True)
-    name = models.CharField(max_length=200)
+    first_name = models.CharField(max_length=200)
+    last_name = models.CharField(max_length=200, null=True)
     email = models.EmailField(null=True, max_length=200)
     mobile = models.CharField(max_length=200, null=True)
-    linkedin_url = models.CharField(max_length=200, null=True)
+    title = models.CharField(null=True, max_length=200, blank=True)
+    linkedin = models.CharField(max_length=200, null=True)
     city = models.CharField(max_length=200)
     country = models.CharField(max_length=200)
     photo = models.FileField(upload_to="profile", null=True)
@@ -46,7 +58,6 @@ class Personal(models.Model):
 
 class Summary(models.Model):
     resume = models.ForeignKey(Resume, primary_key=True)
-    # summary = models.CharField(max_length=2000, null=True)
     summary = models.TextField(null=True)
 
 
@@ -61,71 +72,57 @@ class Education(models.Model):
     city = models.CharField(max_length=200, null=True, blank=True)
     country = models.CharField(max_length=200, null=True, blank=True)
 
-    from_month = models.CharField(max_length=200, null=True, blank=True)
     from_year = models.CharField(max_length=200, null=True, blank=True)
-
-    to_month = models.CharField(max_length=200, null=True, blank=True)
     to_year = models.CharField(max_length=200, null=True, blank=True)
 
+    education_summary = models.TextField(null=True)
+
     def __str__(self):
-        return "{}-{}-{}".format(self.college, self.major, self.gpa)
+        return "{}, {}, {}".format(self.college, self.major, self.degree)
 
 
 class Work(models.Model):
-
     resume = models.ForeignKey(Resume)
+
     company = models.CharField(max_length=200)
     designation = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
     country = models.CharField(max_length=200)
-
     from_year = models.CharField(max_length=200)
     to_year = models.CharField(max_length=200)
-
     work_summary = models.CharField(max_length=2000)
 
     def __str__(self):
         return "{}-{}".format(self.company, self.designation)
 
+class Award(models.Model):
+    resume = models.ForeignKey(Resume)
+
+    award_name = models.CharField(max_length=200)
+    organisation = models.CharField(max_length=200)
+    year = models.CharField(max_length=200)
+    award_summary = models.CharField(max_length=2000)
+
+    def __str__(self):
+        return "{}, {}".format(self.award_name, self.organisation)
+
 
 class Skills(models.Model):
 
     resume = models.ForeignKey(Resume, primary_key=True)
-    technical = models.CharField(max_length=300)
-    management = models.CharField(max_length=300)
+    skills = models.TextField(null=True)
+    # technical = models.CharField(max_length=300)
+    # management = models.CharField(max_length=300)
 
     def __str__(self):
-        return "{}".format(self.technical)
+        return "{}".format(self.skills[0:50])
 
 
 class Languages(models.Model):
-
     resume = models.ForeignKey(Resume, primary_key=True)
-    languages = models.CharField(max_length=300)
+    languages = models.TextField(null=True)
 
 
-class Theme_Model(models.Model):
-    THEMES_CHOICES = [
-        ('standard', 'standard'),
-        ('express', 'express'),
-        ('compact', 'compact'),
-        ('modern', 'modern')
-    ]
-
-    FONTS = [
-        ('computer modern', 'computer modern'),
-        ('arial', 'arial'),
-        ('calibri', 'calibri')
-    ]
-
-    resume = models.ForeignKey(Resume, primary_key=True, unique=True)
-    theme = models.CharField(max_length=60, choices=THEMES_CHOICES, default='standard')
-
-    font_size = models.DecimalField(max_digits=5, decimal_places=2)
-    font_family = models.CharField(max_length=60, choices=FONTS, default='computer modern')
-    horizontal_margins = models.DecimalField(max_digits=5, decimal_places=2)
-    top_margin = models.DecimalField(max_digits=5, decimal_places=2)
-    bottom_margin = models.DecimalField(max_digits=5, decimal_places=2)
 
 
 

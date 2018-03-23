@@ -35,13 +35,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'builder',
+    'app_core',
     'authentication',
+    'publish',
 
     'social_django',
     'formtools',
     'ckeditor',
     'django_extensions',
+    'taggit'
 
 ]
 

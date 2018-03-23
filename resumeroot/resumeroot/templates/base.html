@@ -18,6 +18,7 @@
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://cdn.rawgit.com/digitalBush/jquery.maskedinput/1.4.1/dist/jquery.maskedinput.min.js"></script>
 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.6/typed.min.js"></script>
     <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/MonthPicker.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/bootstrap-datepicker.js' %}"></script>
@@ -89,9 +90,13 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{% url 'resume' %}">CV Editor</a></li>
+                    <li><a href="{% url 'upgrade' %}">Upgrade to pro</a></li>
                 </ul>
 
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{% url 'resume' %}">CV Editor</a></li>
+                </ul>
 
 
             </div>

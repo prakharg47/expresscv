@@ -1,0 +1,94 @@
+{% extends 'builder/builder_base.html' %}
+
+{% block form_content %}
+
+
+    {% if form.errors %}
+        <div class="alert alert-error">
+            <h4>Please fix the following errors</h4>
+            <ul>
+                {% for field in form %}
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <li><a href="#id_{{ field.name }}" class="error">{{ error|escape }}</a></li>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            {% if form.non_field_errors %}
+                {{ form.non_field_errors }}
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if work_objects %}
+        <div>
+            <h2>My Awards and Certificates</h2>
+            <table class="table table-hover table-bordered table-condensed">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Award / Certificate</th>
+                    <th>Organisation</th>
+                    <th>Options</th>
+                    <th></th>
+                </tr>
+                </thead>
+
+                {% for work_object in work_objects %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ work_object.award_name }}</td>
+                        <td>{{ work_object.organisation }}</td>
+                        <td>
+                            <a role="button" class="btn btn-default" href="{% url 'award_edit' resume_id=work_object.resume_id award_id=work_object.id %}">Edit</a>
+                        </td>
+                        <td>
+                            <a role="button" class="btn btn-default"
+                               href="{% url 'award_delete' resume_id=work_object.resume_id award_id=work_object.id %}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endif %}
+
+
+    <h3>Add New</h3>
+    <div class="row">
+        {% comment %}<form action="{% url 'work_object' %}" method="post">
+            {% csrf_token %}
+            {#        {{ form }}#}
+
+            {% for field in form %}
+                <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                    <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>
+                    {{ field }}
+                </div>
+                {{ form.errors }}
+            {% endfor %}
+
+
+            <input type="submit" class="btn btn-primary " value="Save"/>
+        </form>{% endcomment %}
+
+        <a role="button" class="btn btn-default" href="{% url 'award_new' resume_id=resume_id %}">Add new Award or Certificate</a>
+
+{#        #}
+{#        <form action="{% url 'work_object' %}" method="post" name="myform">#}
+{##}
+{#            {% csrf_token %}#}
+{#            <div class="col-lg-5">#}
+{#                <div class="input-group">#}
+{#                    <input name="name" id="id_name" type="text" class="form-control" placeholder="Enter work_object name">#}
+{#                    <span class="input-group-btn">#}
+{#                        <input class="btn btn-primary" type="submit" value="Add work_object"/>#}
+{#                    </span>#}
+{#                </div><!-- /input-group -->#}
+{#            </div><!-- /.col-lg-6 -->#}
+{##}
+{##}
+{#        </form>#}
+    </div>
+
+{% endblock %}

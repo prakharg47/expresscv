@@ -1,6 +1,5 @@
 import shutil
 import subprocess
-
 from wsgiref.util import FileWrapper
 
 from django.contrib import messages
@@ -10,12 +9,12 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.views.generic.edit import FormView
-from django.views.generic import ListView
 
 from .forms import *
 
 # Global defaults
 FORM_ERROR_MESSAGE = "Form has errors. Please fill the form again"
+
 
 @login_required
 def resume(request):
@@ -36,11 +35,14 @@ def resume(request):
             form.instance.user = request.user
             form.save()
 
+            default_theme = Theme(resume_id=form.instance.id)
+            default_theme.save()
+
             # Add message
             messages.success(request, "New resume {} created".format(form.cleaned_data['name']))
 
-            # Redirect to 'personal' page
-            return HttpResponseRedirect(reverse('personal', args=[form.instance.id]))
+            # Redirect to 'choose theme' page
+            return HttpResponseRedirect(reverse('theme', args=[form.instance.id]))
 
         # If form is invalid, show errors to user and render form again
         else:
@@ -61,14 +63,6 @@ def resume(request):
 
 
 @login_required
-def experience2(request, resume_id):
-
-    # get resume object
-    res = Resume.objects.get(id=resume_id)
-    pass
-
-
-@login_required
 def theme(request, resume_id):
     """
     Choose theme for a resume
@@ -78,22 +72,23 @@ def theme(request, resume_id):
 
     if request.method == 'POST':
         # Handle form submission
-        form = ThemesForm(request.POST)
+        form = ThemesChoiceForm(request.POST)
 
         if form.is_valid():
 
+            new_theme = Theme()
+            new_theme.theme = form.cleaned_data['theme_name']
+            new_theme.resume_id = resume_id
+            new_theme.save()
 
-            res.theme = form.cleaned_data['theme']
-            res.save()
-
-            messages.success(request, "theme is changed")
+            messages.success(request, "Theme is saved")
 
             return HttpResponseRedirect(reverse('personal', kwargs={'resume_id': resume_id}))
         else:
             messages.error(request, "Form has errors")
             return render(request, 'builder/theme.html', {'form': form, 'resume_id': resume_id})
 
-    form = ThemesForm()
+    form = ThemesChoiceForm()
 
     return render(request, 'builder/theme.html', {'form': form, 'resume_id': resume_id})
 
@@ -136,7 +131,8 @@ def personal(request, resume_id):
 
     try:
         old_data = Personal.objects.get(resume=resume_id)
-    except:
+    except Exception as e:
+        print(e)
         old_data = None
 
     if old_data is None:
@@ -346,7 +342,6 @@ def languages(request, resume_id):
 
         if form.is_valid():
 
-
             form.instance.resume = res
             form.save()
 
@@ -394,137 +389,6 @@ def html_to_latex(html):
     return html
 
 
-@login_required
-def publish(request, resume_id):
-    themes = [
-        (0, 'standard'),
-        (1, 'express'),
-        (2, 'compact'),
-        (3, 'modern')
-    ]
-
-    res = Resume.objects.get(id=resume_id)
-    theme = res.theme
-
-    theme_name = 'standard'
-    for e in themes:
-        if e[0] == theme:
-            theme_name = e[1]
-
-    try:
-        app_user = Personal.objects.get(resume=res)
-    except Exception as e:
-        raise Http404('Please fill in Personal details first')
-
-    education_set = Education.objects.filter(resume=res)
-
-    try:
-        user_summary = Summary.objects.get(resume=res)
-        user_summary.summary = html_to_latex(user_summary.summary)
-    except Summary.DoesNotExist:
-        user_summary = None
-
-    work_set = Work.objects.filter(resume=res)
-    for work_inst in work_set:
-        # work_inst.work_summary = "\\item  ".join(e for e in work_inst.work_summary.split("\r\n"))
-        work_inst.work_summary = html_to_latex(work_inst.work_summary)
-
-    try:
-        skills = Skills.objects.get(resume=res)
-    except Skills.DoesNotExist:
-        skills = None
-
-    try:
-        language = Languages.objects.get(resume=res)
-    except Languages.DoesNotExist:
-        language = None
-
-    # language.languages = html_to_latex(language.languages)
-
-    try:
-        theme_detail = Theme_Model.objects.get(resume=res)
-    except Exception:
-        theme_detail = None
-
-    ttt = theme_detail.theme
-
-    #rendered = render_to_string('themes/{}.html'.format(ttt),
-    rendered = render_to_string('themes/{}.html'.format("modern"),
-                                {
-                                    'theme_details': theme_detail,
-                                    'personal': app_user,
-                                    'educations': education_set,
-                                    'works': work_set,
-                                    'skills': skills,
-                                    'summary': user_summary,
-                                    'languages': language
-                                })
-    with open('output.tex', 'w') as f:
-        f.write(rendered)
-
-    p = subprocess.Popen(["xelatex", "-interaction=scrollmode", "output.tex"])
-    p.communicate()
-
-    # Rename output.pdf to @resume_name.pdf
-    resume_name = "{}.pdf".format(res.name)
-    shutil.copy('output.pdf', resume_name)
-
-    # send back response
-    # with open(resume_name, 'r') as pdf:
-        #response = HttpResponse(pdf.read(), content_type='application/pdf')
-    response = HttpResponse(FileWrapper(open(resume_name, 'rb')), content_type='application/pdf')
-    response['Content-Disposition'] = 'inline;filename={}'.format(resume_name)
-    return response
-
-
-def preview(request, resume_id):
-    """previews a inline pdf. Also allows further fine tuning """
-
-    # generate the pdf ('output.pdf')
-    # publish(request, resume_id)
-    if request.method == 'POST':
-
-        # Create a bound form using user data
-        form = ThemesModelForm(request.POST)
-
-        # font = request.POST.get('font_family')
-        # theme = request.POST.get('theme')
-        #
-        # form.fields['font_family'] = [(font, font)]
-        # form.fields['theme'] = [(theme, theme)]
-
-        if form.is_valid():
-
-            # Get the resume instance
-            resume_inst = Resume.objects.get(id=resume_id)
-
-            form.instance.resume = resume_inst
-            form.save()
-
-            messages.success(request, "Your summary details are saved")
-            return HttpResponseRedirect(reverse('education', kwargs={'resume_id': resume_id}))
-        else:
-
-            # Form is not valid
-
-            messages.error(request, str("Form has errors"))
-            return render(request, 'builder/preview.html', {'form': form,
-                                                            'resume_id': resume_id})
-
-    try:
-        old_data = Theme_Model.objects.get(resume=resume_id)
-    except:
-        old_data = None
-
-    if old_data is None:
-        # New form. Initialize with social account data
-        personal_form = ThemesModelForm()
-    else:
-        personal_form = ThemesModelForm(instance=old_data)
-
-    return render(request, 'builder/preview.html', {'pdf': 'output.pdf', 'resume_id': resume_id,
-                                                    'form': personal_form})
-
 
 def delete_resume(request, resume_id):
     """ Delete a given resume_id. redirect to my resumes page"""
@@ -539,21 +403,20 @@ def delete_resume(request, resume_id):
 
     return HttpResponseRedirect(reverse('resume'))
 
+
 @login_required
 def experience_all(request, resume_id):
-
     res = Resume.objects.get(id=resume_id)
     work_objects = Work.objects.filter(resume=resume_id)
 
-    return render(request, 'builder/experience_all.html', {'work_objects' : work_objects,
-                                                           'resume_id' : resume_id})
+    return render(request, 'builder/experience_all.html', {'work_objects': work_objects,
+                                                           'resume_id': resume_id})
 
 
 def experience_new(request, resume_id):
-
     res = Resume.objects.get(id=resume_id)
 
-    if request.method == 'POST' :
+    if request.method == 'POST':
         # handle new work form
 
         form = ExperienceForm(request.POST)
@@ -575,8 +438,197 @@ def experience_new(request, resume_id):
 
 
 def experience_edit(request, resume_id, work_id):
-    return None
+    res = Resume.objects.get(id=resume_id)
+    old_work_object = Work.objects.get(resume=res, id=work_id)
+
+    if request.method == 'POST':
+        # handle new work form
+
+        form = ExperienceForm(request.POST, instance=old_work_object)
+
+        if form.is_valid():
+            form.instance.resume = res
+            form.save()
+
+            messages.success(request, "Your details are saved")
+            return HttpResponseRedirect(reverse('experience', kwargs={'resume_id': resume_id}))
+        else:
+            messages.error(request, "Form has errors")
+            return render(request, 'builder/experience_new.html', {'form': form, 'resume_id': resume_id})
+
+    old_work_object = Work.objects.get(resume=res, id=work_id)
+
+    form = ExperienceForm(instance=old_work_object)
+
+    return render(request, 'builder/experience_edit.html', {'form': form,
+                                                            'resume_id': resume_id, 'work_id': work_id})
 
 
 def experience_delete(request, resume_id, work_id):
-    return None
+    """ Delete a given resume_id. redirect to my resumes page"""
+
+    try:
+        res = Resume.objects.get(id=resume_id)
+        res_name = res.name
+        work_object = Work.objects.get(resume=res, id=work_id)
+        work_object.delete()
+        messages.warning(request, "Experience {} deleted".format(res_name))
+    except Exception as e:
+        pass
+
+    return HttpResponseRedirect(reverse('experience', kwargs={'resume_id': resume_id}))
+
+
+@login_required
+def education_all(request, resume_id):
+    res = Resume.objects.get(id=resume_id)
+    work_objects = Education.objects.filter(resume=resume_id)
+
+    return render(request, 'builder/education_all.html', {'work_objects': work_objects,
+                                                          'resume_id': resume_id})
+
+
+@login_required
+def education_new(request, resume_id):
+    res = Resume.objects.get(id=resume_id)
+
+    if request.method == 'POST':
+        # handle new work form
+
+        form = EducationNewForm(request.POST)
+
+        if form.is_valid():
+            form.instance.resume = res
+            form.save()
+
+            messages.success(request, "Your details are saved")
+            return HttpResponseRedirect(reverse('education', kwargs={'resume_id': resume_id}))
+        else:
+            messages.error(request, "Form has errors")
+            return render(request, 'builder/education_new.html', {'form': form, 'resume_id': resume_id})
+
+    form = EducationNewForm()
+
+    return render(request, 'builder/education_new.html', {'form': form,
+                                                          'resume_id': resume_id})
+
+
+@login_required
+def education_edit(request, resume_id, ed_id):
+    res = Resume.objects.get(id=resume_id)
+    old_work_object = Education.objects.get(resume=res, id=ed_id)
+
+    if request.method == 'POST':
+        # handle new work form
+
+        form = EducationNewForm(request.POST, instance=old_work_object)
+
+        if form.is_valid():
+            form.instance.resume = res
+            form.save()
+
+            messages.success(request, "Your details are saved")
+            return HttpResponseRedirect(reverse('education', kwargs={'resume_id': resume_id}))
+        else:
+            messages.error(request, "Form has errors")
+            return render(request, 'builder/education_edit.html', {'form': form, 'resume_id': resume_id})
+
+    old_work_object = Education.objects.get(resume=res, id=ed_id)
+
+    form = EducationNewForm(instance=old_work_object)
+
+    return render(request, 'builder/education_edit.html', {'form': form,
+                                                           'resume_id': resume_id, 'ed_id': ed_id})
+
+
+@login_required
+def education_delete(request, resume_id, ed_id):
+    """ Delete a given resume_id. redirect to my resumes page"""
+
+    try:
+        res = Resume.objects.get(id=resume_id)
+        res_name = res.name
+        work_object = Education.objects.get(resume=res, id=ed_id)
+        work_object.delete()
+        messages.warning(request, "Education {} deleted".format(res_name))
+    except Exception as e:
+        pass
+
+    return HttpResponseRedirect(reverse('education', kwargs={'resume_id': resume_id}))
+
+
+# Awards section
+
+@login_required
+def award_all(request, resume_id):
+    res = Resume.objects.get(id=resume_id)
+    work_objects = Award.objects.filter(resume=resume_id)
+
+    return render(request, 'builder/award_all.html', {'work_objects': work_objects,
+                                                           'resume_id': resume_id})
+
+
+def award_new(request, resume_id):
+    res = Resume.objects.get(id=resume_id)
+
+    if request.method == 'POST':
+        # handle new work form
+
+        form = AwardForm(request.POST)
+
+        if form.is_valid():
+            form.instance.resume = res
+            form.save()
+
+            messages.success(request, "Your details are saved")
+            return HttpResponseRedirect(reverse('award', kwargs={'resume_id': resume_id}))
+        else:
+            messages.error(request, "Form has errors")
+            return render(request, 'builder/award_new.html', {'form': form, 'resume_id': resume_id})
+
+    form = AwardForm()
+
+    return render(request, 'builder/award_new.html', {'form': form,
+                                                           'resume_id': resume_id})
+
+
+def award_edit(request, resume_id, award_id):
+    res = Resume.objects.get(id=resume_id)
+    old_award_object = Award.objects.get(resume=res, id=award_id)
+
+    if request.method == 'POST':
+        # handle new work form
+
+        form = AwardForm(request.POST, instance=old_award_object)
+
+        if form.is_valid():
+            form.instance.resume = res
+            form.save()
+
+            messages.success(request, "Your details are saved")
+            return HttpResponseRedirect(reverse('award', kwargs={'resume_id': resume_id}))
+        else:
+            messages.error(request, "Form has errors")
+            return render(request, 'builder/award_new.html', {'form': form, 'resume_id': resume_id})
+
+    old_award_object = Award.objects.get(resume=res, id=award_id)
+
+    form = AwardForm(instance=old_award_object)
+
+    return render(request, 'builder/award_edit.html', {'form': form,
+                                                            'resume_id': resume_id, 'award_id': award_id})
+
+
+def award_delete(request, resume_id, award_id):
+    """ Delete a given resume_id. redirect to my resumes page"""
+
+    try:
+        res = Resume.objects.get(id=resume_id)
+        res_name = res.name
+        work_object = Award.objects.get(resume=res, id=award_id)
+        work_object.delete()
+        messages.warning(request, "Award {} deleted".format(res_name))
+    except Exception as e:
+        pass
+
+    return HttpResponseRedirect(reverse('award', kwargs={'resume_id': resume_id}))

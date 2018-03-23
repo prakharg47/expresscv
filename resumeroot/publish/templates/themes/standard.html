@@ -1,0 +1,136 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                %
+%         STANDARD THEME            %
+%                            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Start a document with the here given default font size and paper size.
+\documentclass[10pt,a4paper]{article}
+
+% Set the page margins.
+\usepackage[a4paper,margin=0.75in]{geometry}
+\usepackage{scrextend}
+
+
+% Setup the language.
+\usepackage[english]{babel}
+\hyphenation{Some-long-word}
+
+% Makes resume-specific commands available.
+\usepackage{resume}
+
+\begin{document}  % begin the content of the document
+\sloppy  % this to relax whitespacing in favour of straight margins
+
+% FOR CHANGING FONTS
+%\usepackage[T1]{fontenc}
+%\usepackage{mathptmx}
+
+
+\usepackage{geometry}
+\geometry{
+a4paper,
+total={170mm,257mm},
+left={{ theme_detail.horizontal_margins }}mm,
+top={{ theme_detail.top_margin }}mm,
+}
+
+% title on top of the document
+\noindent \maintitle{ {{ personal.name }} } {}
+
+\nobreakvspace{0.3em}  % add some page break averse vertical spacing
+
+% \noindent prevents paragraph's first lines from indenting
+% \mbox is used to obfuscate the email address
+% \sbull is a spaced bullet
+% \href well..
+% \\ breaks the line into a new paragraph
+\noindent  {{ personal.email }} {}{}
+\textsmaller{+}91 {{ personal.mobile }}
+\\
+{{ personal.city }},
+{{ personal.country }}
+
+\spacedhrule{0.9em}{-0.4em}  % a horizontal line with some vertical spacing before and after
+
+\roottitle{Summary}  % a root section title
+
+% \vspace{1.3em}  % some vertical spacing
+% \begin{multicols}{2}  % open a multicolumn environment
+
+{#\begin{itemize}#}
+{#\setlength\itemsep{0em}#}
+{#\item {{ summary.summary }}#}
+{#\end{itemize}#}
+{{ summary.summary }}
+
+% \end{multicols}
+
+\vspace{1.1em}  % some vertical spacing
+\spacedhrule{0em}{-0.4em}
+
+\roottitle{Experience}
+
+{% for w in work %}
+    \headedsection  % sets the header for the section and includes any subsections
+    {% templatetag openvariable %} {{ w.company }} {% templatetag closevariable %}
+    {\textsc{ {{ w.city }}, {{ w.country }} }} {% templatetag openblock %}
+    \headedsubsection
+    { {{ w.designation }} }
+    { {{ w.from_year }} -- {{ w.to_year }} }
+
+    {}
+    }
+    {##}
+    {#    \begin{itemize}#}
+    {#    \setlength\itemsep{0em}#}
+    {#    \item {{ w.work_summary }}#}
+    {#    \end{itemize}#}
+
+    \begin{addmargin}[1em]
+    {{ w.work_summary }}
+    \end{addmargin}
+
+
+{% endfor %}
+
+\vspace{1.1em}  % some vertical spacing
+\spacedhrule{-0.2em}{-0.4em}
+
+\roottitle{Education}
+
+{% for e in education %}
+    \headedsection
+    {% templatetag openvariable %} {{ e.college }} {% templatetag closevariable %}
+    {\textsc{ {{ e.city }}, {{ e.country }} }} {% templatetag openblock %}
+    \headedsubsection
+    { {{ e.degree }}, {{ e.major }} }
+    { {{ e.from_year }} -- {{ e.to_year }} } {}
+
+    }
+{% endfor %}
+
+
+\spacedhrule{0.5em}{-0.4em}
+
+\roottitle{Skills}
+
+\inlineheadsection  % special section that has an inline header with a 'hanging' paragraph
+{Technical:}
+{ {{ skills.technical }} }
+
+\vspace{0.5em}
+\inlineheadsection
+{Management:}
+{ {{ skills.management }} }
+
+\spacedhrule{1.6em}{-0.4em}
+
+\roottitle{Languages}
+
+\inlineheadsection  % special section that has an inline header with a 'hanging' paragraph
+{Languages:}
+{ {{ language.languages }} }
+
+
+\end{document}

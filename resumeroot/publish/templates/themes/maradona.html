@@ -1,0 +1,133 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[margin=0.5in, right=1in]{geometry}
+%A Few Useful Packages
+\usepackage{marvosym}
+% \usepackage{fontspec} 					%for loading fonts
+\usepackage{xunicode,xltxtra,url,parskip} 	%other packages for formatting
+\RequirePackage{color,graphicx}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[big]{layaureo} 				%better formatting of the A4 page
+% an alternative to Layaureo can be ** \usepackage{fullpage} **
+\usepackage{supertabular} 				%for Grades
+\usepackage{titlesec}					%custom \section
+\usepackage{changepage}
+
+%Setup hyperref package, and colours for links
+\usepackage{hyperref}
+\definecolor{linkcolour}{rgb}{0,0.2,0.6}
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour, linkcolor=linkcolour}
+
+%FONTS
+\defaultfontfeatures{Mapping=tex-text}
+%\setmainfont[SmallCapsFont = Fontin SmallCaps]{Fontin}
+%%% modified for Karol Kozioł for ShareLaTeX use
+%\setmainfont[
+%SmallCapsFont = Fontin-SmallCaps.otf,
+%BoldFont = Fontin-Bold.otf,
+%ItalicFont = Fontin-Italic.otf
+%]
+%{Fontin.otf}
+%%%
+
+%CV Sections inspired by: 
+%http://stefano.italians.nl/archives/26
+\titleformat{\section}{\Large\scshape\raggedright}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{3pt}{3pt}
+%Tweak a bit the top margin
+%\addtolength{\voffset}{-1.3cm}
+
+
+
+%Italian hyphenation for the word: ''corporations''
+\hyphenation{im-pre-se}
+
+%-------------WATERMARK TEST [**not part of a CV**]---------------
+\usepackage[absolute]{textpos}
+
+\setlength{\TPHorizModule}{30mm}
+\setlength{\TPVertModule}{\TPHorizModule}
+\textblockorigin{2mm}{0.65\paperheight}
+\setlength{\parindent}{0pt}
+
+%--------------------BEGIN DOCUMENT----------------------
+\begin{document}
+
+%WATERMARK TEST [**not part of a CV**]---------------
+%\font\wm=''Baskerville:color=787878'' at 8pt
+%\font\wmweb=''Baskerville:color=FF1493'' at 8pt
+%{\wm 
+%	\begin{textblock}{1}(0,0)
+%		\rotatebox{-90}{\parbox{500mm}{
+%			Typeset by Alessandro Plasmati with \XeTeX\  \today\ for 
+%			{\wmweb \href{http://www.aleplasmati.comuv.com}{aleplasmati.comuv.com}}
+%		}
+%	}
+%	\end{textblock}
+%}
+
+\pagestyle{empty} % non-numbered pages
+
+\font\fb=''[cmr10]'' %for use with \LaTeX command
+
+%--------------------TITLE-------------
+\par{\centering
+		{\Huge {{ personal.first_name }} {% templatetag openbrace %}{{ personal.last_name }}{% templatetag closebrace %}
+	}\bigskip\par}
+
+%--------------------SECTIONS-----------------------------------
+%Section: Personal Data
+\section{Personal Data}
+
+\begin{tabular}{rl}
+    \textsc{Location:}  & {{ personal.city }}, {{ personal.country }}\\
+    \textsc{Phone:}     & {% templatetag openbrace %}{{ personal.mobile }}{% templatetag closebrace %}\\
+    \textsc{Email:}     & {% templatetag openbrace %}{{ personal.email }}{% templatetag closebrace %} {% if personal.linkedin|length > 0  %} \\
+    \textsc{LinkedIn:}  & {% templatetag openbrace %}{{ personal.linkedin }}{% templatetag closebrace %}
+    {% endif %}
+\end{tabular}
+
+%Section: Work Experience at the top
+\section{Work Experience}
+\begin{tabular}{r|p{11cm}}
+{% for work in works %}
+ \textsc{% templatetag openbrace %}{{ work.from_year }}--{{ work.to_year }}{% templatetag closebrace %} &
+    \textsc{% templatetag openbrace %}{{ work.company }}{% templatetag closebrace %} \hfill {{ work.city }}, {{ work.country }} \\
+    &\emph{% templatetag openbrace %}{{ work.designation }}{% templatetag closebrace %}\\&\smallsize{% templatetag openbrace %}{{ work.work_summary }}{% templatetag closebrace %}\\\multicolumn{2}{c}{} \\
+{% endfor %}
+\end{tabular}
+
+%Section: Education
+\section{Education}
+\begin{tabular}{rp{11cm}}
+{% for education in educations %}
+
+    \textsc{% templatetag openbrace %}{{ education.from_year }}--{{ education.to_year }}{% templatetag closebrace %} &  \textbf{% templatetag openbrace %}{{ education.college }}{% templatetag closebrace %}, \hfill {{ education.city }}, {{ education.country }}\\
+& {{ education.degree }} in \textsc{% templatetag openbrace %}{{ education.major }}{% templatetag closebrace %}\\
+&\normalsize \textsc{Gpa}: {{ education.gpa }}\\&\smallsize{% templatetag openbrace %}{{ education.education_summary }}{% templatetag closebrace %}\\\multicolumn{2}{c}{} \\
+
+
+{% endfor %}
+\end{tabular}
+
+
+\section{Awards and Certificates}
+\begin{tabular}{rp{11cm}}
+{% for award in awards %}
+\textsc{% templatetag openbrace %}{{ award.year }}{% templatetag closebrace %} & {{ award.award_name }}, {{ award.organisation }}\\&\smallsize{% templatetag openbrace %}{{ award.award_summary }}{% templatetag closebrace %}\\\multicolumn{2}{c}{} \\
+
+{% endfor %}
+\end{tabular}
+
+%Section: Languages
+\section{Languages}
+\begin{adjustwidth}{0.3cm}{}
+{{languages.languages}}
+\end{adjustwidth}
+
+\section{Skills}
+\begin{adjustwidth}{0.3cm}{}
+{{ skills.skills }}
+\end{adjustwidth}
+
+
+\end{document}

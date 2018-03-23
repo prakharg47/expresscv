@@ -1,80 +1,102 @@
+%!TEX TS-program = xelatex
+\documentclass[10pt]{friggeri-cv}
 
-
-\documentclass[12pt,a4paper,sans]{moderncv}        % possible options include font size ('10pt', '11pt' and '12pt'), paper size ('a4paper', 'letterpaper', 'a5paper', 'legalpaper', 'executivepaper' and 'landscape') and font family ('sans' and 'roman')
-
-% moderncv themes
-\moderncvstyle{banking}                           % style options are 'casual' (default), 'classic', 'oldstyle' and 'banking'
-\moderncvcolor{black}                               % color options 'blue' (default), 'orange', 'green', 'red', 'purple', 'grey' and 'black'
-%\renewcommand{\familydefault}{\sfdefault}         % to set the default font; use '\sfdefault' for the default sans serif font, '\rmdefault' for the default roman one, or any tex font name
-%\nopagenumbers{}                                  % uncomment to suppress automatic page numbering for CVs longer than one page
-
-\renewcommand*{\addresssymbol}       {}
-\renewcommand*{\mobilephonesymbol}   {}
-\renewcommand*{\fixedphonesymbol}    {}
-\renewcommand*{\faxphonesymbol}      {}
-\renewcommand*{\emailsymbol}         {}
-\renewcommand*{\homepagesymbol}      {}
-% \renewcommand*{\linkedinsocialsymbol}{}
-% \renewcommand*{\twittersocialsymbol} {}
-% \renewcommand*{\githubsocialsymbol}  {}
-
-% character encoding
-\usepackage[utf8]{inputenc}                       % if you are not using xelatex ou lualatex, replace by the encoding you are using
-%\usepackage{CJKutf8}                              % if you need to use CJK to typeset your resume in Chinese, Japanese or Korean
-
-% adjust the page margins
-\usepackage[a4paper,
-            left=1cm,right=1cm,top=1cm,bottom=1cm,%
-            footskip=.25in]{geometry}
-
-\usepackage{blindtext}
-
-
-%\setlength{\hintscolumnwidth}{3cm}                % if you want to change the width of the column with the dates
-%\setlength{\makecvtitlenamewidth}{10cm}           % for the 'classic' style, if you want to force the width allocated to your name and avoid line breaks. be careful though, the length is normally calculated to avoid any overlap with your personal info; use this at your own typographical risks...
-
-% personal data
-\name{  Prakhar Gupta  }{  }
-\title{  }                               % optional, remove / comment the line if not wanted
-
-\address{ 8098098098 }{ 09809 }% optional, remove / comment the line if not wanted; the "postcode city" and and "country" arguments can be omitted or provided empty
-
-
-\phone[mobile]{ 098808080 }
-\email{ soccer3056@gmail.com }                               % optional, remove / comment the line if not wanted
-\homepage{  }                         % optional, remove / comment the line if %----------------------------------------------------------------------------------
-%            content
-%----------------------------------------------------------------------------------
 \begin{document}
-%-----       resume       ---------------------------------------------------------
-\makecvtitle
 
-\vspace{-35pt}
+\header{Shreshtha}{Gupta}
+       {Wealth Manager}
+
+
+% In the aside, each new line forces a line break
+\begin{aside}
+  \section{contact}
+    07874915759
+
+    London, United Kingdom
+
+    
+
+\end{aside}
+
+\section{Summary}
+
+ I graduated from Imperial Business School with Masters in Science in Investment and Wealth Management. I have previously worked in MKU and Horiba as finance intern. My core competencies are - 
+
+\begin{itemize} 
+	\item Writing technical reports on stock markets and equities 
+	\item Analysis of ETFs in Europe and Asia markets. I have worked in HYSE, NSE and NASDAQ. 
+\end{itemize} 
+
+
+\section{Experience}
+
+\begin{entrylist}
+
+  \entry
+    {2017 -- 2018}
+    {ETFGI}
+    {London, United Kingdom}
+    {\emph{ Research Assistant }\\  I graduated from Imperial Business School with Masters in Science in Investment and Wealth Management. I have previously worked in MKU and Horiba as finance intern. My core competencies are -   \begin{itemize}  	\item Writing technical reports on stock markets and equities  	\item Analysis of ETFs in Europe and Asia markets. I have worked in HYSE, NSE and NASDAQ.  	\item Bring coffee for Debbie  \end{itemize} }
+ 
+  \entry
+    {2014 -- 2015}
+    {MKU Pvt. Ltd.}
+    {Kanpur, India}
+    {\emph{ Finance Intern }\\ \begin{itemize}  	\item  	 I graduated from Imperial Business School with Masters in Science in Investment and Wealth Management. I have previously worked in MKU and Horiba as finance intern. My core competencies are Writing technical reports on stock markets and equitie  	  	\item Analysis of ETFs in Europe and Asia markets. I have worked in HYSE, NSE and NASDAQ.  \end{itemize} }
+ 
+\end{entrylist}
+
 \section{Education}
 
-\cventry{  --  }{oko ,kok }{IIT Kanpur }{ 789 ,  7987 }{\textit{ 8798 }}{\blindtext \blinditemize}  % arguments 3 to 6 can be left empty
+\begin{entrylist}
+
+  \entry
+    {2016 -- 2017}
+    {MSc, {\normalfont Finance }}
+    {Imperial Business School}
+    {GPA: Distinction\\ I graduated from Imperial Business School with Masters in Science in Investment and Wealth Management. I have previously worked in MKU and Horiba as finance intern. My core competencies are -   \begin{itemize}  	\item Writing technical reports on stock markets and equities  	\item Analysis of ETFs in Europe and Asia markets. I have worked in HYSE, NSE and NASDAQ.  \end{itemize} }
 
 
-\section{Work Experience}
+  \entry
+    {2012 -- 2015}
+    {Bachelors of Finance, {\normalfont BFM }}
+    {HR College of Commerece}
+    {GPA: 6.95\\ I graduated from Imperial Business School with Masters in Science in Investment and Wealth Management. I have previously worked in MKU and Horiba as finance intern. My core competencies are -   \begin{itemize}  	\item Writing technical reports on stock markets and equities  	\item Analysis of ETFs in Europe and Asia markets. I have worked in HYSE, NSE and NASDAQ.  \end{itemize} }
 
 
-\cventry{  --  }{uhu }{guuhu }{huhu ,  huh }{}{did somethings \begin{enumerate} \item erer \item ioi99 \end{enumerate}  }
+\end{entrylist}
 
-\cventry{  --  }{Thinker }{Google X }{ San Francisco ,  USA }{}{  Did awesome things  }
 
-\cventry{  --  }{Thinker }{Google X }{ San Francisco ,  USA }{}{  \blindtext \blinditemize  }
+\section{Awards}
+
+\begin{entrylist}
+
+  \entry
+    {2014}
+    {Company Secratary, \emph{ICSI}}
+    {}
+    { Completed Company Secretary certificate course from ICSI  }
+
+  \entry
+    {2015}
+    {Member, \emph{Finance Society}}
+    {}
+    { Worked for Finance society as a Treasurer and organised events.   \begin{itemize}  	\item Organized college level equity trading competition  	\item Collected funds for society through alumni  \end{itemize} }
+
+\end{entrylist}
+
 
 \section{Skills}
+ \textbf{Analysis } :\textbf{ } DCF and Financial Modelling, Excel programming 
  
+  \textbf{Technical } : Python, VBA, Excel, MATLAB 
+
 
 \section{Languages}
+ \textbf{Fluent Proficiency} : Hindi, English 
  
-
-
-\section{Awards and Certificates}
-
-
+  \textbf{Working Proficiency} : Spanish, French 
+ 
+  \textbf{Limited Proficiency} : Japanese 
 
 \end{document}
-
-%% end of file `template.tex'.
