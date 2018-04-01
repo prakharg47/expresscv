@@ -24,7 +24,8 @@ SECRET_KEY = 'ig84c(5m3qe)2%%^ivs423v@s(w=-+c8s%kcv#+#xqly^jzf6^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.42.205', '192.168.43.60', 'localhost']
+
+ALLOWED_HOSTS = ['192.168.42.205', '192.168.43.60', 'localhost', 'c33dee5c.ngrok.io']
 
 # Application definition
 
@@ -45,9 +46,13 @@ INSTALLED_APPS = [
     'formtools',
     'ckeditor',
     'django_extensions',
-    'taggit'
+    'taggit',
+    'paypal.standard.ipn'
 
 ]
+
+PAYPAL_TEST = True
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -219,3 +224,34 @@ TINYMCE_COMPRESSOR = True
 #         ...
 #     ],
 # }
+
+
+if DEBUG:
+   INTERNAL_IPS = ('127.0.0.1', 'localhost',)
+   MIDDLEWARE += (
+       'debug_toolbar.middleware.DebugToolbarMiddleware',
+   )
+
+   INSTALLED_APPS += (
+       'debug_toolbar',
+   )
+
+   DEBUG_TOOLBAR_PANELS = [
+       'debug_toolbar.panels.versions.VersionsPanel',
+       'debug_toolbar.panels.timer.TimerPanel',
+       'debug_toolbar.panels.settings.SettingsPanel',
+       'debug_toolbar.panels.headers.HeadersPanel',
+       'debug_toolbar.panels.request.RequestPanel',
+       'debug_toolbar.panels.sql.SQLPanel',
+       'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+       'debug_toolbar.panels.templates.TemplatesPanel',
+       'debug_toolbar.panels.cache.CachePanel',
+       'debug_toolbar.panels.signals.SignalsPanel',
+       'debug_toolbar.panels.logging.LoggingPanel',
+       'debug_toolbar.panels.redirects.RedirectsPanel',
+   ]
+
+   DEBUG_TOOLBAR_CONFIG = {
+       'INTERCEPT_REDIRECTS': False,
+   }
+

@@ -19,6 +19,8 @@ from . import views as core_views
 from app_core import views as app_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+from .settings import DEBUG
+
 urlpatterns = [
     # Apps
     url(r'^auth/', include('authentication.urls')),
@@ -32,8 +34,16 @@ urlpatterns = [
     url(r'^about', app_views.home, name='about'),
 
     url(r'^oauth/', include('social_django.urls', namespace='social')),
+    url(r'^paypal/', include('paypal.standard.ipn.urls')),
     url(r'^admin/', admin.site.urls),
 ]
+
+
+if DEBUG:
+   import debug_toolbar
+   urlpatterns += [
+       url(r'^__debug__/', include(debug_toolbar.urls)),
+   ]
 
 urlpatterns += staticfiles_urlpatterns()
 
