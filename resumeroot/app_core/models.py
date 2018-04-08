@@ -1,9 +1,16 @@
 from __future__ import unicode_literals
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from django.db import models
 from django.contrib.auth.models import User
 
+from django.core.mail import send_mail
+
+
 # Create your models here.
+from social_django.models import UserSocialAuth
+
 
 class UserSubscription(models.Model):
     user = models.ForeignKey(User)
@@ -27,10 +34,7 @@ class UserProfile(models.Model):
     expiry_date = models.DateTimeField()
     job_suggestions = models.BooleanField(default=True)
     referral_code = models.CharField(max_length=50)
-    referred_by = models.ForeignKey(User)
-
-
-
+    referred_by = models.ForeignKey(User, related_name="referred_by")
 
 
 
@@ -77,3 +81,30 @@ def show_me_the_money(sender, **kwargs):
 
 valid_ipn_received.connect(show_me_the_money)
 
+
+# @receiver(post_save,  sender=User, dispatch_uid='post_save_user_1')
+# def user_created(sender, instance, **kwargs):
+#
+#     if kwargs.get('created', True):
+#
+#         print ("sending email !!!!")
+#
+#         first_name = instance.first_name
+#         if first_name is not None and first_name != "":
+#             print("sending email for real !!!!")
+#
+#             # send email to user
+#             email_body = """
+#
+# Dear {},
+# Thank you for signing up on expresscv.co
+#
+# We’re happy to help you.
+#
+#
+# Regards,
+#
+# expresscv team
+#
+#             """
+#     #        send_mail('Welcome to expresscv !', email_body.format(first_name), 'no-reply@expresscv.co', ['prakhar11509@gmail.com'], fail_silently=False)

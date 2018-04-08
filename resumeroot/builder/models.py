@@ -8,7 +8,7 @@ from taggit.managers import TaggableManager
 
 
 class Resume(TimeStampedModel):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     tags = TaggableManager()
 
@@ -23,7 +23,7 @@ class Theme(models.Model):
     FONT_NAMES = ['Computer Modern', 'Sans', 'Teletype']
     FONT_CHOICES = [(e,e) for e in FONT_NAMES]
 
-    resume = models.ForeignKey(Resume, primary_key=True, unique=True)
+    resume = models.ForeignKey(Resume, primary_key=True, unique=True, on_delete=models.CASCADE)
 
     theme = models.CharField(max_length=60, choices=THEME_CHOICES, default='Specter')
     font_size = models.IntegerField(default=11)
@@ -34,7 +34,7 @@ class Theme(models.Model):
 
 
 class Personal(models.Model):
-    resume = models.ForeignKey(Resume, primary_key=True)
+    resume = models.ForeignKey(Resume, primary_key=True, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200, null=True)
     email = models.EmailField(null=True, max_length=200)
@@ -57,12 +57,12 @@ class Personal(models.Model):
 
 
 class Summary(models.Model):
-    resume = models.ForeignKey(Resume, primary_key=True)
+    resume = models.ForeignKey(Resume, primary_key=True, on_delete=models.CASCADE)
     summary = models.TextField(null=True)
 
 
 class Education(models.Model):
-    resume = models.ForeignKey(Resume)
+    resume = models.ForeignKey(Resume, on_delete=models.CASCADE)
 
     college = models.CharField(max_length=200, null=True, blank=True)
     major = models.CharField(max_length=200, null=True, blank=True)
@@ -82,7 +82,7 @@ class Education(models.Model):
 
 
 class Work(models.Model):
-    resume = models.ForeignKey(Resume)
+    resume = models.ForeignKey(Resume, on_delete=models.CASCADE)
 
     company = models.CharField(max_length=200)
     designation = models.CharField(max_length=200)
@@ -96,7 +96,7 @@ class Work(models.Model):
         return "{}-{}".format(self.company, self.designation)
 
 class Award(models.Model):
-    resume = models.ForeignKey(Resume)
+    resume = models.ForeignKey(Resume, on_delete=models.CASCADE)
 
     award_name = models.CharField(max_length=200)
     organisation = models.CharField(max_length=200)
@@ -109,7 +109,7 @@ class Award(models.Model):
 
 class Skills(models.Model):
 
-    resume = models.ForeignKey(Resume, primary_key=True)
+    resume = models.ForeignKey(Resume, primary_key=True, on_delete=models.CASCADE)
     skills = models.TextField(null=True)
     # technical = models.CharField(max_length=300)
     # management = models.CharField(max_length=300)
@@ -119,7 +119,7 @@ class Skills(models.Model):
 
 
 class Languages(models.Model):
-    resume = models.ForeignKey(Resume, primary_key=True)
+    resume = models.ForeignKey(Resume, primary_key=True, on_delete=models.CASCADE)
     languages = models.TextField(null=True)
 
 

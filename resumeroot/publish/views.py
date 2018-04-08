@@ -81,7 +81,7 @@ def publish(request, resume_id):
     ttt = theme_detail.theme
 
     # rendered = render_to_string('old_themes/{}.html'.format(ttt),
-    rendered = render_to_string('themes/{}.html'.format("mahrez"),
+    rendered = render_to_string('themes/{}.html'.format("ozil"),
                                 {
                                     'theme_details': theme_detail,
                                     'personal': app_user,

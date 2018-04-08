@@ -25,7 +25,7 @@ SECRET_KEY = 'ig84c(5m3qe)2%%^ivs423v@s(w=-+c8s%kcv#+#xqly^jzf6^'
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['192.168.42.205', '192.168.43.60', 'localhost', 'c33dee5c.ngrok.io']
+ALLOWED_HOSTS = ['192.168.42.205', '192.168.43.60', 'localhost', '4ae0faea.ngrok.io']
 
 # Application definition
 
@@ -93,6 +93,7 @@ WSGI_APPLICATION = 'resumeroot.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
+
 
 DATABASES = {
     'default': {
@@ -255,3 +256,22 @@ if DEBUG:
        'INTERCEPT_REDIRECTS': False,
    }
 
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+    'app_core.views.new_user_email',  # <--- set the path to the function
+)
+
+
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'warlock3056'
+EMAIL_HOST_PASSWORD = 'soccer3056'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

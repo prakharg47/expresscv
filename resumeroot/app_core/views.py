@@ -58,9 +58,7 @@ def upgrade_user(request):
     user = request.user
     user1 = User()
 
-
     sub_type = 'PRO'
-
     new_sub = UserSubscription(user=user, valid_thru=expiry_date,
                                subscription_type=sub_type, created_on=activation_date)
 
@@ -70,3 +68,42 @@ def upgrade_user(request):
 
 def payment_done(request):
     return render(request, 'app_core/payment_done.html', {})
+
+
+def account(request):
+
+    u = User()
+
+    if request.user.userprofile.plan == 1:
+        print ("PRO USER")
+    else:
+        print("BASIC USER")
+
+
+
+    return render(request, 'app_core/account.html', {})
+
+
+def new_user_email(backend, user, response, *args, **kwargs):
+    # send email to user
+    #
+    first_name = user.first_name
+
+    email_body = """
+
+    Dear prakhar,
+    Thank you for signing up on expresscv.co
+
+    We’re happy to help you.
+
+
+
+    Regards,
+    expresscv team
+
+                """
+    send_mail('Welcome to expresscv !', email_body.format(first_name), 'no-reply@expresscv.co', ['prakhar11509@gmail.com'], fail_silently=False)
+
+    if backend.name == 'facebook':
+
+        pass
