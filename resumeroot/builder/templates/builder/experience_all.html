@@ -1,79 +1,187 @@
-{% extends 'builder/builder_base.html' %}
+{% extends 'builder/builder_forms_base.html' %}
+
+{% block form_title %}
+    Work
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
+          integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+{% endblock %}
+
 
 {% block form_content %}
 
-
-    {% if form.errors %}
-        <div class="alert alert-error">
-            <h4>Please fix the following errors</h4>
-            <ul>
-                {% for field in form %}
-                    {% if field.errors %}
-                        {% for error in field.errors %}
-                            <li><a href="#id_{{ field.name }}" class="error">{{ error|escape }}</a></li>
-                        {% endfor %}
-                    {% endif %}
-                {% endfor %}
-            </ul>
-            {% if form.non_field_errors %}
-                {{ form.non_field_errors }}
-            {% endif %}
-        </div>
-    {% endif %}
-
-    {% if work_objects %}
-        <div>
-            <h2>My Work Experiences</h2>
-            <table class="table table-hover table-bordered table-condensed">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Company</th>
-                    <th>Designation</th>
-                    <th>Options</th>
-                    <th></th>
-                </tr>
-                </thead>
-
-                {% for work_object in work_objects %}
+    <div class="" style="height: 600px;">
+        {% if work_objects %}
+            <div class="col-md-9 mt-4">
+                <h6 class="text-muted">MY WORK EXPERIENCES</h6>
+                <table class="table table-md table-responsive-md ">
+                    <thead>
                     <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ work_object.company }}</td>
-                        <td>{{ work_object.designation }}</td>
-                        <td>
-                            <a role="button" class="btn btn-default" href="{% url 'experience_edit' resume_id=work_object.resume_id work_id=work_object.id %}">Edit</a>
-                        </td>
-                        <td>
-                            <a role="button" class="btn btn-default"
-                               href="{% url 'experience_delete' resume_id=work_object.resume_id work_id=work_object.id %}">Delete</a>
-                        </td>
+                        <th>#</th>
+                        <th>Company</th>
+                        <th>Designation</th>
+                        <th>Options</th>
+
                     </tr>
-                {% endfor %}
-            </table>
-        </div>
-    {% endif %}
+                    </thead>
 
+                    {% for work_object in work_objects %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ work_object.company }}</td>
+                            <td>{{ work_object.designation }}</td>
+                            <td>
+                                <a role="button" class="btn btn-light"
+                                   href="{% url 'experience_edit' resume_id=work_object.resume_id work_id=work_object.id %}">
+                                    <i class="fas fa-edit mr-2"></i><span>Edit</span></a>
+                                <a role="button" class="btn btn-light ml-3"
+                                   href="{% url 'experience_delete' resume_id=work_object.resume_id work_id=work_object.id %}">
+                                    <i class="fas fa-trash-alt mr-2"></i><span>Delete</span></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <h5>Add New</h5>
+        {% else %}
+            <p class="text-muted">Click the button below to start adding your work experiences</p>
+        {% endif %}
 
-    <h3>Add New</h3>
-    <div class="row">
-        {% comment %}<form action="{% url 'work_object' %}" method="post">
-            {% csrf_token %}
-            {#        {{ form }}#}
+        <a role="button" class="btn btn-primary" href="{% url 'experience_new' resume_id=resume_id %}">Add new work</a>
 
+    </div>
+
+{% endblock %}
+
+{% block js_2 %}
+    <script>
+        $(document).ready(function () {
+            $("#workMenuItem").addClass("text-dark");
+        });
+    </script>
+{% endblock %}
+
+{% if form.errors %}
+    <div class="alert alert-error">
+        <h4>Please fix the following errors</h4>
+        <ul>
             {% for field in form %}
-                <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                    <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>
-                    {{ field }}
-                </div>
-                {{ form.errors }}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <li><a href="#id_{{ field.name }}" class="error">{{ error|escape }}</a></li>
+                    {% endfor %}
+                {% endif %}
             {% endfor %}
+        </ul>
+        {% if form.non_field_errors %}
+            {{ form.non_field_errors }}
+        {% endif %}
+    </div>
+{% endif %}
 
 
-            <input type="submit" class="btn btn-primary " value="Save"/>
-        </form>{% endcomment %}
-
-        <a role="button" class="btn btn-default" href="{% url 'experience_new' resume_id=resume_id %}">Add new Work Experience</a>
-
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#{% extends 'builder/builder_base.html' %}#}
+{##}
+{#{% block form_content %}#}
+{##}
+{##}
+{#    {% if form.errors %}#}
+{#        <div class="alert alert-error">#}
+{#            <h4>Please fix the following errors</h4>#}
+{#            <ul>#}
+{#                {% for field in form %}#}
+{#                    {% if field.errors %}#}
+{#                        {% for error in field.errors %}#}
+{#                            <li><a href="#id_{{ field.name }}" class="error">{{ error|escape }}</a></li>#}
+{#                        {% endfor %}#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
+{#            </ul>#}
+{#            {% if form.non_field_errors %}#}
+{#                {{ form.non_field_errors }}#}
+{#            {% endif %}#}
+{#        </div>#}
+{#    {% endif %}#}
+{##}
+{#    {% if work_objects %}#}
+{#        <div>#}
+{#            <h2>My Work Experiences</h2>#}
+{#            <table class="table table-hover table-bordered table-condensed">#}
+{#                <thead>#}
+{#                <tr>#}
+{#                    <th>#</th>#}
+{#                    <th>Company</th>#}
+{#                    <th>Designation</th>#}
+{#                    <th>Options</th>#}
+{#                    <th></th>#}
+{#                </tr>#}
+{#                </thead>#}
+{##}
+{#                {% for work_object in work_objects %}#}
+{#                    <tr>#}
+{#                        <td>{{ forloop.counter }}</td>#}
+{#                        <td>{{ work_object.company }}</td>#}
+{#                        <td>{{ work_object.designation }}</td>#}
+{#                        <td>#}
+{#                            <a role="button" class="btn btn-default" href="{% url 'experience_edit' resume_id=work_object.resume_id work_id=work_object.id %}">Edit</a>#}
+{#                        </td>#}
+{#                        <td>#}
+{#                            <a role="button" class="btn btn-default"#}
+{#                               href="{% url 'experience_delete' resume_id=work_object.resume_id work_id=work_object.id %}">Delete</a>#}
+{#                        </td>#}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{#            </table>#}
+{#        </div>#}
+{#    {% endif %}#}
+{##}
+{##}
+{#    <h3>Add New</h3>#}
+{#    <div class="row">#}
+{#        {% comment %}<form action="{% url 'work_object' %}" method="post">#}
+{#            {% csrf_token %}#}
+            {#        {{ form }}#}
+{##}
+{#            {% for field in form %}#}
+{#                <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">#}
+{#                    <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>#}
+{#                    {{ field }}#}
+{#                </div>#}
+{#                {{ form.errors }}#}
+{#            {% endfor %}#}
+{##}
+{##}
+{#            <input type="submit" class="btn btn-primary " value="Save"/>#}
+{#        </form>{% endcomment %}#}
+{##}
+{#        <a role="button" class="btn btn-default" href="{% url 'experience_new' resume_id=resume_id %}">Add new Work Experience</a>#}
+{##}
 {#        #}
 {#        <form action="{% url 'work_object' %}" method="post" name="myform">#}
 {##}
@@ -89,6 +197,6 @@
 {##}
 {##}
 {#        </form>#}
-    </div>
-
-{% endblock %}
+{#    </div>#}
+{##}
+{#{% endblock %}#}

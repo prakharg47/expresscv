@@ -1,6 +1,7 @@
 import shutil
 import subprocess
 from wsgiref.util import FileWrapper
+import re
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -15,73 +16,67 @@ from builder.views import html_to_latex
 
 import publish.utils as utils
 
+
 @login_required
 def publish(request, resume_id):
-    themes = [
-        (0, 'standard'),
-        (1, 'express'),
-        (2, 'compact'),
-        (3, 'modern')
-    ]
 
-    res = Resume.objects.get(id=resume_id)
-    theme = Theme.objects.get(resume_id=resume_id)
+    user_resume = Resume.objects.get(id=resume_id)
 
     try:
-        app_user = Personal.objects.get(resume=res)
-    except Exception as e:
+        theme_detail = Theme.objects.get(resume=user_resume)
+    except Theme.DoesNotExist:
+        raise Http404('Please choose a theme first')
+
+    try:
+        app_user = Personal.objects.get(resume=user_resume)
+    except Personal.DoesNotExist:
         raise Http404('Please fill in Personal details first')
 
+    # un-escape email according to latex rules
     app_user.email = utils.unescape_email(app_user.email)
 
-    education_set = Education.objects.filter(resume=res)
-    for work_inst in education_set:
-        # work_inst.work_summary = "\\item  ".join(e for e in work_inst.work_summary.split("\r\n"))
-        work_inst.education_summary = html_to_latex(work_inst.education_summary).replace("\n", " ").replace("\r", "")
+    education_set = Education.objects.filter(resume=user_resume)
+
+    for elem in education_set:
+        elem.education_summary = convert_html_to_latex(elem.education_summary, theme_detail.theme)\
+            .replace("\n", " ")\
+            .replace("\r", "")
 
     try:
-        user_summary = Summary.objects.get(resume=res)
-        user_summary.summary = html_to_latex(user_summary.summary)
+        user_summary = Summary.objects.get(resume=user_resume)
+        user_summary.summary = convert_html_to_latex(user_summary.summary, theme_detail.theme)
     except Summary.DoesNotExist:
         user_summary = None
 
-    work_set = Work.objects.filter(resume=res)
-    for work_inst in work_set:
-        # work_inst.work_summary = "\\item  ".join(e for e in work_inst.work_summary.split("\r\n"))
-        work_inst.work_summary = html_to_latex(work_inst.work_summary).replace("\n", " ").replace("\r", "")
+    work_set = Work.objects.filter(resume=user_resume)
+    for elem in work_set:
+        elem.work_summary = convert_html_to_latex(elem.work_summary, theme_detail.theme)\
+            .replace("\n", " ")\
+            .replace("\r", "")
 
     try:
-        skills = Skills.objects.get(resume=res)
+        skills = Skills.objects.get(resume=user_resume)
+        skills.skills = convert_html_to_latex(skills.skills, theme_detail.theme)\
+            .replace("\n", " ")\
+            .replace("\r", "\n")
     except Skills.DoesNotExist:
         skills = None
 
-    skills.skills = html_to_latex(skills.skills).replace("\n", " ").replace("\r", "\n")
-    print ("Skills are {}".format(skills))
-
     try:
-        language = Languages.objects.get(resume=res)
+        language = Languages.objects.get(resume=user_resume)
+        language.languages = convert_html_to_latex(language.languages, theme_detail.theme)\
+            .replace("\n", " ")\
+            .replace("\r", "\n")
     except Languages.DoesNotExist:
         language = None
 
-    language.languages = html_to_latex(language.languages).replace("\n", " ").replace("\r", "\n")
+    award_set = Award.objects.filter(resume=user_resume)
+    for elem in award_set:
+        elem.award_summary = convert_html_to_latex(elem.award_summary, theme_detail.theme)\
+            .replace("\n", " ")\
+            .replace("\r", "")
 
-    print("Languages are {}".format(language))
-
-    # language.languages = html_to_latex(language.languages)
-
-    try:
-        theme_detail = Theme.objects.get(resume=res)
-    except Exception:
-        theme_detail = None
-
-    award_set = Award.objects.filter(resume=res)
-    for a in award_set:
-        a.award_summary = html_to_latex(a.award_summary).replace("\n", " ").replace("\r", "")
-
-    ttt = theme_detail.theme
-
-    # rendered = render_to_string('old_themes/{}.html'.format(ttt),
-    rendered = render_to_string('themes/{}.html'.format("ozil"),
+    rendered = render_to_string('themes/{}.html'.format(theme_detail.theme),
                                 {
                                     'theme_details': theme_detail,
                                     'personal': app_user,
@@ -90,16 +85,19 @@ def publish(request, resume_id):
                                     'skills': skills,
                                     'summary': user_summary,
                                     'languages': language,
-                                    'awards' : award_set
+                                    'awards': award_set
                                 })
-    with open('output.tex', 'w') as f:
+
+    s = rendered[902:905]
+
+    with open('output.tex', 'w', encoding="utf-8") as f:
         f.write(rendered)
 
     p = subprocess.Popen(["xelatex", "-interaction=scrollmode", "output.tex"])
     p.communicate()
 
     # Rename output.pdf to @resume_name.pdf
-    resume_name = "{}.pdf".format(res.name)
+    resume_name = "{}.pdf".format(user_resume.name)
     shutil.copy('output.pdf', resume_name)
 
     # send back response
@@ -141,7 +139,7 @@ def preview(request, resume_id):
             # Form is not valid
 
             messages.error(request, str("Form has errors"))
-            return render(request, 'builder/preview.html', {'form': form,
+            return render(request, 'publish/preview.html', {'form': form,
                                                             'resume_id': resume_id})
 
     try:
@@ -157,3 +155,37 @@ def preview(request, resume_id):
 
     return render(request, 'builder/preview.html', {'pdf': 'output.pdf', 'resume_id': resume_id,
                                                     'form': personal_form})
+
+
+def convert_html_to_latex(html, theme_id):
+    """Convert html to latex based on theme"""
+
+    if theme_id == "2":
+        return html_to_latex(html)
+
+    html = html.replace("</p>\r\n\r\n<p>", "\\\\")
+    html = html.replace("</p>\n\n<p>", "\\\\")
+    html = html.replace("</ol>", "\\end{enumerate} ")
+    html = html.replace("</ul>", "\\end{itemize} ")
+
+    html = html.replace("<li>", "\\item ")
+    html = html.replace("</li>", " ")
+    html = html.replace("<p>", " ")
+
+    html = html.replace("<strong>", "\\textbf{")
+    html = html.replace("</strong>", "} ")
+    html = html.replace("<em>", "\\textit{")
+    html = html.replace("</em>", "} ")
+    html = html.replace("<u>", "\\underline{")
+    html = html.replace("</u>", "} ")
+
+    html = html.replace("&nbsp;", " ")
+
+    if theme_id in ["1", "3", "4", "5", "6"]:
+        html = html.replace("<ol>", "\\begin{enumerate} \n\\setlength\\itemsep{0pt}")
+        html = html.replace("<ul>", "\\begin{itemize} \n\\setlength\\itemsep{0pt}")
+
+        html = html.replace("</p>", " \\\\[-5pt]")
+
+    return html
+

@@ -1,27 +1,181 @@
-{% extends 'builder/builder_base.html' %}
+{% extends 'builder/builder_forms_base.html' %}
+{% load static %}
 
+{% block form_title %}Education{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
+          integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+{% endblock %}
+
+
+{% block js_1 %}
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% endblock %}
 
 {% block form_content %}
 
-        <h3>Edit education</h3>
-
-    <div>
-
+    <h6 class="text-muted">Editing education</h6>
+    <div class="" style="height: 750px;">
         <form action="{% url 'education_edit' resume_id=resume_id ed_id=ed_id %}" method="post">
-            <div class="row">
-                {% csrf_token %}
+            {% csrf_token %}
 
-                {% for field in form %}
-                    <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                        <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>
-                        {{ field }}
-                    </div>
-                {% endfor %}
-            </div>
             <div class="row">
-                <input type="submit" class="btn btn-primary" value="Save"/>
+                <div class="col-md-3 mb-3">
+                    <label for="{{ form.college.id_for_label }}">{{ form.college.label }}</label>
+                    {{ form.college }}
+                    <div class="invalid-feedback">
+                        {{ form.college.errors }}
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="{{ form.major.id_for_label }}">{{ form.major.label }}</label>
+                    {{ form.major }}
+                    <div class="invalid-feedback">
+
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="{{ form.degree.id_for_label }}">{{ form.degree.label }}</label>
+                    {{ form.degree }}
+                    <div class="invalid-feedback">
+                        {{ form.degree.errors }}
+                    </div>
+                </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label for="{{ form.gpa.id_for_label }}">{{ form.gpa.label }}</label>
+                    {{ form.gpa }}
+                    <div class="invalid-feedback">
+
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="{{ form.country.id_for_label }}">{{ form.country.label }}</label>
+                    {{ form.country }}
+                    <div class="invalid-feedback">
+
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label for="{{ form.city.id_for_label }}">{{ form.city.label }}</label>
+                    {{ form.city }}
+                    <div class="invalid-feedback">
+                        {{ form.city.errors }}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label for="{{ form.from_year.id_for_label }}">{{ form.from_year.label }}</label>
+                    {{ form.from_year }}
+                    <div class="invalid-feedback">
+                        {{ form.from_year.errors }}
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="{{ form.to_year.id_for_label }}">{{ form.to_year.label }}</label>
+                    {{ form.to_year }}
+                    <div class="invalid-feedback">
+
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-9 mb-3">
+                    <label for="{{ form.education_summary.id_for_label }}">{{ form.education_summary.label }}</label>
+                    {{ form.education_summary }}
+                    <div class="invalid-feedback">
+                        {{ form.education_summary.errors }}
+                    </div>
+                </div>
+                
+            </div>
+
+            <input type="submit" class="btn btn-outline-success" value="Save"/>
+            <button class="btn btn-outline-secondary" value="Save">Preview</button>
+
         </form>
     </div>
 
+
+    {% comment %}<form action="{% url 'work_object' %}" method="post">
+            {% csrf_token %}
+            {#        {{ form }}#}
+
+            {% for field in form %}
+                <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                    <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>
+                    {{ field }}
+                </div>
+                {{ form.errors }}
+            {% endfor %}
+
+
+            <input type="submit" class="btn btn-primary " value="Save"/>
+        </form>{% endcomment %}
+
+
+
+    {#        #}
+    {#        <form action="{% url 'work_object' %}" method="post" name="myform">#}
+    {##}
+    {#            {% csrf_token %}#}
+    {#            <div class="col-lg-5">#}
+    {#                <div class="input-group">#}
+    {#                    <input name="name" id="id_name" type="text" class="form-control" placeholder="Enter work_object name">#}
+    {#                    <span class="input-group-btn">#}
+    {#                        <input class="btn btn-primary" type="submit" value="Add work_object"/>#}
+    {#                    </span>#}
+    {#                </div><!-- /input-group -->#}
+    {#            </div><!-- /.col-lg-6 -->#}
+    {##}
+    {##}
+    {#        </form>#}
+
+
+
 {% endblock %}
+
+{% block js_2 %}
+    <script>
+        $(document).ready(function () {
+            $("#educationMenuItem").addClass("text-dark");
+        });
+    </script>
+{% endblock %}
+
+
+{#{% extends 'builder/builder_base.html' %}#}
+{##}
+{#{% block form_content %}#}
+{##}
+
+{% if form.errors %}
+    <div class="alert alert-error">
+        <h4>Please fix the following errors</h4>
+        <ul>
+            {% for field in form %}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <li><a href="#id_{{ field.name }}" class="error">{{ error|escape }}</a></li>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+        {% if form.non_field_errors %}
+            {{ form.non_field_errors }}
+        {% endif %}
+    </div>
+{% endif %}
+
+
+{#{% endblock %}#}
+

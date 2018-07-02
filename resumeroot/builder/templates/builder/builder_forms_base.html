@@ -1,0 +1,105 @@
+{% extends 'builder/builder_base2.html' %}
+{% load static %}
+
+{% block css %}
+    {#    <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">#}
+    <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans+SC" rel="stylesheet">
+    <style>
+        {#h2, h3, h4 {#}
+        {#    font-weight: 200 !important;#}
+
+
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block sidebar bg-light mr-0 pr-0 ">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column list-group-flush pt-5 pl-2">
+
+                        <li class="nav-item">
+                            <a class="nav-link disabled text-secondary">
+                                <span data-feather="home"></span>
+                                <h4 class="display-6">Sections</h4><span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="personalMenuItem" class="nav-link disabled "
+                               href="{% url 'personal' resume_id=resume_id %}">
+                                <span data-feather="file"></span>
+                                Personal
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="{% url 'summary'  resume_id=resume_id %}">
+                                <span data-feather="users"></span>
+                                Summary
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="{% url 'education' resume_id=resume_id %}">
+                                <span data-feather="users"></span>
+                                Education
+                                <span class="badge badge-secondary badge-pill">{{ pill_map.education }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="{% url 'experience' resume_id=resume_id %}">
+                                Experience
+                                <span class="badge badge-secondary badge-pill">{{ pill_map.work }}</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="{% url 'award' resume_id=resume_id %}">
+                                <span data-feather="layers"></span>
+                                Awards and Certificates
+                                <span class="badge badge-secondary badge-pill">{{ pill_map.award }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="{% url 'skills' resume_id=resume_id %}">
+                                <span data-feather="bar-chart-2"></span>
+                                Skills
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="{% url 'languages' resume_id=resume_id %}">
+                                <span data-feather="bar-chart-2"></span>
+                                Languages
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="col-11-md mt-4">
+                        <a class="btn btn-outline-secondary btn-wide ml-2 pl-4 pr-4" href="{% url 'theme' resume_id=resume_id %}">
+                            Themes</a>
+                    </div>
+                    <div class="col-11-md mt-3">
+                        <a class="btn btn-primary btn-wide ml-2 pl-4 pr-4" href="{% url 'preview' resume_id=resume_id %}">
+                            Preview</a>
+                    </div>
+                </div>
+            </nav>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 bg-light "
+                  style="background: #fdfdfe">
+
+                <div class="card p-5 shadow mt- mb-4">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                        <h3>{% block form_title %}{% endblock %}</h3>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+
+                        </div>
+                    </div>
+
+                    {% block form_content %}
+                    {% endblock %}
+                </div>
+            </main>
+        </div>
+    </div>
+
+{% endblock %}

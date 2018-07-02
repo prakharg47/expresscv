@@ -1,40 +1,136 @@
-{% extends 'builder/builder_base.html' %}
+{% extends 'builder/builder_forms_base.html' %}
+
+{% block form_title %}
+    Education
+{% endblock %}
 
 {% block form_content %}
 
-    <h3> Education</h3>
-
-    <div>
-
-        <script type="text/javascript">
-            $(function () {
-                $('.formset-group').formset();
-                $('.add-row').addClass('btn').addClass('btn-success');
-                $('.delete-row').addClass('btn').addClass('btn-danger');
-            })
-        </script>
-
-        <form id="myForm" method="post" action="{% url 'education' resume_id=resume_id %}">
+    <div class="" style="height: 600px;" >
+        <form action="{% url 'personal' resume_id=resume_id %}" method="post" enctype="multipart/form-data"  novalidate>
             {% csrf_token %}
 
-            {% for form in formset.forms %}
-                <div class="formset-group row">
-                    {% for field in form %}
-                        <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                            <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>
-                            {{ field }}
-                        </div>
-                    {% endfor %}
+            <div class="row">
+              <div class="col-md-3 mb-3">
+                <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+                {{ form.first_name }}
+                <div class="invalid-feedback">
+                 {{ form.first_name.errors }}
                 </div>
-                <br>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+                {{ form.last_name }}
+                <div class="invalid-feedback">
 
-            {% endfor %}
-            {{ formset.management_form }}
-        <br><br>
-            <div class="control-group">
-                <input type="submit" class="btn btn-primary" value="Save"/>
+                </div>
+              </div>
+                <div class="col-md-3 mb-3">
+                <label for="{{ form.city.id_for_label }}">{{ form.city.label }}</label>
+                {{ form.city }}
+                <div class="invalid-feedback">
+                 {{ form.city.errors }}
+                </div>
+              </div>
             </div>
+
+            <div class="row">
+
+              <div class="col-md-3 mb-3">
+                <label for="{{ form.country.id_for_label }}">{{ form.country.label }}</label>
+                {{ form.country }}
+                <div class="invalid-feedback">
+
+                </div>
+              </div>
+
+                <div class="col-md-3 mb-3">
+                <label for="{{ form.mobile.id_for_label }}">{{ form.mobile.label }}</label>
+                {{ form.mobile }}
+                <div class="invalid-feedback">
+                 {{ form.mobile.errors }}
+                </div>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                {{ form.email }}
+                <div class="invalid-feedback">
+
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-3 mb-3">
+                <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+                {{ form.title }}
+                <div class="invalid-feedback">
+                 {{ form.title.errors }}
+                </div>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="{{ form.linkedin_url.id_for_label }}">{{ form.linkedin_url.label }}</label>
+                {{ form.linkedin_url }}
+                <div class="invalid-feedback">
+
+                </div>
+              </div>
+            </div>
+
+            <input type="submit" class="btn btn-outline-success" value="Save"/>
+            <button class="btn btn-outline-secondary" value="Save">Preview</button>
         </form>
     </div>
 
 {% endblock %}
+
+{% block js_2 %}
+    <script>
+        $(document).ready(function () {
+            $("#personalMenuItem").addClass("text-dark");
+        });
+    </script>
+{% endblock %}
+
+
+
+{#{% extends 'builder/builder_base.html' %}#}
+{##}
+{#{% block form_content %}#}
+{##}
+{#    <h3> Education</h3>#}
+{##}
+{#    <div>#}
+{##}
+{#        <script type="text/javascript">#}
+{#            $(function () {#}
+{#                $('.formset-group').formset();#}
+{#                $('.add-row').addClass('btn').addClass('btn-success');#}
+{#                $('.delete-row').addClass('btn').addClass('btn-danger');#}
+{#            })#}
+{#        </script>#}
+{##}
+{#        <form id="myForm" method="post" action="{% url 'education' resume_id=resume_id %}">#}
+{#            {% csrf_token %}#}
+{##}
+{#            {% for form in formset.forms %}#}
+{#                <div class="formset-group row">#}
+{#                    {% for field in form %}#}
+{#                        <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">#}
+{#                            <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>#}
+{#                            {{ field }}#}
+{#                        </div>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#                <br>#}
+{##}
+{#            {% endfor %}#}
+{#            {{ formset.management_form }}#}
+{#        <br><br>#}
+{#            <div class="control-group">#}
+{#                <input type="submit" class="btn btn-primary" value="Save"/>#}
+{#            </div>#}
+{#        </form>#}
+{#    </div>#}
+{##}
+{#{% endblock %}#}
