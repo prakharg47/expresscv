@@ -1,0 +1,213 @@
+{% load static %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    {% block title %}{% endblock %}
+
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display+SC" rel="stylesheet">
+
+
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.rawgit.com/digitalBush/jquery.maskedinput/1.4.1/dist/jquery.maskedinput.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.6/typed.min.js"></script>
+{#    <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>#}
+{#    <script type="text/javascript" src="{% static 'js/MonthPicker.min.js' %}"></script>#}
+    <script type="text/javascript" src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+
+    <!-- Main Quill library -->
+{#    <link href="//cdn.quilljs.com/1.3.3/quill.snow.css" rel="stylesheet">#}
+{#    <script src="//cdn.quilljs.com/1.3.3/quill.min.js"></script>#}
+
+
+    {# <script type="text/javascript" src="http://yourjavascript.com/93320114137/jquery-formset.js"></script>#}
+    <link href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
+    {#    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">#}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    {#    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/sandstone/bootstrap.min.css">#}
+    <link rel="stylesheet" type="text/css" href="http://code.divshot.com/bootstrap-theme-cirrus/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/MonthPicker.min.css' %}">
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"> -->
+
+    {#    <link rel="stylesheet" type="text/css" href="{% static 'css/test.css' %}">#}
+
+
+    <style>
+        #heading {
+            font-family: 'Playfair Display SC', serif;
+        }
+
+        iframe {
+            resize: horizontal;
+            overflow: auto;
+        }
+
+    </style>
+
+</head>
+<div>
+
+    <div class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">{{ APPTITLE }}</a>
+                <button class="navbar-toggle" data-target="#navbar-main" data-toggle="collapse" type="button">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div id="navbar-main" class="navbar-collapse collapse">
+
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'root_home' %}"><strong>express cv</strong></a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="/auth/login">Login</a></li>
+                    {% endif %}
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Templates</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{% url 'pricing' %}">Pricing</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{% url 'upgrade' %}">Upgrade to pro</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{% url 'resume' %}">Dashboard</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="min-height:500px">
+
+        {#        <script type="text/javascript">#}
+        {#            $(function () { //ready#}
+        {#                toastr.info('If all three of these are referenced correctly, then this should toast should pop-up.');#}
+        {#            });#}
+        {#        </script>#}
+
+        <main>
+            {#            {% for message in messages %}#}
+            {#                <p style="color: {% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% endif %}">#}
+            {#                    {{ message }}#}
+            {#                </p>#}
+            {#            {% endfor %}#}
+
+            {% if messages %}
+                <script type="text/javascript">
+                    $(document).ready(function () {
+
+                        toastr.options = {
+                            "closeButton": false,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": false,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "5000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        };
+                        {% for m in messages %}
+                            {% if 'success' in m.tags %}
+                                toastr.success("{{ m }}");
+                            {% elif 'error' in m.tags %}
+                                toastr.error("{{ m }}");
+                            {% elif 'warning' in m.tags %}
+                                toastr.info("{{ m }}");
+                            {% endif %}
+                        {% endfor %}
+
+                    });
+                </script>
+            {% endif %}
+
+            {% block content %}
+            {% endblock %}
+        </main>
+
+    </div>
+
+    <div class="panel">
+
+    </div>
+</div>
+
+<!-- React Playground -->
+
+
+<footer id="myFooter">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <h3 class="logo"><a href="#"> ResumeRoot </a></h3>
+            </div>
+            <div class="col-sm-2">
+                <h5>Builder</h5>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Login</a></li>
+
+                </ul>
+            </div>
+            <div class="col-sm-2">
+                <h5>About Us</h5>
+                <ul>
+                    <li><a href="#">Company</a></li>
+                    <li><a href="#">Contact us</a></li>
+                    <li><a href="#">Testimonials</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-2">
+                <h5>Support</h5>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Help </a></li>
+                    <li><a href="#">Forums</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3">
+                <div class="social-networks">
+                    <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                    <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                    <a href="#" class="google"><i class="fa fa-google-plus"></i></a>
+                </div>
+                <button type="button" class="btn btn-default">Contact us</button>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <p><tt>© 2017 Root Technology</tt></p>
+    </div>
+</footer>
+
+</body>
+</html>

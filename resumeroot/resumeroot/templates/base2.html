@@ -1,0 +1,100 @@
+{% load static %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    {% block title %}{% endblock %}
+    {% block css %}{% endblock %}
+    {% block js_1 %}{% endblock %}
+    {% block fonts %}{% endblock %}
+
+    <link href="https://fonts.googleapis.com/css?family=Dosis:800" rel="stylesheet">
+    <style>
+        .bd-footer {
+            font-size: 85%;
+            text-align: center;
+            background-color: #f7f7f7
+        }
+
+        .bd-footer a {
+            font-weight: 500;
+            color: #495057
+        }
+
+        .bd-footer a:focus, .bd-footer a:hover {
+            color: #007bff
+        }
+
+        .bd-footer p {
+            margin-bottom: 0
+        }
+
+        @media (min-width: 576px) {
+            .bd-footer {
+                text-align: left
+            }
+        }
+
+        .bd-footer-links {
+            padding-left: 0;
+            margin-bottom: 1rem
+        }
+
+        .bd-footer-links li {
+            display: inline-block
+        }
+
+        .bd-footer-links li + li {
+            margin-left: 1rem
+        }
+    </style>
+
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+
+    {# bootstrap css #}
+    {#    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/4/litera/bootstrap.min.css">#}
+
+<link rel='stylesheet' href='//cdn.jsdelivr.net/font-hack/2.020/css/hack.min.css'>
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+          integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap4-neon-glow.min.css' %}">
+
+{#    <link rel="stylesheet" type="text/css" href="{% static 'css/stisla.css' %}">#}
+{#    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">#}
+
+
+</head>
+<body>
+
+
+{% block navbar %}{% endblock %}
+
+{#<div class="container">#}
+
+{% block content %}{% endblock %}
+
+{#</div>#}
+{#<div class="container-fluid">#}
+{% block footer %}{% endblock %}
+{#</div>#}
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+{% block js_2 %}
+{% endblock %}
+
+</body>
+</html>
