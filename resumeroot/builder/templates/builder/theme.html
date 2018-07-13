@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="bg-light">
+    <div class="bg-white">
         <div class="container ">
             <div class="card p-5 shadow mt-4 mb-4">
 
@@ -19,27 +19,25 @@
                         <div class="row mb-3">
                             <div class="col-4">
                                 <img id="1" src="{% static 'img/1.png' %}" width="90%" class="shadow ">
-
+{#                                <div class="align-content-center text-center mt-2"><span class="text-muted"#}
+{#                                                                                         style="font-family: Muli">Hendricks</span></div>#}
                             </div>
                             <div class="col-4">
                                 {#                                <img src="{% static 'img/1.png' %}" width="90%" class="shadow">#}
-                                <img id="2" src="https://img.resume.com/templates/4.png"
+                                <img id="2" src="{% static 'img/2.png' %}"
                                      width="90%" class="shadow">
 
                             </div>
                             <div class="col-4">
-                                <img id="3" src="{% static 'img/1.png' %}" width="90%" class="shadow">
+                                <img id="3" src="{% static 'img/3.png' %}" width="90%" class="shadow">
                             </div>
                         </div>
                         <div class="row mt-lg-4">
                             <div class="col-4">
-                                <img id="4" src="{% static 'img/1.png' %}" width="90%" class="shadow">
+                                <img id="4" src="{% static 'img/4.png' %}" width="90%" class="shadow">
                             </div>
                             <div class="col-4">
-                                <img id="5" src="{% static 'img/1.png' %}" width="90%" class="shadow">
-                            </div>
-                            <div class="col-4">
-                                <img id="6" src="{% static 'img/1.png' %}" width="90%" class="shadow ">
+                                <img id="5" src="{% static 'img/5.png' %}" width="90%" class="shadow">
                             </div>
                         </div>
 
@@ -56,10 +54,10 @@
                         {% if theme_id != None %}
                             <img id="selectedTheme" src="{% get_static_prefix %}img/{{ theme_id }}.png" width="90%"
                                  class="shadow">
-                            THEME  is preselected
+{#                            THEME  is preselected#}
                         {% else %}
                             <img id="selectedTheme" src="{% static 'img/1.png' %}" width="90%" class="shadow">
-                            THEME IS NONE, show default
+{#                            THEME IS NONE, show default#}
                         {% endif %}
 
 
