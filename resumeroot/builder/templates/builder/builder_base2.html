@@ -12,12 +12,12 @@
                     aria-controls="navbar2" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand ml-5 mb-1 " href="index.html" style="font-family: 'Dosis', sans-serif; font-size: x-large">
+            <a class="navbar-brand ml-5 mb-1 " href="{% url 'home' %}" style="font-family: 'Dosis', sans-serif; font-size: x-large">
                 {#            <img src="{% static 'img/logo.png' %}" width="120px" height="8%">#}
                 expresscv
             </a>
 
-            <div class="collapse navbar-collapse justify-content-between" id="navbar2">
+            <div class="collapse navbar-collapse justify-content-between mr-5 pr-2" id="navbar2">
                 <ul class="navbar-nav navbar-right ml-auto ">
                     <li class="nav-item">
                         <a class="pro-button btn btn-outline-warning my-2 my-sm-0 nav-item mr-md-4 text-warning">Upgrade to Pro</a>

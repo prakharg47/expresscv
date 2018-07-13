@@ -1,17 +1,127 @@
-{% extends 'base.html' %}
 
-{% block content %}
-    <h2>Login</h2>
-{#    <form method="post">#}
-{#        {% csrf_token %}#}
-{#        {{ form.as_p }}#}
-{#        <button type="submit">Login</button>#}
-{#    </form>#}
-    <br>
-    {% load static %}
-    
-    <a href="{% url 'social:begin' 'google-oauth2' %}"><img src="{% static 'img/google-login.png' %}"/></a>
-    <br>
-    <a href="{% url 'social:begin' 'linkedin-oauth2' %}"><img src="{% static 'img/linkedin-login.png' %}"/></a>
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block css %}
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:700" rel="stylesheet">
+{% endblock %}
+
+{% block navbar %}
+    <div>
+        <nav class="navbar navbar-expand-lg  bg-white ">
+            <!--shadow p-3 mb-5 bg-white rounded-->
+
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                    data-target="#navbar2"
+                    aria-controls="navbar2" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand ml-5 mb-1 " href="{% url 'home' %}"
+               style="font-family: 'Dosis', sans-serif; font-size: xx-large">
+{#                            <img src="{% static 'img/logo.png' %}" width="120px" height="8%">#}
+                expresscv
+            </a>
+
+            <div class="collapse navbar-collapse justify-content-between" id="navbar2">
+                <ul class="navbar-nav navbar-right ml-auto mr-5">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="pro-button btn btn-outline-warning my-2 my-sm-0 nav-item mr-md-4 text-warning">Upgrade
+                                to Pro</a>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a class="nav-item nav-link mr-md-2 " href="{% url 'resume' %}" id="bd-versions"
+                               aria-haspopup="true" aria-expanded="false">
+                                Dashboard
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <li class="nav-item">
+                        <a class="nav-item nav-link mr-md-2" href="{% url 'pricing' %}" id="bd-versions"
+                           data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            Pricing
+                        </a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                Account
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#">My Profile</a>
+                                <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link " href="{% url 'login' %}">
+                                Login
+                            </a>
+                        </li>
+                    {% endif %}
+
+                </ul>
+
+
+            </div>
+        </nav>
+    </div>
 
 {% endblock %}
+{% block js_1 %}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.6/typed.min.js"></script>
+{% endblock %}
+
+
+
+
+
+<div class="jumbotron bg-white ">
+    <div class="p-5 ml-5">
+        <h1 class="display-3" style="font-family: 'IBM Plex Sans', sans-serif">Awesome CVs <strong>for <span
+                class="elemento"></span></strong></h1>
+        <p class="h5 text-muted">Create professional looking resumes in minutes </p>
+        <div class="panel m-5"></div>
+        <p>
+            <a href="{% url 'resume' %}" class="btn btn-warning btn-lg shadow">
+
+                <span>Get Started</span></a>
+        </p>
+    </div>
+
+</div>
+
+
+
+{% block content %}
+
+    <div class="container align-content-center">
+        <div class="row">
+            <center class="col-12 align-content-center">
+                <div class="mt-5 mr-2 p-3">
+                    <h2>Login</h2>
+                <br>
+
+                <a href="{% url 'social:begin' 'google-oauth2' %}"><img src="{% static 'img/google-login.png' %}"/></a>
+                <div class="panel"></div>
+                <a href="{% url 'social:begin' 'linkedin-oauth2' %}"><img src="{% static 'img/linkedin-login.png' %}"/></a>
+
+                </div>
+
+            </center>
+    </div>
+    </div>
+
+
+{% endblock %}
+
+
+
+
+
+

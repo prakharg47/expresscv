@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>resumeroot</title>
+    {% block title %}{% endblock %}
     <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
 
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display+SC" rel="stylesheet">
@@ -92,13 +92,9 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="{% url 'upgrade' %}">Upgrade to pro</a></li>
                 </ul>
-
-
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{% url 'resume' %}">CV Editor</a></li>
+                    <li><a href="{% url 'resume' %}">Dashboard</a></li>
                 </ul>
-
-
             </div>
         </div>
     </div>

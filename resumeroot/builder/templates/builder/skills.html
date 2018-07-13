@@ -1,27 +1,78 @@
-{% extends 'builder/builder_base.html' %}
+{% extends 'builder/builder_forms_base.html' %}
+{% load static %}
 
+{% block js_1 %}
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% endblock %}
+
+{% block form_title %}
+    Skills
+{% endblock %}
 
 {% block form_content %}
 
-    {#    <h3>Skills</h3>#}
+    <div class="" style="height: 600px;" >
+        <form action="{% url 'skills' resume_id=resume_id %}" method="post" enctype="multipart/form-data"  novalidate>
+            {% csrf_token %}
 
-    <div>
-
-        <form action="{% url 'skills' resume_id=resume_id %}" method="post">
             <div class="row">
-                {% csrf_token %}
-
-                {% for field in form %}
-                    <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                        <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>
-                        {{ field }}
-                    </div>
-                {% endfor %}
+              <div class="col-md-8 mb-3">
+{#                <label for="{{ form.skills.id_for_label }}">{{ form.skills.label }}</label>#}
+                {{ form.skills }}
+                <div class="invalid-feedback">
+                 {{ form.skills.errors }}
+                </div>
+              </div>
             </div>
-            <div class="row">
-                <input type="submit" class="btn btn-primary" value="Save"/>
+
+            <div class="row mt-4">
+                <div class="col-4">
+                    <input type="submit" class="btn btn-primary btn-block " value="Next"/>
+                </div>
+                <div class="col-4">
+                    <a href="{% url 'languages' resume_id=resume_id %}" class="ml-1 btn btn-outline-secondary" value="Save">Skip this section</a>
+                </div>
+
             </div>
         </form>
     </div>
 
 {% endblock %}
+
+{% block js_2 %}
+    <script>
+        $(document).ready(function () {
+            $("#skillMenuItem").addClass("text-dark");
+        });
+    </script>
+{% endblock %}
+
+
+{#{% extends 'builder/builder_base.html' %}#}
+{##}
+{##}
+{#{% block form_content %}#}
+{##}
+    {#    <h3>Skills</h3>#}
+{##}
+{#    <div>#}
+{##}
+{#        <form action="{% url 'skills' resume_id=resume_id %}" method="post">#}
+{#            <div class="row">#}
+{#                {% csrf_token %}#}
+{##}
+{#                {% for field in form %}#}
+{#                    <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">#}
+{#                        <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>#}
+{#                        {{ field }}#}
+{#                    </div>#}
+{#                {% endfor %}#}
+{#            </div>#}
+{#            <div class="row">#}
+{#                <input type="submit" class="btn btn-primary" value="Save"/>#}
+{#            </div>#}
+{#        </form>#}
+{#    </div>#}
+{##}
+{#{% endblock %}#}

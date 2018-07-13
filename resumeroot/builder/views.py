@@ -1,15 +1,11 @@
-import shutil
-import subprocess
-from wsgiref.util import FileWrapper
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import *
 from django.shortcuts import render
-from django.template.loader import render_to_string
 from django.urls import reverse
 from django.views.generic.edit import FormView
 
+from . import constants
 from .forms import *
 
 # Global defaults
@@ -62,10 +58,22 @@ def resume(request):
                                                    'form': form})
 
 
+def get_user_group(user):
+    if user.groups.filter(name='Pro').exists():
+        return "Pro"
+    else:
+        return "Basic"
+
+
+def resolve_theme_name(theme_id):
+    """Convert the theme_id received from UI to a predefined theme name"""
+    return constants.THEMES.get(theme_id, None).get("name", None)
+
+
 @login_required
 def theme(request, resume_id):
     """
-    Choose theme for a resume
+    Choose theme for a resume. If user has already chosen any theme, show that in big screen
     """
     res = Resume.objects.get(id=resume_id)
     # form = SkillsForm(request.POST)
@@ -77,6 +85,11 @@ def theme(request, resume_id):
         if form.is_valid():
 
             new_theme = Theme()
+
+            # TODO Check if user is allowed to select this theme based on his group
+            # resolve theme_id to theme_name
+            # DONT DO NOW new_theme.theme = resolve_theme_name(form.cleaned_data['theme_name'])
+
             new_theme.theme = form.cleaned_data['theme_name']
             new_theme.resume_id = resume_id
             new_theme.save()
@@ -88,9 +101,15 @@ def theme(request, resume_id):
             messages.error(request, "Form has errors")
             return render(request, 'builder/theme.html', {'form': form, 'resume_id': resume_id})
 
-    form = ThemesChoiceForm()
+    group = get_user_group(request.user)
+    try:
+        theme_id = Theme.objects.get(resume_id=resume_id)
+    except:
+        theme_id = Theme(theme="1")
 
-    return render(request, 'builder/theme.html', {'form': form, 'resume_id': resume_id})
+    return render(request, 'builder/theme.html', {'resume_id': resume_id,
+                                                  'group': group,
+                                                  'theme_id': theme_id.theme})
 
 
 class PersonalView(FormView):
@@ -138,9 +157,12 @@ def personal(request, resume_id):
     if old_data is None:
         # New form. Initialize with social account data
         s_user = User.objects.get(id=request.user.id)
-
-        personal_form = PersonalForm(initial={'name': "{} {}".format(s_user.first_name, s_user.last_name),
-                                              'email': s_user.email})
+        personal_form = PersonalForm(initial={
+                'first_name': s_user.first_name,
+                'last_name': s_user.last_name,
+                'email': s_user.email
+            }
+        )
     else:
         personal_form = PersonalForm(instance=old_data)
 
@@ -310,7 +332,7 @@ def skills(request, resume_id):
             form.save()
 
             messages.success(request, "Your details are saved")
-            return HttpResponseRedirect(reverse('skills', kwargs={'resume_id': resume_id}))
+            return HttpResponseRedirect(reverse('languages', kwargs={'resume_id': resume_id}))
         else:
             messages.error(request, "Form has errors")
             return render(request, 'builder/skills.html', {'form': form, 'resume_id': resume_id})
@@ -346,7 +368,7 @@ def languages(request, resume_id):
             form.save()
 
             messages.success(request, "Your details are saved")
-            return HttpResponseRedirect(reverse('languages', kwargs={'resume_id': resume_id}))
+            return HttpResponseRedirect(reverse('preview', kwargs={'resume_id': resume_id}))
         else:
             messages.error(request, "Form has errors")
             return render(request, 'builder/languages.html', {'form': form, 'resume_id': resume_id})
@@ -367,7 +389,7 @@ def languages(request, resume_id):
 
 
 def html_to_latex(html):
-    html = html.replace("<ol>", "\\begin{enumerate} ")
+    html = html.replace("<ol>", "\\begin{enumerate} \n  \setlength\itemsep{-1pt}")
     html = html.replace("</ol>", "\\end{enumerate} ")
     html = html.replace("<ul>", "\\begin{itemize} ")
     html = html.replace("</ul>", "\\end{itemize} ")
@@ -389,7 +411,6 @@ def html_to_latex(html):
     return html
 
 
-
 def delete_resume(request, resume_id):
     """ Delete a given resume_id. redirect to my resumes page"""
 
@@ -409,7 +430,13 @@ def experience_all(request, resume_id):
     res = Resume.objects.get(id=resume_id)
     work_objects = Work.objects.filter(resume=resume_id)
 
+    pill_map = {}
+    pill_map['work'] = Work.objects.filter(resume=resume_id).count()
+    pill_map['education'] = Education.objects.filter(resume=resume_id).count()
+    pill_map['award'] = Award.objects.filter(resume=resume_id).count()
+
     return render(request, 'builder/experience_all.html', {'work_objects': work_objects,
+                                                           'pill_map' : pill_map,
                                                            'resume_id': resume_id})
 
 
@@ -565,7 +592,7 @@ def award_all(request, resume_id):
     work_objects = Award.objects.filter(resume=resume_id)
 
     return render(request, 'builder/award_all.html', {'work_objects': work_objects,
-                                                           'resume_id': resume_id})
+                                                      'resume_id': resume_id})
 
 
 def award_new(request, resume_id):
@@ -589,7 +616,7 @@ def award_new(request, resume_id):
     form = AwardForm()
 
     return render(request, 'builder/award_new.html', {'form': form,
-                                                           'resume_id': resume_id})
+                                                      'resume_id': resume_id})
 
 
 def award_edit(request, resume_id, award_id):
@@ -616,7 +643,7 @@ def award_edit(request, resume_id, award_id):
     form = AwardForm(instance=old_award_object)
 
     return render(request, 'builder/award_edit.html', {'form': form,
-                                                            'resume_id': resume_id, 'award_id': award_id})
+                                                       'resume_id': resume_id, 'award_id': award_id})
 
 
 def award_delete(request, resume_id, award_id):
@@ -632,3 +659,5 @@ def award_delete(request, resume_id, award_id):
         pass
 
     return HttpResponseRedirect(reverse('award', kwargs={'resume_id': resume_id}))
+
+

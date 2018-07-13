@@ -14,13 +14,14 @@ class ResumeForm(forms.ModelForm):
         label=_("Resume Name"),
         required=True,
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': 'Resume Name', }
+            attrs={'class': 'form-control', 'placeholder': '', }
         )
     )
 
     class Meta:
         model = Resume
-        fields = ['name', 'tags']
+        # fields = ['name', 'tags']
+        fields = ['name']
 
     def clean(self):
         if self.cleaned_data.get('name') == 'Prakhar':
@@ -38,9 +39,9 @@ class PersonalForm(forms.ModelForm):
     )
 
     last_name = forms.CharField(
-        label="Family Name",
+        label="Last Name",
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': 'Elon', }
+            attrs={'class': 'form-control', 'placeholder': 'Musk', }
         )
     )
 
@@ -48,7 +49,7 @@ class PersonalForm(forms.ModelForm):
         required=False,
         label="Email",
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': 'Email', }
+            attrs={'class': 'form-control', 'placeholder': 'elon.musk@tesla.com', }
         )
     )
 
@@ -56,7 +57,7 @@ class PersonalForm(forms.ModelForm):
         required=False,
         label="Mobile",
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': 'Mobile', }
+            attrs={'class': 'form-control', 'placeholder': '+1 414 567890', }
         )
     )
 
@@ -64,7 +65,7 @@ class PersonalForm(forms.ModelForm):
         required=False,
         label="Title ",
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': 'Investment Banker', }
+            attrs={'class': 'form-control', 'placeholder': 'Rocket Scientist', }
         )
     )
 
@@ -79,7 +80,7 @@ class PersonalForm(forms.ModelForm):
         required=False,
         label="City",
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': 'City', }
+            attrs={'class': 'form-control', 'placeholder': 'California', }
         )
     )
 
@@ -87,15 +88,15 @@ class PersonalForm(forms.ModelForm):
         required=False,
         label="Country",
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': 'Country', }
+            attrs={'class': 'form-control', 'placeholder': 'USA', }
         )
     )
 
     linkedin_url = forms.CharField(
         required=False,
-        label="LinkedIn Url",
+        label="LinkedIn",
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': 'LinkedIn url', }
+            attrs={'class': 'form-control', 'placeholder': 'linkedin.com/r/musk', }
         )
     )
 

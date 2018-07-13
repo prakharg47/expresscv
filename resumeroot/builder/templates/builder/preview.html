@@ -1,32 +1,39 @@
-{% extends 'builder/builder_base.html' %}
+{% extends 'builder/builder_forms_base.html' %}
 
 {% load staticfiles %}
+
+{% block form_title %}
+    Preview
+{% endblock %}
 
 {% block form_content %}
     {% comment %}
     <div id="pdf-container" class="col-md-10">
         <iframe src="http://web.mit.edu/alexmv/6.037/sicp.pdf" width="100%" style="height:40em"></iframe>
     </div>{% endcomment %}
-    <h3>Preview </h3>
 
-    <div id="pdf-container" class="col-md-10 row">
+    <div class="row">
+        <div id="pdf-container" class="col-md-8 ">
         <iframe src="http://localhost:8080/publish/{{ resume_id }}/publish" width="100%" style="height:40em"></iframe>
+{#            <embed src="http://localhost:8080/publish/{{ resume_id }}/publish" width="400" type='application/pdf'>#}
     </div>
 
 
-    <div class="row col-md-6">
-        <form action="{% url 'preview' resume_id=resume_id %}" method="post" >
-            {% csrf_token %}
+    <div class="col-md-4">
+{#        <form action="{% url 'preview' resume_id=resume_id %}" method="post" >#}
+{#            {% csrf_token %}#}
+{##}
+{#            {% for field in form %}#}
+{#                <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">#}
+{#                    <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>#}
+{#                    {{ field }}#}
+{#                </div>#}
+{#            {% endfor %}#}
+{##}
+{#            <input type="submit" class="btn btn-primary" value="Save"/>#}
+{#        </form>#}
+    </div>
 
-            {% for field in form %}
-                <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                    <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>
-                    {{ field }}
-                </div>
-            {% endfor %}
-
-            <input type="submit" class="btn btn-primary" value="Save"/>
-        </form>
     </div>
 
 {% endblock %}

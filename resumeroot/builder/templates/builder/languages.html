@@ -1,26 +1,77 @@
-{% extends 'builder/builder_base.html' %}
+{% extends 'builder/builder_forms_base.html' %}
+{% load static %}
+
+{% block js_1 %}
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% endblock %}
+
+{% block form_title %}
+    Languages
+{% endblock %}
 
 {% block form_content %}
 
-
-    <div>
-        <form action="{% url 'languages' resume_id=resume_id %}" method="post">
+    <div class="" style="height: 600px;" >
+        <form action="{% url 'languages' resume_id=resume_id %}" method="post" enctype="multipart/form-data"  novalidate>
             {% csrf_token %}
 
             <div class="row">
-            {% for field in form %}
-                <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                    <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>
-                    {{ field }}
+              <div class="col-md-8 mb-3">
+{#                <label for="{{ form.languages.id_for_label }}">{{ form.languages.label }}</label>#}
+                {{ form.languages }}
+                <div class="invalid-feedback">
+                 {{ form.languages.errors }}
                 </div>
-            {% endfor %}
+              </div>
             </div>
 
-            <div class="row">
-                <input type="submit" class="btn btn-primary" value="Save"/>
-            </div>
+            <div class="row mt-4">
+                <div class="col-4">
+                    <input type="submit" class="btn btn-primary btn-block " value="Next"/>
+                </div>
+                <div class="col-3">
+                    <a href="{% url 'summary' resume_id=resume_id %}" class="ml-1 btn btn-outline-secondary" value="Save">Skip this section</a>
+                </div>
 
+            </div>
         </form>
     </div>
 
 {% endblock %}
+
+{% block js_2 %}
+    <script>
+        $(document).ready(function () {
+            $("#languageMenuItem").addClass("text-dark");
+        });
+    </script>
+{% endblock %}
+
+
+{#{% extends 'builder/builder_base.html' %}#}
+{##}
+{#{% block form_content %}#}
+{##}
+{##}
+{#    <div>#}
+{#        <form action="{% url 'languages' resume_id=resume_id %}" method="post">#}
+{#            {% csrf_token %}#}
+{##}
+{#            <div class="row">#}
+{#            {% for field in form %}#}
+{#                <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">#}
+{#                    <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>#}
+{#                    {{ field }}#}
+{#                </div>#}
+{#            {% endfor %}#}
+{#            </div>#}
+{##}
+{#            <div class="row">#}
+{#                <input type="submit" class="btn btn-primary" value="Save"/>#}
+{#            </div>#}
+{##}
+{#        </form>#}
+{#    </div>#}
+{##}
+{#{% endblock %}#}

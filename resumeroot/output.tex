@@ -1,102 +1,158 @@
-%!TEX TS-program = xelatex
-\documentclass[10pt]{friggeri-cv}
+\documentclass[a4paper,10pt]{article}
+\usepackage[margin=0.5in, right=1in]{geometry}
+%A Few Useful Packages
+\usepackage{marvosym}
+% \usepackage{fontspec} 					%for loading fonts
+\usepackage{xunicode,xltxtra,url,parskip} 	%other packages for formatting
+\RequirePackage{color,graphicx}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[big]{layaureo} 				%better formatting of the A4 page
+% an alternative to Layaureo can be ** \usepackage{fullpage} **
+\usepackage{supertabular} 				%for Grades
+\usepackage{titlesec}					%custom \section
+\usepackage{changepage}
 
+%Setup hyperref package, and colours for links
+\usepackage{hyperref}
+\definecolor{linkcolour}{rgb}{0,0.2,0.6}
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour, linkcolor=linkcolour}
+
+%FONTS
+\defaultfontfeatures{Mapping=tex-text}
+%\setmainfont[SmallCapsFont = Fontin SmallCaps]{Fontin}
+%%% modified for Karol Kozioł for ShareLaTeX use
+%\setmainfont[
+%SmallCapsFont = Fontin-SmallCaps.otf,
+%BoldFont = Fontin-Bold.otf,
+%ItalicFont = Fontin-Italic.otf
+%]
+%{Fontin.otf}
+%%%
+
+%CV Sections inspired by: 
+%http://stefano.italians.nl/archives/26
+\titleformat{\section}{\Large\scshape\raggedright}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{3pt}{3pt}
+%Tweak a bit the top margin
+%\addtolength{\voffset}{-1.3cm}
+
+
+
+%Italian hyphenation for the word: ''corporations''
+\hyphenation{im-pre-se}
+
+%-------------WATERMARK TEST [**not part of a CV**]---------------
+\usepackage[absolute]{textpos}
+
+\setlength{\TPHorizModule}{30mm}
+\setlength{\TPVertModule}{\TPHorizModule}
+\textblockorigin{2mm}{0.65\paperheight}
+\setlength{\parindent}{0pt}
+
+%--------------------BEGIN DOCUMENT----------------------
 \begin{document}
 
-\header{Shreshtha}{Gupta}
-       {Wealth Manager}
+%WATERMARK TEST [**not part of a CV**]---------------
+%\font\wm=''Baskerville:color=787878'' at 8pt
+%\font\wmweb=''Baskerville:color=FF1493'' at 8pt
+%{\wm 
+%	\begin{textblock}{1}(0,0)
+%		\rotatebox{-90}{\parbox{500mm}{
+%			Typeset by Alessandro Plasmati with \XeTeX\  \today\ for 
+%			{\wmweb \href{http://www.aleplasmati.comuv.com}{aleplasmati.comuv.com}}
+%		}
+%	}
+%	\end{textblock}
+%}
 
+\pagestyle{empty} % non-numbered pages
 
-% In the aside, each new line forces a line break
-\begin{aside}
-  \section{contact}
-    07874915759
+\font\fb=''[cmr10]'' %for use with \LaTeX command
 
-    London, United Kingdom
+%--------------------TITLE-------------
+\par{\centering
+		{\Huge Prakhar {Gupta}
+	}\bigskip\par}
 
-    
+%--------------------SECTIONS-----------------------------------
+%Section: Personal Data
+\section{Personal Data}
 
-\end{aside}
+\begin{tabular}{rl}
+    \textsc{Location:}  & Mumbai, India\\
+    \textsc{Phone:}     & {+91 9699254402}\\
+    \textsc{Email:}     & {soccer3056@gmail.com} 
+\end{tabular}
 
+%Section: Languages
 \section{Summary}
-
- I graduated from Imperial Business School with Masters in Science in Investment and Wealth Management. I have previously worked in MKU and Horiba as finance intern. My core competencies are - 
-
-\begin{itemize} 
-	\item Writing technical reports on stock markets and equities 
-	\item Analysis of ETFs in Europe and Asia markets. I have worked in HYSE, NSE and NASDAQ. 
+\begin{adjustwidth}{0.3cm}{}
+ I am a graduate of IIT Kanpur and would like to use my skills as a quant developer. I have studied the following courses: 
+
+\begin{itemize} 
+	\item Maths and Computer Science 
+	\item Databases and Algos 
 \end{itemize} 
+\end{adjustwidth}
 
 
-\section{Experience}
+%Section: Work Experience at the top
+\section{Work Experience}
+\begin{tabular}{r|p{11cm}}
 
-\begin{entrylist}
+ \textsc{2015--2018} &
+    \textsc{Loylty Rewardz} \hfill Mumbai, India \\
+    &\emph{Developer}\\&\smallsize{ Did lotta work   \begin{itemize}  	\item Wrote several components in the company like DA and scheduler  	\item Wrote scripts for automation  \end{itemize} }\\\multicolumn{2}{c}{} \\
 
-  \entry
-    {2017 -- 2018}
-    {ETFGI}
-    {London, United Kingdom}
-    {\emph{ Research Assistant }\\  I graduated from Imperial Business School with Masters in Science in Investment and Wealth Management. I have previously worked in MKU and Horiba as finance intern. My core competencies are -   \begin{itemize}  	\item Writing technical reports on stock markets and equities  	\item Analysis of ETFs in Europe and Asia markets. I have worked in HYSE, NSE and NASDAQ.  	\item Bring coffee for Debbie  \end{itemize} }
- 
-  \entry
-    {2014 -- 2015}
-    {MKU Pvt. Ltd.}
-    {Kanpur, India}
-    {\emph{ Finance Intern }\\ \begin{itemize}  	\item  	 I graduated from Imperial Business School with Masters in Science in Investment and Wealth Management. I have previously worked in MKU and Horiba as finance intern. My core competencies are Writing technical reports on stock markets and equitie  	  	\item Analysis of ETFs in Europe and Asia markets. I have worked in HYSE, NSE and NASDAQ.  \end{itemize} }
- 
-\end{entrylist}
+\end{tabular}
 
+%Section: Education
 \section{Education}
-
-\begin{entrylist}
-
-  \entry
-    {2016 -- 2017}
-    {MSc, {\normalfont Finance }}
-    {Imperial Business School}
-    {GPA: Distinction\\ I graduated from Imperial Business School with Masters in Science in Investment and Wealth Management. I have previously worked in MKU and Horiba as finance intern. My core competencies are -   \begin{itemize}  	\item Writing technical reports on stock markets and equities  	\item Analysis of ETFs in Europe and Asia markets. I have worked in HYSE, NSE and NASDAQ.  \end{itemize} }
+\begin{tabular}{rp{11cm}}
 
 
-  \entry
-    {2012 -- 2015}
-    {Bachelors of Finance, {\normalfont BFM }}
-    {HR College of Commerece}
-    {GPA: 6.95\\ I graduated from Imperial Business School with Masters in Science in Investment and Wealth Management. I have previously worked in MKU and Horiba as finance intern. My core competencies are -   \begin{itemize}  	\item Writing technical reports on stock markets and equities  	\item Analysis of ETFs in Europe and Asia markets. I have worked in HYSE, NSE and NASDAQ.  \end{itemize} }
+    \textsc{2011--2015} &  \textbf{IIT Kanpur}+ \hfill Kanpur, India\\
+& B.Tech in \textsc{Mechanical Engineering}\\
+&\normalsize \textsc{Gpa}: 3.0\\&\smallsize{ Did whole lotta work  }\\\multicolumn{2}{c}{} \\
 
 
-\end{entrylist}
 
 
-\section{Awards}
+    \textsc{2015--2017} &  \textbf{Imperial College}+ \hfill London, UK\\
+& MS in \textsc{Investment Banking}\\
+&\normalsize \textsc{Gpa}: 3.5\\&\smallsize{ Basically delegated work to other Asians. Hehe   \begin{itemize}  	\item Wohan makes good rice as she is an asian person  	\item Some chinese kids were making lobster in kitchen, which is not good   \end{itemize} }\\\multicolumn{2}{c}{} \\
 
-\begin{entrylist}
 
-  \entry
-    {2014}
-    {Company Secratary, \emph{ICSI}}
-    {}
-    { Completed Company Secretary certificate course from ICSI  }
 
-  \entry
-    {2015}
-    {Member, \emph{Finance Society}}
-    {}
-    { Worked for Finance society as a Treasurer and organised events.   \begin{itemize}  	\item Organized college level equity trading competition  	\item Collected funds for society through alumni  \end{itemize} }
+\end{tabular}
 
-\end{entrylist}
 
+\section{Awards and Certificates}
+\begin{tabular}{rp{11cm}}
+
+\textsc{2016} & CS, ICSI\\&\smallsize{ Some work was done }\\\multicolumn{2}{c}{} \\
+
+
+\end{tabular}
+
+
+
+%Section: Languages
+\section{Languages}
+\begin{adjustwidth}{0.3cm}{}
+ \textbf{Fluent} : English, Hindi 
+ 
+  \textbf{Limited proficiency} : Japanese  
+\end{adjustwidth}
 
 \section{Skills}
- \textbf{Analysis } :\textbf{ } DCF and Financial Modelling, Excel programming 
+\begin{adjustwidth}{0.3cm}{}
+ \textbf{Technical: } Java, python, market analysis 
  
-  \textbf{Technical } : Python, VBA, Excel, MATLAB 
+  \textbf{Software: } MATLAB, Octave, Linux 
+ 
+    
+\end{adjustwidth}
 
-
-\section{Languages}
- \textbf{Fluent Proficiency} : Hindi, English 
- 
-  \textbf{Working Proficiency} : Spanish, French 
- 
-  \textbf{Limited Proficiency} : Japanese 
 
 \end{document}

@@ -1,38 +1,111 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
+
+{% block css %}
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+{% endblock %}
+
+{% block navbar %}
+    <div>
+        <nav class="navbar navbar-expand-lg  bg-white ">
+            <!--shadow p-3 mb-5 bg-white rounded-->
+
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                    data-target="#navbar2"
+                    aria-controls="navbar2" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand ml-5 mb-1 " href="{% url 'home' %}"
+               style="font-family: 'Dosis', sans-serif; font-size: xx-large">
+                {#            <img src="{% static 'img/logo.png' %}" width="120px" height="8%">#}
+                expresscv
+            </a>
+
+            <div class="collapse navbar-collapse justify-content-between" id="navbar2">
+                <ul class="navbar-nav navbar-right ml-auto mr-5">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="pro-button btn btn-outline-warning my-2 my-sm-0 nav-item mr-md-4 text-warning">Upgrade
+                            to Pro</a>
+                    </li>
+
+
+                        <li class="nav-item">
+                        <a class="nav-item nav-link mr-md-2 " href="{% url 'resume' %}" id="bd-versions"
+                           aria-haspopup="true" aria-expanded="false">
+                            Dashboard
+                        </a>
+                    </li>-
+                    {% endif %}
+
+                    <li class="nav-item">
+                        <a class="nav-item nav-link mr-md-2" href="{% url 'pricing' %}" id="bd-versions"
+                           data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            Pricing
+                        </a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                Account
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#">My Profile</a>
+                                <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link " href="{% url 'login' %}" >
+                                Login
+                            </a>
+                        </li>
+                    {% endif %}
+
+                </ul>
+
+
+            </div>
+        </nav>
+    </div>
+
+{% endblock %}
+{% block js_1 %}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.6/typed.min.js"></script>
+{% endblock %}
 
 {% block content %}
 
-    <div class="panel">
+    <div class="jumbotron bg-white ">
+        <div class="p-5 ml-5">
+            <h1 class="display-3" style="font-family: 'IBM Plex Sans', sans-serif">Awesome CVs <strong>for <span class="elemento"></span></strong></h1>
+            <p class="h5 text-muted">Create professional looking resumes in minutes </p>
+            <div class="panel m-5"></div>
+            <p>
+                <a href="{% url 'resume' %}" class="btn btn-warning btn-lg shadow">
+
+                    <span class="p-5 pt-4 " style="font-family: 'Muli'; padding: 50px !important;border-radius: 0px !important; font-size: medium">GET STARTED</span></a>
+            </p>
+        </div>
 
     </div>
-    <div class="panel">
 
-    </div>
-    <div class="panel">
+    <div class="row">
 
-
-    <div class="jumbotron">
-        <h1><span contenteditable="true">Awesome CVs for <span class="elemento"></span></span></h1>
-        <p>Create professional looking resumes in minutes </p>
-        <p>
-            <a href="{% url 'resume'  %}" class="btn btn-success btn-lg ">Get Started</a>
-        </p>
     </div>
 
     <script>
         var typed = new Typed('.elemento', {
             strings: ["Artists", "Bankers", "Consultants", "Developers"],
-            typeSpeed: 100,
+            typeSpeed: 80,
             loop: true
         });
     </script>
 
 
-    <div class="row">
-        <div class="col-md-2 col-md-offset-5">
-            <h3>Total users <strong>{{ total_users }}</strong></h3>
-        </div>
-    </div>
 
 {% endblock %}
 

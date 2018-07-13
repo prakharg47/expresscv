@@ -15,7 +15,7 @@
     <div class="" style="height: 600px;">
         {% if work_objects %}
             <div class="col-md-9 mt-4">
-                <h6 class="text-muted">EDUCATION</h6>
+                <h6 class="text-muted">EDUCATION HISTORY</h6>
                 <table class="table table-md table-responsive-md ">
                     <thead>
                     <tr>
@@ -45,23 +45,34 @@
                     {% endfor %}
                 </table>
             </div>
-            <h5>Add New</h5>
+            <h6></h6>
         {% else %}
             <p class="text-muted">Click the button below to start adding your education degrees</p>
         {% endif %}
 
-        <a role="button" class="btn btn-primary" href="{% url 'education_new' resume_id=resume_id %}">Add new
+    <div class="row">
+        <div class="col-3">
+            <a role="button" class="btn btn-primary btn-block" href="{% url 'education_new' resume_id=resume_id %}">Add new
             Education</a>
+        </div>
+        <div class="col-3">
+            <a role="button" class="btn btn-outline-secondary btn-block"
+               href="{% url 'experience' resume_id=resume_id %}">Continue</a>
+        </div>
+    </div>
+
+
 
     </div>
 
 
 {% endblock %}
 
+
 {% block js_2 %}
     <script>
         $(document).ready(function () {
-            $("#workMenuItem").addClass("text-dark");
+            $("#educationMenuItem").addClass("text-dark");
         });
     </script>
 {% endblock %}

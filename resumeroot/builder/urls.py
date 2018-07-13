@@ -1,8 +1,6 @@
-from django.conf.urls import url, include
-from django.contrib import admin
-from django.contrib.auth import views as auth_views
-from . import views
+from django.conf.urls import url
 
+from . import views
 
 urlpatterns = [
     url(r'^(?P<resume_id>[0-9]+)/personal$', views.personal, name='personal'),
@@ -29,7 +27,7 @@ urlpatterns = [
     # name changed to avoid any django clashing
     url(r'^(?P<resume_id>[0-9]+)/theme', views.theme, name='theme'),
 
-    url(r'^resume$', views.resume, name='resume'),
+    url(r'^dashboard$', views.resume, name='resume'),
     url(r'^resume/(?P<resume_id>[0-9]+)/delete$', views.delete_resume, name='delete_resume'),
 
     # url(r'^(?P<resume_id>[0-9]+)/publish$', views.publish, name='publish'),

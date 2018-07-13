@@ -25,7 +25,7 @@ SECRET_KEY = 'ig84c(5m3qe)2%%^ivs423v@s(w=-+c8s%kcv#+#xqly^jzf6^'
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['192.168.42.205', '192.168.43.60', 'localhost', '4ae0faea.ngrok.io']
+ALLOWED_HOSTS = ['192.168.42.205', '192.168.43.60', 'localhost', '4ae0faea.ngrok.io', '0eed81f0.ngrok.io']
 
 # Application definition
 
@@ -100,7 +100,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'resumeroot',
         'USER': 'root',
-        'PASSWORD': 'lidsysRoot',
+        'PASSWORD': 'blackflash',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
 
@@ -109,6 +109,7 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
+
 
 
 AUTHENTICATION_BACKENDS = (
@@ -159,7 +160,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'resume'
 
 # Social config
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1050437934887-n2q0u7m5mmuktq69435slbsghqgjvhfg.apps.googleusercontent.com'

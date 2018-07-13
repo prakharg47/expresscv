@@ -40,7 +40,7 @@ class Personal(models.Model):
     email = models.EmailField(null=True, max_length=200)
     mobile = models.CharField(max_length=200, null=True)
     title = models.CharField(null=True, max_length=200, blank=True)
-    linkedin = models.CharField(max_length=200, null=True)
+    linkedin_url = models.CharField(max_length=200, null=True)
     city = models.CharField(max_length=200)
     country = models.CharField(max_length=200)
     photo = models.FileField(upload_to="profile", null=True)

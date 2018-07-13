@@ -1,76 +1,199 @@
-{% extends 'builder/builder_base.html' %}
-
+{% extends 'builder/builder_base2.html' %}
 {% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
 
-{% block form_content %}
+{% block css %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
+          integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+{% endblock %}
 
-    <h2>Choose your theme</h2>
+{% block content %}
+    <div class="bg-light">
+        <div class="container ">
+            <div class="card p-5 shadow mt-4 mb-4">
 
-    <div class="row">
-        <form method="post" action="{% url 'theme' resume_id=resume_id %}">
-            {% csrf_token %}
-            <div class="form-group">
-                <div class="col-md-2 box"><label class="btn btn-primary"><img
-                        src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Running.png"
-                        alt="..." class="img-thumbnail img-check"><input type="radio" name="chk1" id="item4"
-                                                                         value="val1" class="hidden" autocomplete="off"></label>
-                </div>
-                <div class="col-md-2 box"><label class="btn btn-primary"><img
-                        src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png"
-                        alt="..." class="img-thumbnail img-check"><input type="radio" name="chk1" id="item4"
-                                                                         value="val2" class="hidden" autocomplete="off"></label>
-                </div>
-                <div class="col-md-2 box"><label class="btn btn-primary"><img
-                        src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Football.png"
-                        alt="..." class="img-thumbnail img-check"><input type="radio" name="chk1" id="item4"
-                                                                         value="val3" class="hidden" autocomplete="off"></label>
-                </div>
+                <h3 class=" text">Choose your theme</h3>
+                <div class="row mt-4">
 
-            </div>
-            <div class="clearfix"></div>
+                    <div class="col-md-6 border-dark">
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <img id="1" src="{% static 'img/1.png' %}" width="90%" class="shadow ">
 
-            <input type="submit" value="Check Item" class="btn btn-success">
+                            </div>
+                            <div class="col-4">
+                                {#                                <img src="{% static 'img/1.png' %}" width="90%" class="shadow">#}
+                                <img id="2" src="https://img.resume.com/templates/4.png"
+                                     width="90%" class="shadow">
 
-        </form>
-    </div>
+                            </div>
+                            <div class="col-4">
+                                <img id="3" src="{% static 'img/1.png' %}" width="90%" class="shadow">
+                            </div>
+                        </div>
+                        <div class="row mt-lg-4">
+                            <div class="col-4">
+                                <img id="4" src="{% static 'img/1.png' %}" width="90%" class="shadow">
+                            </div>
+                            <div class="col-4">
+                                <img id="5" src="{% static 'img/1.png' %}" width="90%" class="shadow">
+                            </div>
+                            <div class="col-4">
+                                <img id="6" src="{% static 'img/1.png' %}" width="90%" class="shadow ">
+                            </div>
+                        </div>
 
-    <script>
-        $(document).ready(function (e) {
-
-            $('.img-check').click(function (e) {
-                $('.img-check').not(this).removeClass('check')
-                    .siblings('input').prop('checked', false);
-                $(this).addClass('check')
-                    .siblings('input').prop('checked', true);
-            });
-
-        });
-    </script>
-
-    <div>
-
-        <div class="row">
-            <img src="{% static 'img/img1.png' %}"/>
-            <img src="{% static 'img/img1.png' %}"/>
-            <img src="{% static 'img/img1.png' %}"/>
-        </div>
-        <br>
-
-        <form action="{% url 'theme' resume_id=resume_id %}" method="post">
-            <div class="row">
-                {% csrf_token %}
-
-                {% for field in form %}
-                    <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                        <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>
-                        {{ field }}
+                        <div class="row mt-lg-4 pl-4 ">
+                            <form action="{% url 'theme' resume_id=resume_id %}" method="post" novalidate>
+                                {% csrf_token %}
+                                <input id="themeForm" type="text" name="theme_name" hidden value="1"/>
+                                <input type="submit" class="btn btn-primary " value="Select Theme"/>
+                            </form>
+                        </div>
                     </div>
-                {% endfor %}
+
+                    <div class="col-md-6 ">
+                        {% if theme_id != None %}
+                            <img id="selectedTheme" src="{% get_static_prefix %}img/{{ theme_id }}.png" width="90%"
+                                 class="shadow">
+                            THEME  is preselected
+                        {% else %}
+                            <img id="selectedTheme" src="{% static 'img/1.png' %}" width="90%" class="shadow">
+                            THEME IS NONE, show default
+                        {% endif %}
+
+
+                    </div>
+                </div>
             </div>
-            <div class="row">
-                <input type="submit" class="btn btn-primary" value="Save"/>
-            </div>
-        </form>
+        </div>
+
+
+    </div>
+    <div class="jumbotron mb-0 ">
+        <div class="pl-4">
+            <h4 class="display-6">{{ request.user.first_name }}, get more from your account </h4>
+            <p class="lead">Upgrade to Pro today and enjoy all benefits</p>
+            <button class="btn btn-warning">Upgrade to Pro</button>
+        </div>
+
     </div>
 
 {% endblock %}
+
+
+{% block js_2 %}
+    <script>
+        $(document).ready(function () {
+            $("img").on("mouseenter", function () {
+                var elem = $(this);
+                elem.addClass("shadow-lg");
+                console.log("event occurred");
+            });
+
+            $("img").on("mouseleave", function () {
+                var elem = $(this);
+                elem.removeClass("shadow-lg");
+                console.log("event occurred");
+            });
+
+            $("img").on("click", function () {
+                var elem = $(this);
+                selectedTheme = $("#selectedTheme");
+                selectedTheme.attr("src", elem.attr("src"));
+                console.log("event occurred");
+                $("#themeForm").attr("value", elem.attr("id"));
+            });
+
+        })
+
+    </script>
+
+{% endblock %}
+
+{#{% extends 'builder/builder_base.html' %}#}
+{##}
+{% load static %}
+{##}
+{#{% block form_content %}#}
+{##}
+{#    <h2>Choose your theme</h2>#}
+{##}
+{#    <div class="row">#}
+{#        <form method="post" action="{% url 'theme' resume_id=resume_id %}">#}
+{#            {% csrf_token %}#}
+{#            <div class="form-group">#}
+{#                <div class="col-md-2 box"><label class="btn btn-primary"><img#}
+{#                        src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Running.png"#}
+{#                        alt="..." class="img-thumbnail img-check"><input type="radio" name="chk1" id="item4"#}
+{#                                                                         value="val1" class="<img src="{% static 'img/1.png' %}" width="90%">dden" autocomplete="off"></label>#}
+{#                </div>#}
+{#                <div class="col-md-2 box"><label class="btn btn-primary"><img#}
+{#                        src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png"#}
+{#                        alt="..." class="img-thumbnail img-check"><input type="radio" name="chk1" id="item4"#}
+{#                                                                         value="val2" class="<img src="{% static 'img/1.png' %}" width="90%">dden" autocomplete="off"></label>#}
+{#                </div>#}
+{#                <div class="col-md-2 box"><label class="btn btn-primary"><img#}
+{#                        src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Football.png"#}
+{#                        alt="..." class="img-thumbnail img-check"><input type="radio" name="chk1" id="item4"#}
+{#                                                                         value="val3" class="<img src="{% static 'img/1.png' %}" width="90%">dden" autocomplete="off"></label>#}
+{#                </div>#}
+{##}
+{#            </div>#}
+{#            <div class="clearfix"></div>#}
+{##}
+{#            <input type="submit" value="Check Item" class="btn btn-success">#}
+{##}
+{#        </form>#}
+{#    </div>#}
+{##}
+{#    <script>#}
+{#        $(document).ready(function (e) {#}
+{##}
+{#            $('.img-check').click(function (e) {#}
+{#                $('.img-check').not(t<img src="{% static 'img/1.png' %}" width="90%">s).removeClass('check')#}
+{#                    .siblings('input').prop('checked', false);#}
+{#                $(t<img src="{% static 'img/1.png' %}" width="90%">s).addClass('check')#}
+{#                    .siblings('input').prop('checked', true);#}
+{#            });#}
+{##}
+{#        });#}
+{#    </script>#}
+{##}
+{#    <div>#}
+{##}
+{#        <div class="row">#}
+{#            <img src="{% static 'img/1.png' %}"/>#}
+{#            <img src="{% static 'img/1.png' %}"/>#}
+{#            <img src="{% static 'img/1.png' %}"/>#}
+{#        </div>#}
+{#        <br>#}
+{##}
+{#        {% if group == 'Pro' %}#}
+{#            Here are some more templates#}
+{#        {% elif group == 'Basic' %}#}
+{#            Upgrade to our pro plans for more templates#}
+{#        {% endif %}#}
+{##}
+{#        <form action="{% url 'theme' resume_id=resume_id %}" method="post">#}
+{#            <div class="row">#}
+{#                {% csrf_token %}#}
+{##}
+{#                {% for field in form %}#}
+{#                    <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">#}
+{#                        <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>#}
+{#                        {{ field }}#}
+{#                    </div>#}
+{#                {% endfor %}#}
+{#            </div>#}
+{#            <div class="row">#}
+{#                <input type="submit" class="btn btn-primary" value="Save"/>#}
+{#            </div>#}
+{#        </form>#}
+{#    </div>#}
+{##}
+{#{% endblock %}#}
+{##}
+
+
+

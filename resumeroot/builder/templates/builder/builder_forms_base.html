@@ -8,6 +8,25 @@
         {#h2, h3, h4 {#}
         {#    font-weight: 200 !important;#}
 
+        ::-webkit-input-placeholder { /* WebKit browsers */
+            color: #dde !important;
+        }
+
+        :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+            color: #dde !important;
+        }
+
+        ::-moz-placeholder { /* Mozilla Firefox 19+ */
+            color: #dde !important;
+        }
+
+        :-ms-input-placeholder { /* Internet Explorer 10+ */
+            color: #dde!important;
+        }
+
+        ::placeholder { /* Most modern browsers support this now. */
+            color: #dde !important;
+        }
 
     </style>
 {% endblock %}
@@ -34,51 +53,53 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="{% url 'summary'  resume_id=resume_id %}">
+                            <a id="summaryMenuItem" class="nav-link disabled" href="{% url 'summary'  resume_id=resume_id %}">
                                 <span data-feather="users"></span>
                                 Summary
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="{% url 'education' resume_id=resume_id %}">
+                            <a id="educationMenuItem" class="nav-link disabled" href="{% url 'education' resume_id=resume_id %}">
                                 <span data-feather="users"></span>
                                 Education
                                 <span class="badge badge-secondary badge-pill">{{ pill_map.education }}</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="{% url 'experience' resume_id=resume_id %}">
+                            <a id="workMenuItem" class="nav-link disabled" href="{% url 'experience' resume_id=resume_id %}">
                                 Experience
                                 <span class="badge badge-secondary badge-pill">{{ pill_map.work }}</span>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="{% url 'award' resume_id=resume_id %}">
+                            <a id="awardMenuItem" class="nav-link disabled" href="{% url 'award' resume_id=resume_id %}">
                                 <span data-feather="layers"></span>
                                 Awards and Certificates
                                 <span class="badge badge-secondary badge-pill">{{ pill_map.award }}</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="{% url 'skills' resume_id=resume_id %}">
+                            <a id="skillMenuItem" class="nav-link disabled" href="{% url 'skills' resume_id=resume_id %}">
                                 <span data-feather="bar-chart-2"></span>
                                 Skills
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="{% url 'languages' resume_id=resume_id %}">
+                            <a id="languageMenuItem" class="nav-link disabled" href="{% url 'languages' resume_id=resume_id %}">
                                 <span data-feather="bar-chart-2"></span>
                                 Languages
                             </a>
                         </li>
                     </ul>
                     <div class="col-11-md mt-4">
-                        <a class="btn btn-outline-secondary btn-wide ml-2 pl-4 pr-4" href="{% url 'theme' resume_id=resume_id %}">
+                        <a class="btn btn-outline-secondary btn-wide ml-2 pl-4 pr-4"
+                           href="{% url 'theme' resume_id=resume_id %}">
                             Themes</a>
                     </div>
                     <div class="col-11-md mt-3">
-                        <a class="btn btn-primary btn-wide ml-2 pl-4 pr-4" href="{% url 'preview' resume_id=resume_id %}">
+                        <a class="btn btn-primary btn-wide ml-2 pl-4 pr-4"
+                           href="{% url 'preview' resume_id=resume_id %}">
                             Preview</a>
                     </div>
                 </div>

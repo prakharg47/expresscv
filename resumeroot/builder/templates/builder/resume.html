@@ -1,91 +1,133 @@
-{% extends 'base.html' %}
+{% extends 'builder/builder_base2.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
+          integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+{% endblock %}
 
 {% block content %}
+    <div class="bg-white" style="height: 100vh">
+        <div class="container ">
+            <div class="card p-5 shadow mt-4 mb-4">
+
+                <h3 class="text">Dashboard</h3>
+
+                {% if form.errors %}
+                    <div class="alert alert-error">
+                        <h4>Please fix the following errors</h4>
+                        <ul>
+                            {% for field in form %}
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        <li><a href="#id_{{ field.name }}" class="error">{{ error|escape }}</a></li>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                        {% if form.non_field_errors %}
+                            {{ form.non_field_errors }}
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                {% if resumes %}
+                    <div>
+                        <h6 class="text-muted">MY RESUMES</h6>
+                        <table class="table table-hover table-md table-responsive-md ">
+                            <thead class="yellow">
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Last modified on</th>
+                                <th>Options</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            </thead>
+
+                            {% for resume in resumes %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td class="w-25">{{ resume.name }}</td>
+                                    <td>{{ resume.modified|date }}</td>
+                                    <td>
+                                        <a role="button" class="btn shadow btn-light"
+                                           href="{% url 'personal' resume_id=resume.id %}"><i
+                                                class="fas fa-edit mr-2"></i><span>Edit</span></a>
+                                    </td>
+                                    <td>
+                                        <a role="button" class="btn shadow btn-light"
+                                           href="{% url 'delete_resume' resume_id=resume.id %}"><i
+                                                class="fas fa-trash-alt mr-2"></i>Delete</a>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-light shadow dropdown-toggle" type="button"
+                                                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                Share
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#"><i class="fas fa-download mr-2"></i>
+                                                    Download</a>
+                                                <a class="dropdown-item" href="#"><i class="fas fa-envelope mr-2"></i>
+                                                    Email</a>
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <br>
+                    <br>
+                {% endif %}
 
 
-    {% if form.errors %}
-        <div class="alert alert-error">
-            <h4>Please fix the following errors</h4>
-            <ul>
-                {% for field in form %}
-                    {% if field.errors %}
-                        {% for error in field.errors %}
-                            <li><a href="#id_{{ field.name }}" class="error">{{ error|escape }}</a></li>
-                        {% endfor %}
-                    {% endif %}
-                {% endfor %}
-            </ul>
-            {% if form.non_field_errors %}
-                {{ form.non_field_errors }}
-            {% endif %}
-        </div>
-    {% endif %}
+                <h6 class="text-muted">ADD NEW</h6>
 
-    {% if resumes %}
-        <div>
-            <h2>My resumes</h2>
-            <table class="table table-hover table-bordered table-condensed">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Resume Name</th>
-                    <th>Last modified on</th>
-                    <th>Options</th>
-                    <th></th>
-                </tr>
-                </thead>
+                <div class="row">
 
-                {% for resume in resumes %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ resume.name }}</td>
-                        <td>{{ resume.modified }}</td>
-                        <td>
-                            <a role="button" class="btn btn-default"
-                               href="{% url 'personal' resume_id=resume.id %}">Edit</a>
-                        </td>
-                        <td>
-                            <a role="button" class="btn btn-default"
-                               href="{% url 'delete_resume' resume_id=resume.id %}">Delete</a>
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default">Share</button>
-                                <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">
-                                    <span class="caret"></span></button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Download</a></li>
-                                    <li><a href="#">Email</a></li>
+                    <form action="{% url 'resume' %}" method="post" name="myform">
 
-                                </ul>
+                        {% csrf_token %}
+                        {#            <div class="col-lg-5">#}
+                        {#                <div class="input-group">#}
+                        {#                    <input name="name" id="id_name" type="text" class="form-control" placeholder="Enter resume name">#}
+                        {#                    <span class="input-group-btn">#}
+                        {#                        <input class="btn btn-primary" type="submit" value="Add Resume"/>#}
+                        {#                    </span>#}
+                        {#                </div><!-- /input-group -->#}
+                        {#            </div><!-- /.col-lg-6 -->#}
+                        {##}
+                        {#        </form>#}
+
+                        <div class="col-md-12 mb-3">
+                            <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+                            {{ form.name }}
+                            <div class="invalid-feedback">
+                                {{ form.name.errors }}
                             </div>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
+                            <br>
+                            <input class="btn btn-primary" type="submit" value="Create Resume"/>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
         </div>
-    {% endif %}
 
-
-    <h3>Add New</h3>
-    <div class="row">
-
-        <form action="{% url 'resume' %}" method="post" name="myform">
-
-            {% csrf_token %}
-{#            <div class="col-lg-5">#}
-{#                <div class="input-group">#}
-{#                    <input name="name" id="id_name" type="text" class="form-control" placeholder="Enter resume name">#}
-{#                    <span class="input-group-btn">#}
-{#                        <input class="btn btn-primary" type="submit" value="Add Resume"/>#}
-{#                    </span>#}
-{#                </div><!-- /input-group -->#}
-{#            </div><!-- /.col-lg-6 -->#}
-{##}
-{#        </form>#}
-
-        {{ form }}
-            <input class="btn btn-primary" type="submit" value="Add Resume"/>
     </div>
+{#    <div class="jumbotron mb-0 ">#}
+{#        <div class="pl-4">#}
+{#            <h4 class="display-6">{{ request.user.first_name }}, get more from your account </h4>#}
+{#            <p class="lead">Upgrade to Pro today and enjoy all benefits</p>#}
+{#            <button class="btn btn-warning">Upgrade to Pro</button>#}
+{#        </div>#}
+{##}
+{#    </div>#}
 
 {% endblock %}

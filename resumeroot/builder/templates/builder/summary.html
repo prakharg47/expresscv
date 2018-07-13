@@ -1,28 +1,80 @@
-{% extends 'builder/builder_base.html' %}
+{% extends 'builder/builder_forms_base.html' %}
+{% load static %}
 
+{% block js_1 %}
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% endblock %}
+
+{% block form_title %}
+    Summary
+{% endblock %}
 
 {% block form_content %}
 
-    <h3>Summary</h3>
-    <div>
-        <form action="{% url 'summary' resume_id=resume_id %}" method="post">
-        <div class="row">
+    <div class="" style="height: 600px;" >
+        <form action="{% url 'summary' resume_id=resume_id %}" method="post" enctype="multipart/form-data"  novalidate>
             {% csrf_token %}
-            {#        {{ form }}#}
 
-            {% for field in form %}
-                <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                    <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>
-                    {{ field }}
+            <div class="row">
+              <div class="col-md-8 mb-3">
+{#                <label for="{{ form.summary.id_for_label }}">{{ form.summary.label }}</label>#}
+                {{ form.summary }}
+                <div class="invalid-feedback">
+                 {{ form.summary.errors }}
                 </div>
-            {% endfor %}
-        </div>
+              </div>
+            </div>
+{#            <input type="submit" class="btn btn-outline-success" value="Save"/>#}
+{#            <button class="btn btn-outline-secondary" value="Save">Preview</button>#}
 
-        <div class="row">
-            <input type="submit" class="btn btn-primary" value="Save"/>
-        </div>
+            <div class="row mt-4">
+                <div class="col-4">
+                    <input type="submit" class="btn btn-primary btn-block " value="Next"/>
+                </div>
+                <div class="col-3">
+                    <a href="{% url 'education' resume_id=resume_id %}"
+                       class="ml-1 btn-block btn btn-outline-secondary" value="Save">Skip this section</a>
+                </div>
+
+            </div>
 
         </form>
     </div>
 
 {% endblock %}
+
+{% block js_2 %}
+    <script>
+        $(document).ready(function () {
+            $("#summaryMenuItem").addClass("text-dark");
+        });
+    </script>
+{% endblock %}
+
+
+{#{% block form_content %}#}
+{##}
+{#    <h3>Summary</h3>#}
+{#    <div>#}
+{#        <form action="{% url 'summary' resume_id=resume_id %}" method="post">#}
+{#        <div class="row">#}
+{#            {% csrf_token %}#}
+            {#        {{ form }}#}
+{##}
+{#            {% for field in form %}#}
+{#                <div class="form-group col-xs-10 col-sm-4 col-md-4 col-lg-4">#}
+{#                    <label class="my_class" for="{{ field.name }}">{{ field.label }}</label>#}
+{#                    {{ field }}#}
+{#                </div>#}
+{#            {% endfor %}#}
+{#        </div>#}
+{##}
+{#        <div class="row">#}
+{#            <input type="submit" class="btn btn-primary" value="Save"/>#}
+{#        </div>#}
+{##}
+{#        </form>#}
+{#    </div>#}
+{##}
+{#{% endblock %}#}

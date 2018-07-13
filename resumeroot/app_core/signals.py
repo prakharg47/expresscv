@@ -1,11 +1,12 @@
 import datetime
 
 from dateutil.relativedelta import relativedelta
-from paypal.standard.models import ST_PP_COMPLETED
+from django.contrib.auth.models import User, Group
 from paypal.standard.ipn.signals import valid_ipn_received
-from django.contrib.auth.models import User
+from paypal.standard.models import ST_PP_COMPLETED
 
 from .models import UserProfile
+
 
 def show_me_the_money(sender, **kwargs):
     ipn_obj = sender
@@ -23,27 +24,19 @@ def show_me_the_money(sender, **kwargs):
         # received, `custom` etc. are all what you expect or what
         # is allowed.
 
-        print(""" XXXXXXXXXXXX""")
-        print(ipn_obj.custom)
+        # add user to Pro group
+        pro_group = Group.objects.get(name="Pro")
 
+        user = User.objects.get(id=ipn_obj.custom)
+        pro_group.user_set.add(user)
+        print(pro_group.user_set)
+
+        # add a user Profile model (to handle expiry)
         profile = UserProfile(user_id=ipn_obj.custom)
         profile.expiry_date = datetime.datetime.today() + relativedelta(months=+3)
         profile.plan = 1
         profile.save()
 
-        # Undertake some action depending upon `ipn_obj`.
-        if ipn_obj.custom == "premium_plan":
-            price = 10
-        else:
-            price = 1000
-
-        if ipn_obj.mc_gross == price and ipn_obj.mc_currency == 'USD':
-            pass
-
-        print("price is {}".format(str(price)))
-    else:
-        #...
-        print("Do nothing ....")
 
 valid_ipn_received.connect(show_me_the_money)
 

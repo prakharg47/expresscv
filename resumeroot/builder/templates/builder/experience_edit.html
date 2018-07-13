@@ -4,6 +4,7 @@
 {% block form_title %}Work{% endblock %}
 
 {% block css %}
+    {{ block.super }}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
           integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
 {% endblock %}
@@ -43,7 +44,7 @@
                         {{ form.city.errors }}
                     </div>
                 </div>
-            </div>
+0            </div>
 
             <div class="row">
                 <div class="col-md-3 mb-3">
@@ -80,8 +81,16 @@
 
             </div>
 
-            <input type="submit" class="btn btn-outline-success" value="Save"/>
-            <button class="btn btn-outline-secondary" value="Save">Preview</button>
+            <div class="row">
+                <div class="col-3">
+                    <input type="submit" class="btn btn-success btn-block" value="Save"/>
+                </div>
+                <div class="col-3">
+                    <a role="button" class="btn btn-outline-danger btn-block"
+                       href="{% url 'experience' resume_id=resume_id %}">Discard</a>
+                </div>
+            </div>
+
 
         </form>
     </div>
@@ -128,7 +137,7 @@
 {% block js_2 %}
     <script>
         $(document).ready(function () {
-            $("#educationMenuItem").addClass("text-dark");
+            $("#workMenuItem").addClass("text-dark");
         });
     </script>
 {% endblock %}

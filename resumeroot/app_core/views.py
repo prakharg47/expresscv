@@ -1,9 +1,9 @@
+import datetime
+
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-import datetime
-from dateutil.relativedelta import relativedelta
 from django.urls import reverse
 # Create your views here.
 from paypal.standard.forms import PayPalPaymentsForm
@@ -85,10 +85,13 @@ def account(request):
 
 
 def new_user_email(backend, user, response, *args, **kwargs):
-    # send email to user
-    #
-    first_name = user.first_name
 
+    # Assign basic group to user
+    # basic_group = Group.objects.get(name="Basic")
+    # basic_group.user_set.add(user)
+
+    # send email to user
+    first_name = user.first_name
     email_body = """
 
     Dear prakhar,
