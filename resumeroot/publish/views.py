@@ -157,7 +157,7 @@ def preview(request, resume_id):
                                                     'form': personal_form})
 
 
-def convert_html_to_latex(html, theme_id):
+def convert_html_to_latex_old(html, theme_id):
     """Convert html to latex based on theme"""
 
     if theme_id == "2":
@@ -189,3 +189,18 @@ def convert_html_to_latex(html, theme_id):
 
     return html
 
+
+def convert_html_to_latex(html, theme_id):
+    random_file_name = "random.html"
+    output_file_name = random_file_name.replace("html", "tex")
+
+    with open(random_file_name, 'w', encoding="utf-8") as f:
+        f.write(html)
+
+    p = subprocess.Popen(["xelatex", "-interaction=scrollmode", random_file_name, "-o", output_file_name])
+    p.communicate()
+
+    with open(output_file_name, "r", encoding="utf-8") as f:
+        latex = f.read()
+
+    return latex
