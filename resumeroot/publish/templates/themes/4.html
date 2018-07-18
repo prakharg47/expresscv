@@ -89,13 +89,14 @@
 \mywebheader
 
 %%%%%%%%%%%%%%%%%%%%%%
-
+{% if summary %}
 \resheading{Summary}
 \begin{itemize}
 \item[] {{ summary.summary }}
 \end{itemize}
+    {% endif %}
 
-
+{% if works %}
 \resheading{Experience}
 
 	\begin{itemize}
@@ -110,8 +111,9 @@
 
         {% endfor %}
 	\end{itemize}
+{% endif %}
 
-
+    {% if educations %}
 \resheading{Education}
 \begin{itemize}
 {% for education in educations %}
@@ -128,7 +130,7 @@
 {% endfor %}
 
 \end{itemize}
-
+{% endif %}
 
 %%%%%%%%%%%%%%%%%%%%%%
 
@@ -145,19 +147,24 @@
 	\end{itemize}
 {% endif %}
 
+    {% if skills %}
 \resheading{Skills}
 	%\begin{description}
 	\begin{itemize}
 	\item[] {{ skills.skills }}
 	\end{itemize}
 	%\end{description} % End Skills list
-	
-\vspace{5pt}
+	{% endif %}
 
+
+
+{% if languagues %}
+    \vspace{5pt}
 \resheading{Languages}
 	\begin{itemize}
 	\item[ ] {{languages.languages}}
 	\end{itemize}
 \end{document}
+    {% endif %}
 
 {% endautoescape %}

@@ -37,9 +37,12 @@
 \makecvtitle
 \vspace{-35pt}
 
+    {% if summary %}
 \section{Summary}
 {{ summary.summary }}
+{% endif %}
 
+    {% if works %}
 \section{Work Experience}
 {% for work in works %}
 \cventry
@@ -53,7 +56,9 @@
     \vspace{4pt}
 
 {% endfor %}
+    {% endif %}
 
+    {% if educations %}
 \section{Education}
 {% for education in educations %}
 \cventry{% templatetag openbrace %}{{education.from_year}} -- {{education.to_year}}{% templatetag closebrace %}
@@ -64,6 +69,7 @@
 
     \vspace{4pt}
 {% endfor %}
+{% endif %}
 
 {% if awards %}
 \section{Awards and Certificates}
@@ -76,14 +82,17 @@
 {% endfor %}
 {% endif %}
 
+    {% if skills %}
 \section{Skills}
 {{skills.skills}}
+{% endif %}
 
-\vspace{-10pt}
 
+    {% if languages %}
+        \vspace{-10pt}
 \section{Languages}
 {{languages.languages}}
-
+{% endif %}
 
 
 \end{document}

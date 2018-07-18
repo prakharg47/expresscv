@@ -175,17 +175,21 @@ GPA: #7 \\[0.6em]
 \end{itemize}
 {% endif %}
 
+    {% if skills %}
 \section{Skills}
 \begin{itemize}
 \item[] {{ skills.skills }}
 
 \end{itemize}
+    {% endif %}
 
 
+    {% if languages%}
 \section{Languages}
 \begin{itemize}
 \item[] {{ languages.languages }}
 \end{itemize}
+    {% endif %}
 
 
 \end{document}

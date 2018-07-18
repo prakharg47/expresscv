@@ -88,13 +88,15 @@
     {% endif %}
 \end{tabular}
 
+    {% if summary %}
 %Section: Languages
 \section{Summary}
 \begin{adjustwidth}{0.3cm}{}
 {{ summary.summary }}
 \end{adjustwidth}
+    {% endif %}
 
-
+{% if works %}
 %Section: Work Experience at the top
 \section{Work Experience}
 \begin{tabular}{r|p{11cm}}
@@ -104,7 +106,9 @@
     &\emph{% templatetag openbrace %}{{ work.designation }}{% templatetag closebrace %}\\&\smallsize{% templatetag openbrace %}{{ work.work_summary }}{% templatetag closebrace %}\\\multicolumn{2}{c}{} \\
 {% endfor %}
 \end{tabular}
+    {% endif %}
 
+    {% if educations %}
 %Section: Education
 \section{Education}
 \begin{tabular}{rp{11cm}}
@@ -117,6 +121,8 @@
 
 {% endfor %}
 \end{tabular}
+{% endif %}
+
 
 {% if awards %}
 \section{Awards and Certificates}
@@ -129,16 +135,21 @@
 {% endif %}
 
 
+    {% if languages%}
 %Section: Languages
 \section{Languages}
 \begin{adjustwidth}{0.3cm}{}
 {{ languages.languages }}
 \end{adjustwidth}
+    {% endif %}
 
+
+    {% if skills %}
 \section{Skills}
 \begin{adjustwidth}{0.3cm}{}
 {{ skills.skills }}
 \end{adjustwidth}
+    {% endif %}
 
 
 \end{document}
