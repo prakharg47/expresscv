@@ -38,9 +38,11 @@ def publish(request, resume_id):
     education_set = Education.objects.filter(resume=user_resume)
 
     for elem in education_set:
-        elem.education_summary = convert_html_to_latex(elem.education_summary, theme_detail.theme)\
-            .replace("\n", " ")\
-            .replace("\r", "")
+        elem.education_summary = convert_html_to_latex(elem.education_summary, theme_detail.theme) \
+            .replace("\r", "") \
+            .replace("\n\n", " \\\\ ")
+            # .replace("\n", " ")\
+            # .replace("\r", "")
 
     try:
         user_summary = Summary.objects.get(resume=user_resume)
@@ -50,31 +52,40 @@ def publish(request, resume_id):
 
     work_set = Work.objects.filter(resume=user_resume)
     for elem in work_set:
-        elem.work_summary = convert_html_to_latex(elem.work_summary, theme_detail.theme)\
-            .replace("\n", " ")\
-            .replace("\r", "")
+        elem.work_summary = convert_html_to_latex(elem.work_summary, theme_detail.theme) \
+            .replace("\r", "") \
+            .replace("\n\n", " \\\\ ")
+            # .replace("\n", " ")\
+            # .replace("\r", "")
 
     try:
         skills = Skills.objects.get(resume=user_resume)
-        skills.skills = convert_html_to_latex(skills.skills, theme_detail.theme)\
-            .replace("\n", " ")\
-            .replace("\r", "\n")
+        skills.skills = convert_html_to_latex(skills.skills, theme_detail.theme) \
+            .replace("\r", "")\
+            .replace("\n\n", " \\\\ ")
+
+
     except Skills.DoesNotExist:
         skills = None
 
     try:
         language = Languages.objects.get(resume=user_resume)
-        language.languages = convert_html_to_latex(language.languages, theme_detail.theme)\
-            .replace("\n", " ")\
-            .replace("\r", "\n")
+        language.languages = convert_html_to_latex(language.languages, theme_detail.theme) \
+            .replace("\r", "") \
+            .replace("\n\n", " \\\\ ")
+        # .replace("\n", " ")\
+        #     .replace("\r", "\n")
     except Languages.DoesNotExist:
         language = None
 
     award_set = Award.objects.filter(resume=user_resume)
     for elem in award_set:
-        elem.award_summary = convert_html_to_latex(elem.award_summary, theme_detail.theme)\
-            .replace("\n", " ")\
-            .replace("\r", "")
+        elem.award_summary = convert_html_to_latex(elem.award_summary, theme_detail.theme) \
+            .replace("\r", "") \
+            .replace("\n\n", " \\\\ ")
+
+        # .replace("\r", "")
+            # .replace("\n", " ")\
 
     rendered = render_to_string('themes/{}.html'.format(theme_detail.theme),
                                 {
@@ -197,8 +208,9 @@ def convert_html_to_latex(html, theme_id):
     with open(random_file_name, 'w', encoding="utf-8") as f:
         f.write(html)
 
-    p = subprocess.Popen(["xelatex", "-interaction=scrollmode", random_file_name, "-o", output_file_name])
+    p = subprocess.Popen(["pandoc", random_file_name, "-o", output_file_name])
     p.communicate()
+    p.wait()
 
     with open(output_file_name, "r", encoding="utf-8") as f:
         latex = f.read()
