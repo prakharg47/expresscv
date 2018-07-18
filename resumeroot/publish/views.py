@@ -58,6 +58,9 @@ def publish(request, resume_id):
             # .replace("\n", " ")\
             # .replace("\r", "")
 
+        if theme_detail == "5" or theme_detail == 5:
+            elem.work_summary = elem.work_summary.replace("\\\\", " ")
+
     try:
         skills = Skills.objects.get(resume=user_resume)
         skills.skills = convert_html_to_latex(skills.skills, theme_detail.theme) \
@@ -215,4 +218,4 @@ def convert_html_to_latex(html, theme_id):
     with open(output_file_name, "r", encoding="utf-8") as f:
         latex = f.read()
 
-    return latex
+    return latex.replace("~", "")
