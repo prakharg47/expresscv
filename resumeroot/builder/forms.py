@@ -157,21 +157,22 @@ class ExperienceForm(forms.ModelForm):
 
     from_year = forms.CharField(
         required=False,
-        label="From year",
+        label="From",
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': '2018', }
+            attrs={'class': 'form-control', 'placeholder': 'Jan, 2016', }
         )
     )
 
     to_year = forms.CharField(
         required=False,
-        label="To year",
+        label="To",
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': '2018', }
+            attrs={'class': 'form-control', 'placeholder': 'Mar, 2018 / present', }
         )
     )
 
     work_summary = forms.CharField(
+        required=False,
         label="Summary",
         widget=CKEditorWidget()
     )
@@ -232,21 +233,22 @@ class EducationNewForm(forms.ModelForm):
 
     from_year = forms.CharField(
         required=False,
-        label="From year",
+        label="From",
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': '2018', }
+            attrs={'class': 'form-control', 'placeholder': 'Jan, 2018', }
         )
     )
 
     to_year = forms.CharField(
         required=False,
-        label="To year",
+        label="To",
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': '2018', }
+            attrs={'class': 'form-control', 'placeholder': 'Mar, 2018 / present', }
         )
     )
 
     education_summary = forms.CharField(
+        required=False,
         label="Summary",
         widget=CKEditorWidget()
     )
@@ -293,6 +295,7 @@ class AwardForm(forms.ModelForm):
 
     organisation = forms.CharField(
         label="Organisation",
+        required=False,
         widget=forms.TextInput(
             attrs={'class': 'form-control', 'placeholder': 'Indian Company Secretary Institute', }
         )
@@ -307,7 +310,8 @@ class AwardForm(forms.ModelForm):
     )
 
     award_summary = forms.CharField(
-        label="Short description",
+        required=False,
+        label="Short Description",
         widget=CKEditorWidget()
     )
 

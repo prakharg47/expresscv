@@ -58,7 +58,7 @@ def publish(request, resume_id):
             # .replace("\n", " ")\
             # .replace("\r", "")
 
-        if theme_detail == "5" or theme_detail == 5:
+        if theme_detail == "2" or theme_detail == 2:
             elem.work_summary = elem.work_summary.replace("\\\\", " ")
 
     try:
@@ -66,7 +66,6 @@ def publish(request, resume_id):
         skills.skills = convert_html_to_latex(skills.skills, theme_detail.theme) \
             .replace("\r", "")\
             .replace("\n\n", " \\\\ ")
-
 
     except Skills.DoesNotExist:
         skills = None

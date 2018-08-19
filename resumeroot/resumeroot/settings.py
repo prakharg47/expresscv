@@ -85,6 +85,7 @@ TEMPLATES = [
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
             ],
+            # 'autoescape': False,
         },
     },
 ]
@@ -202,7 +203,10 @@ CKEDITOR_CONFIGS = {
             ['Bold', 'Italic', 'Underline'],
             ['NumberedList', 'BulletedList' ],
             ['RemoveFormat', ]
-        ]
+        ],
+        'removePlugins': ','.join([
+            'elementspath',
+        ]),
     }
 }
 

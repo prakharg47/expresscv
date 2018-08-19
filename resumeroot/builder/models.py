@@ -15,7 +15,6 @@ class Resume(TimeStampedModel):
     def __str__(self):
         return "{}".format(self.name)
 
-
 class Theme(models.Model):
 
     THEME_NAMES = ['Specter', 'Ross', 'Donna', 'Louie']
@@ -25,7 +24,7 @@ class Theme(models.Model):
 
     resume = models.ForeignKey(Resume, primary_key=True, unique=True, on_delete=models.CASCADE)
 
-    theme = models.CharField(max_length=60, choices=THEME_CHOICES, default='Specter')
+    theme = models.CharField(max_length=60, choices=THEME_CHOICES, default='1')
     font_size = models.IntegerField(default=11)
     font_family = models.CharField(max_length=60, choices=FONT_CHOICES, default='Sans')
     horizontal_margins = models.DecimalField(max_digits=5, decimal_places=2, default=1.5)
