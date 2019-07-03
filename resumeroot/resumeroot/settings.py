@@ -19,13 +19,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ig84c(5m3qe)2%%^ivs423v@s(w=-+c8s%kcv#+#xqly^jzf6^'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['192.168.42.205', '192.168.43.60', 'localhost', '4ae0faea.ngrok.io', '0eed81f0.ngrok.io']
+ALLOWED_HOSTS = ['localhost']
 
 # Application definition
 
@@ -99,11 +99,11 @@ WSGI_APPLICATION = 'resumeroot.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'resumeroot',
-        'USER': 'root',
-        'PASSWORD': 'blackflash',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',   # Or an IP Address that your DB is hosted on
+        'PORT': '',
 
     }
 }
@@ -164,11 +164,11 @@ LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'resume'
 
 # Social config
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1050437934887-n2q0u7m5mmuktq69435slbsghqgjvhfg.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'MXLbKs6Tovz_mzUoF4OPWwqc'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
 
-SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = '78o8mql7rg2v1i'
-SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'cMXpYULSrkXbr02h'
+SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = ''
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = ''
 
 LOGGING = {
     'disable_existing_loggers': False,
@@ -275,8 +275,8 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'warlock3056'
-EMAIL_HOST_PASSWORD = 'soccer3056'
+EMAIL_HOST = ''
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
