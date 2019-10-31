@@ -1,6 +1,6 @@
 wheel
 dj-database-url==0.4.2
-Django==1.10.6
+Django==1.11.23
 gunicorn==19.6.0
 psycopg2==2.7
 python-decouple==3.0
